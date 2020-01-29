@@ -37,7 +37,7 @@ public class MainController {
         if(principal==null)
             data.put("profile", null);
         else
-            data.put("profile",userDetailsRepo.findById(principal.getName()).get());
+            data.put("profile",userDetailsRepo.findByIdWeb(principal.getName()).get());
 
         data.put("messages", messageRepo.findAll());
         model.addAttribute("frontendData", data);

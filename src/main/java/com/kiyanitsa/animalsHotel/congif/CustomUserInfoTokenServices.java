@@ -101,11 +101,11 @@ public class CustomUserInfoTokenServices implements ResourceServerTokenServices
         {
             String id=(String) map.get("sub");
             System.out.println(id);
-            mapToUser(map, id);
-        }else if(map.containsKey("id"))
+            fullUser(map, id);
+        }else   if(map.containsKey("id"))
         {
             String id=(String) map.get("id");
-            mapToUser(map, id);
+            fullUser(map, id);
         }
 
         if (map.containsKey("error"))
@@ -116,13 +116,12 @@ public class CustomUserInfoTokenServices implements ResourceServerTokenServices
         return extractAuthentication(map);
     }
 
-    private void mapToUser(Map<String, Object> map, String id) {
-        User user=userDetailsRepo.findById(id).orElseGet(()->{
+    private void fullUser(Map<String, Object> map, String id) {
+        User user=userDetailsRepo.findByIdWeb(id).orElseGet(()->{
             User newUser=new User();
-            newUser.setId(id);
+            newUser.setIdWeb(id);
             newUser.setName((String) map.get("name"));
             newUser.setEmail((String) map.get("email"));
-            newUser.setEmail((String) map.get("gender"));
             newUser.setEmail((String) map.get("picture"));
             return newUser;
         });
