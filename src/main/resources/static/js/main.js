@@ -22,10 +22,10 @@ Vue.component('message-form',{
         }
     },
     template:
-        '<ul class="list-group">' +
+        '<div>' +
             '<input type="text" placeholder="Write something" v-model="text"/>'+
-            '<button type="button" class="btn btn-info" v-on:click="save">Save <button/>'+
-        '</ul>',
+            '<button type="button" class="btn btn-info" v-on:click="save">Save </button>'+
+        '</div>',
     methods:{
         save: function () {
             var message = {text: this.text};
@@ -95,7 +95,8 @@ var app = new Vue({
     template: '<div>' +
         '<div v-if="!profile">Необходимо авторизоваться через <a href="/login/google">Google</a></div>' +
         '<div v-if="!profile">Необходимо авторизоваться через <a href="/login/facebook">Facebook</a></div>' +
-        '<div v-if="!profile"><a href="/reg">Зарегистрироваться </a></div>' +
+        '<div v-if="!profile">Необходимо авторизоваться через <a href="/login">почту</a></div>' +
+        '<div v-if="!profile"><a href="/registration">Зарегистрироваться </a></div>' +
         '<div v-else >'+
             '<div>{{profile.name}}&nbsp;<a href="/logout">Выйти</a></div>'+
         '   <messages-list :messages="messages"/>' +

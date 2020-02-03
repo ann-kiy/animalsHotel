@@ -1,6 +1,6 @@
 package com.kiyanitsa.animalsHotel.congif;
 
-import com.kiyanitsa.animalsHotel.domain.User;
+
 import com.kiyanitsa.animalsHotel.repo.UserDetailsRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
@@ -16,6 +16,8 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
@@ -24,6 +26,7 @@ import org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticat
 import org.springframework.security.oauth2.client.filter.OAuth2ClientContextFilter;
 import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.authentication.rememberme.AbstractRememberMeServices;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
@@ -60,16 +63,33 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .antMatcher("/**")
                 .authorizeRequests()
-                    .antMatchers("/message","/message/**","/", "/login**",  "/js/**","/webjars/**", "/error**","/logout**")
+                    .antMatchers("/message","/message/**","/", "/login**",  "/js/**","/webjars/js-cookie/js.cookie.js", "/error**","/logout**","/registration**")
                     .permitAll()
-                .anyRequest()
-                    .authenticated()
-                .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).deleteCookies(AbstractRememberMeServices.SPRING_SECURITY_REMEMBER_ME_COOKIE_KEY)
-                .invalidateHttpSession(true)
-                .logoutSuccessUrl("/")
+                .anyRequest().authenticated()
+                .and()
+                    .formLogin()
+                    .loginPage("/login")
+                    .permitAll()
+                .and()
+                    .logout()
+                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout")).deleteCookies(AbstractRememberMeServices.SPRING_SECURITY_REMEMBER_ME_COOKIE_KEY)
+                    .invalidateHttpSession(true)
+                    .logoutSuccessUrl("/")
                 .and().csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 .and().addFilterBefore(ssoFilter(), BasicAuthenticationFilter.class)
         .csrf().disable();
+    }
+    @Bean
+    @Override
+    public UserDetailsService userDetailsServiceBean() throws Exception {
+        UserDetails user =
+                User.withDefaultPasswordEncoder()
+                        .username("u")
+                        .password("p")
+                        .roles("USER")
+                        .build();
+
+        return new InMemoryUserDetailsManager(user);
     }
 
     private Filter ssoFilter() {
@@ -112,6 +132,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         registration.setOrder(-100);
         return registration;
     }
+
 
 
 

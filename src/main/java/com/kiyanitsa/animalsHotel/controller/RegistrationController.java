@@ -7,7 +7,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
+@RequestMapping("/registration")
 @Controller
 public class RegistrationController {
     private UserDetailsRepo userDetailsRepo;
@@ -15,13 +17,13 @@ public class RegistrationController {
 //    @Autowired
 //    private PasswordEncoder passwordEncoder;
 
-    @GetMapping("/registration")
+    @GetMapping
     public String registration()
     {
         return "registration";
     }
 
-    @PostMapping("/registration")
+    @PostMapping
     public String addUser(String name, String username, String password)
     {
 //        User user = new User();

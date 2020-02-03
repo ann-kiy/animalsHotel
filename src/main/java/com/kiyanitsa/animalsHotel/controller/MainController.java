@@ -36,8 +36,12 @@ public class MainController {
        HashMap<Object, Object> data = new HashMap<>();
         if(principal==null)
             data.put("profile", null);
-        else
-            data.put("profile",userDetailsRepo.findByIdWeb(principal.getName()).get());
+        else {
+           if(userDetailsRepo.findByIdWeb(principal.getName()).isEmpty())
+               data.put("profile", principal);
+           else
+                data.put("profile", userDetailsRepo.findByIdWeb(principal.getName()).get());
+        }
 
         data.put("messages", messageRepo.findAll());
         model.addAttribute("frontendData", data);

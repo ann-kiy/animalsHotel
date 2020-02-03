@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
@@ -21,7 +22,6 @@
             }
         });
     </script>
-
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
@@ -30,11 +30,52 @@
     <script th:inline="javascript">
         var frontendData=[[${frontendData}]];
     </script>
-
+    <title>Title</title>
 </head>
 <body>
-<h3>AnimalsHotel</h3>
-<div id="app"></div>
-<script src="/js/main.js"></script>
+<div>
+<form  id="app"
+       @submit="checkForm"
+       action="https://vuejs.org/"
+       method="post">
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <label for="inputSurname">Фамилия</label>
+            <input type="text" class="form-control" id="inputSurname">
+        </div>
+        <div class="form-group col-md-4">
+            <label for="inputName">Имя</label>
+            <input type="text" class="form-control" id="inputName">
+        </div>
+        <div class="form-group col-md-4">
+            <label for="inputPatronymic">Отчество</label>
+            <input type="text" class="form-control" id="inputPatronymic">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="inputEmail4">E-mail</label>
+        <input type="email" class="form-control" id="inputEmail4">
+    </div>
+    <div class="form-group">
+        <label for="inputPhone">Телефон</label>
+        <input type="text"   class="form-control" id="inputPhone">
+    </div>
+    <div class="form-group">
+        <label for="inputAddress">Адрес</label>
+        <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+    </div>
+    <div class="form-group">
+        <label for="inputPassword">Пароль</label>
+        <input type="password"   class="form-control" id="inputPassword">
+    </div>
+    <div class="form-group">
+        <label for="inputPassword2">Повторите пароль</label>
+        <input type="password"   class="form-control" id="inputPassword2">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Sign in</button>
+
+</form>
+</div>
 </body>
 </html>
