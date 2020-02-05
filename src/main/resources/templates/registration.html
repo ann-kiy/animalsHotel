@@ -33,32 +33,24 @@
     <title>Title</title>
 </head>
 <body>
+Добавление нового пользователя
+<p th:utext="${message}">Welcome to our grocery store!</p>
 <div>
 <form  id="app"
        @submit="checkForm"
-       action="https://vuejs.org/"
+       action="/registration"
        method="post">
-    <div class="form-row">
-        <div class="form-group col-md-4">
-            <label for="inputSurname">Фамилия</label>
-            <input type="text" class="form-control" id="inputSurname">
+        <div class="form-group">
+            <label for="inputSurname">ФИО</label>
+            <input type="text" class="form-control" id="inputSurname" name="name">
         </div>
-        <div class="form-group col-md-4">
-            <label for="inputName">Имя</label>
-            <input type="text" class="form-control" id="inputName">
-        </div>
-        <div class="form-group col-md-4">
-            <label for="inputPatronymic">Отчество</label>
-            <input type="text" class="form-control" id="inputPatronymic">
-        </div>
-    </div>
     <div class="form-group">
         <label for="inputEmail4">E-mail</label>
-        <input type="email" class="form-control" id="inputEmail4">
+        <input type="email" class="form-control" id="inputEmail4" name="email">
     </div>
     <div class="form-group">
         <label for="inputPhone">Телефон</label>
-        <input type="text"   class="form-control" id="inputPhone">
+        <input type="text"   class="form-control" id="inputPhone"  name="phone">
     </div>
     <div class="form-group">
         <label for="inputAddress">Адрес</label>
@@ -66,7 +58,7 @@
     </div>
     <div class="form-group">
         <label for="inputPassword">Пароль</label>
-        <input type="password"   class="form-control" id="inputPassword">
+        <input type="password"   class="form-control" id="inputPassword" name="password">
     </div>
     <div class="form-group">
         <label for="inputPassword2">Повторите пароль</label>

@@ -2,11 +2,12 @@ package com.kiyanitsa.animalsHotel.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonView;
+import lombok.Data;
 import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-
+@Data
 @Entity
 @Table
 @ToString(of={"id","text"})
@@ -23,29 +24,35 @@ public class Message {
     @JsonView(Views.FullMessage.class)
     private LocalDateTime createDate;
 
-    public LocalDateTime getCreateDate() {
-        return createDate;
-    }
+    @ManyToOne(fetch = FetchType.EAGER)
+    private User author;
 
-    public void setCreateDate(LocalDateTime createDate) {
-        this.createDate = createDate;
-    }
+    @ManyToOne(fetch = FetchType.EAGER)
+    private User recipient;
 
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
+//    public LocalDateTime getCreateDate() {
+//        return createDate;
+//    }
+//
+//    public void setCreateDate(LocalDateTime createDate) {
+//        this.createDate = createDate;
+//    }
+//
+//
+//
+//    public Long getId() {
+//        return id;
+//    }
+//
+//    public void setId(Long id) {
+//        this.id = id;
+//    }
+//
+//    public String getText() {
+//        return text;
+//    }
+//
+//    public void setText(String text) {
+//        this.text = text;
+//    }
 }

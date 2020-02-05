@@ -2,11 +2,13 @@ package com.kiyanitsa.animalsHotel.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.kiyanitsa.animalsHotel.domain.Message;
+import com.kiyanitsa.animalsHotel.domain.User;
 import com.kiyanitsa.animalsHotel.domain.Views;
 import com.kiyanitsa.animalsHotel.exceptions.NotFoundException;
 import com.kiyanitsa.animalsHotel.repo.MessageRepo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -43,8 +45,9 @@ public class MessageController {
     }
 
     @PostMapping
-    public Message create(@RequestBody Message message){
+    public Message create(@RequestBody Message message, @AuthenticationPrincipal User user){
         message.setCreateDate(LocalDateTime.now());
+        message.setAuthor(user);
         return messageRepo.save(message);
     }
     @PutMapping("{id}")
