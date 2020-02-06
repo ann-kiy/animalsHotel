@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/")
@@ -32,19 +33,19 @@ public class MainController {
     }
 
     @GetMapping
-    public String main(@AuthenticationPrincipal Principal principal, Model model) {
+    public String main(@AuthenticationPrincipal User principal, @AuthenticationPrincipal Principal principal1, Model model) {
        HashMap<Object, Object> data = new HashMap<>();
-        if(principal==null)
+        if(principal==null && principal1==null)
             data.put("profile", null);
-        else {
-           if(userDetailsRepo.findByIdWeb(principal.getName()).isEmpty())
-               data.put("profile", principal);
-           else
-                data.put("profile", userDetailsRepo.findByIdWeb(principal.getName()).get());
+        else if(principal==null) {
+                data.put("profile", userDetailsRepo.findByIdWeb(principal1.getName()).get());
+        }else {
+                data.put("profile", principal);
         }
 
         data.put("messages", messageRepo.findAll());
         model.addAttribute("frontendData", data);
         return "index";
     }
+
 }

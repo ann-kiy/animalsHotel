@@ -39,7 +39,8 @@
 <form  id="app"
        @submit="checkForm"
        action="/registration"
-       method="post">
+       method="post"
+        enctype="multipart/form-data">
         <div class="form-group">
             <label for="inputSurname">ФИО</label>
             <input type="text" class="form-control" id="inputSurname" name="name">
@@ -64,6 +65,14 @@
         <label for="inputPassword2">Повторите пароль</label>
         <input type="password"   class="form-control" id="inputPassword2">
     </div>
+    <input type="file" id="validatedCustomFile"  name="file">
+<!--    <div class="custom-file">-->
+<!--        <label for="validatedCustomFile">Фото</label>-->
+<!--        <input type="file" class="custom-file-input" id="validatedCustomFile"  name="img">-->
+<!--        <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>-->
+<!--        <div class="invalid-feedback">Example invalid custom file feedback</div>-->
+<!--    </div>-->
+
 
     <button type="submit" class="btn btn-primary">Sign in</button>
 

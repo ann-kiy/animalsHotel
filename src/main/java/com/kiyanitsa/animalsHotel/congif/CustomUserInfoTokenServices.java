@@ -122,7 +122,8 @@ public class CustomUserInfoTokenServices implements ResourceServerTokenServices
             newUser.setIdWeb(id);
             newUser.setName((String) map.get("name"));
             newUser.setEmail((String) map.get("email"));
-            newUser.setEmail((String) map.get("picture"));
+            newUser.setImg((String) map.get("picture"));
+            newUser.setActive(true);
             return newUser;
         });
         user.setLastVisit(LocalDateTime.now());
@@ -160,7 +161,7 @@ public class CustomUserInfoTokenServices implements ResourceServerTokenServices
         else if(map.containsKey("sub"))
             return  map.get("sub");
         else
-            return null;
+            return map;
 
     }
 

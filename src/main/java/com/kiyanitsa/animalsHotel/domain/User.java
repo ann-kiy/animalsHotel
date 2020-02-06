@@ -23,7 +23,7 @@ public class User implements UserDetails{
     private Long id;
     private String idWeb;
     private String name;
-    private String userpic;
+    private String img;
     private String email;
     private String phone;
     private String locale;

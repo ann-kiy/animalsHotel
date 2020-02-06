@@ -99,14 +99,21 @@ var app = new Vue({
         '<div v-if="!profile"><a href="/registration">Зарегистрироваться </a></div>' +
         '<div v-else >'+
             '<div>{{profile.name}}&nbsp;<a href="/logout">Выйти</a></div>'+
+        '<div>' +
+            '<img v-bind:src="src">'+
+        '</div>'+
         '   <messages-list :messages="messages"/>' +
         '</div>'+
         '</div>',
-    data: {
-        messages: frontendData.messages,
-        profile: frontendData.profile
+    data:        function () {
+            if(frontendData)
+            return {
+                src: "/img/"+frontendData.profile.img,
+                messages: frontendData.messages,
+                profile: frontendData.profile
+            }
 
-    },
+        } ,
     created: function () {
         // messageApi.get().then(result =>
         //     result.json().then(data=>
