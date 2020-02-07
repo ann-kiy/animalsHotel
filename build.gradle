@@ -40,6 +40,9 @@ dependencies {
 	compile('org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.0.0.RELEASE')
 // https://mvnrepository.com/artifact/org.webjars/js-cookie
 	compile group: 'org.webjars', name: 'js-cookie', version: '2.1.0'
+	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-mail
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '2.2.4.RELEASE'
+
 
 }
 

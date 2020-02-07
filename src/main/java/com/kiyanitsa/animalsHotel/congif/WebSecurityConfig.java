@@ -38,8 +38,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private UserService userService;
     @Autowired
    private OAuth2ClientContext oauth2ClientContext;
-    @Autowired
-    private UserDetailsRepo userDetailsRepo;
 
     @Override
     protected UserDetailsService userDetailsService() {
@@ -51,7 +49,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .antMatcher("/**")
                 .authorizeRequests()
-                    .antMatchers("/message","/message/**","/", "/login**",  "/js/**","/webjars/js-cookie/js.cookie.js", "/error**","/logout**","/registration**")
+                    .antMatchers("/message","/message/**","/", "/login**",  "/js/**","/webjars/js-cookie/js.cookie.js", "/error**","/logout**","/registration**","/activate/*")
                     .permitAll()
                 .anyRequest().authenticated()
                 .and()
@@ -92,7 +90,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         CustomUserInfoTokenServices tokenServices = new CustomUserInfoTokenServices(
                 client.getResource().getUserInfoUri(), client.getClient().getClientId());
         tokenServices.setRestTemplate(template);
-        tokenServices.setUserRepo(userDetailsRepo);
+        tokenServices.setUserRepo(userService);
         filter.setTokenServices(tokenServices);
         return filter;
     }

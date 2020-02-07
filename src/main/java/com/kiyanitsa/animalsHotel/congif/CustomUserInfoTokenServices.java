@@ -3,6 +3,7 @@ package com.kiyanitsa.animalsHotel.congif;
 
 import com.kiyanitsa.animalsHotel.domain.User;
 import com.kiyanitsa.animalsHotel.repo.UserDetailsRepo;
+import com.kiyanitsa.animalsHotel.services.UserService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.AuthoritiesExtractor;
@@ -23,11 +24,19 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.OAuth2Request;
 import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
 import org.springframework.util.Assert;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.file.Files;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class CustomUserInfoTokenServices implements ResourceServerTokenServices
 {
@@ -39,7 +48,7 @@ public class CustomUserInfoTokenServices implements ResourceServerTokenServices
     private AuthoritiesExtractor authoritiesExtractor = new FixedAuthoritiesExtractor();
     private PrincipalExtractor principalExtractor = new FixedPrincipalExtractor();
 
-    private UserDetailsRepo userDetailsRepo;
+    private UserService userService;
     private PasswordEncoder passwordEncoder;
 
     public CustomUserInfoTokenServices(){}
@@ -50,9 +59,9 @@ public class CustomUserInfoTokenServices implements ResourceServerTokenServices
         this.clientId = clientId;
     }
 
-    public void setUserRepo(UserDetailsRepo userRepo)
+    public void setUserRepo(UserService userService)
     {
-        this.userDetailsRepo = userRepo;
+        this.userService=userService;
     }
 
     public void setPasswordEncoder(PasswordEncoder passwordEncoder)
@@ -117,17 +126,16 @@ public class CustomUserInfoTokenServices implements ResourceServerTokenServices
     }
 
     private void fullUser(Map<String, Object> map, String id) {
-        User user=userDetailsRepo.findByIdWeb(id).orElseGet(()->{
+        User user=userService.findByIdWeb(id).orElseGet(()->{
             User newUser=new User();
             newUser.setIdWeb(id);
             newUser.setName((String) map.get("name"));
             newUser.setEmail((String) map.get("email"));
-            newUser.setImg((String) map.get("picture"));
-            newUser.setActive(true);
+            newUser.setActive(false);
             return newUser;
         });
         user.setLastVisit(LocalDateTime.now());
-        userDetailsRepo.save(user);
+        userService.saveUser(user);
     }
 
     private OAuth2Authentication extractAuthentication(Map<String, Object> map) {

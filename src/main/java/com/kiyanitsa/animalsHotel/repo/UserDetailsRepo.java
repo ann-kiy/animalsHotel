@@ -11,4 +11,6 @@ public interface UserDetailsRepo extends JpaRepository<User,String> {
 
     Optional<User> findByIdWeb(String id);
     User findByEmail(String email);
+
+    User findByActivationCode(String code);
 }

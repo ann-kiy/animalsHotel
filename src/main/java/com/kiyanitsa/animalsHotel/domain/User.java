@@ -35,6 +35,7 @@ public class User implements UserDetails{
     private Set<Role> roles;
 
     private boolean active;
+    private String activationCode;
   //  @ElementCollection(fetch = FetchType.EAGER)
 
 //    private Set<Long> id_animals;

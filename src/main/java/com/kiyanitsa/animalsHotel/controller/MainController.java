@@ -4,6 +4,7 @@ package com.kiyanitsa.animalsHotel.controller;
 import com.kiyanitsa.animalsHotel.domain.User;
 import com.kiyanitsa.animalsHotel.repo.MessageRepo;
 import com.kiyanitsa.animalsHotel.repo.UserDetailsRepo;
+import com.kiyanitsa.animalsHotel.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,13 +23,13 @@ import java.util.Optional;
 @RequestMapping("/")
 public class MainController {
 
-    private final UserDetailsRepo userDetailsRepo;
+    private final UserService userService;
 
     private final MessageRepo messageRepo;
 
     @Autowired
-    public MainController( UserDetailsRepo userDetailsRepo, MessageRepo messageRepo) {
-        this.userDetailsRepo = userDetailsRepo;
+    public MainController( UserService userService, MessageRepo messageRepo) {
+        this.userService = userService;
         this.messageRepo = messageRepo;
     }
 
@@ -38,7 +39,7 @@ public class MainController {
         if(principal==null && principal1==null)
             data.put("profile", null);
         else if(principal==null) {
-                data.put("profile", userDetailsRepo.findByIdWeb(principal1.getName()).get());
+                data.put("profile", userService.findByIdWeb(principal1.getName()).get());
         }else {
                 data.put("profile", principal);
         }
