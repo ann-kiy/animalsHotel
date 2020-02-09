@@ -52,6 +52,24 @@ public class UserService implements UserDetailsService {
         //user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
 
+       sendMessage(user);
+        return true;
+    }
+    public void updateUser(User user, User userFBD){
+        boolean isEmailChange=(!user.getEmail().equals(userFBD.getEmail()) && !user.getEmail().equals(""));
+        userFBD.setName(user.getName());
+        userFBD.setLocale(user.getLocale());
+        userFBD.setPhone(user.getPhone());
+
+        if(isEmailChange){
+            userFBD.setEmail(user.getEmail());
+            userFBD.setActivationCode(UUID.randomUUID().toString());
+            sendMessage(userFBD);
+        }
+        userRepository.save(userFBD);
+    }
+
+    private void sendMessage(User user) {
         if(!StringUtils.isEmpty(user.getEmail())){
             String message=String.format(
                     "Hello, %s\n"+
@@ -61,10 +79,11 @@ public class UserService implements UserDetailsService {
             );
             mailService.sent(user.getEmail(),"Activation code",message);
         }
-        return true;
     }
+
     public User addImg(User user, MultipartFile file) throws IOException {
-        if(file!=null && !file.getOriginalFilename().isEmpty()) {
+        System.out.println(file.getOriginalFilename());
+        if(!file.getOriginalFilename().equals("")) {
             File uploadDir= new File(uploadPath);
             if(!uploadDir.exists()){
                 uploadDir.mkdir();

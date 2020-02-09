@@ -22,6 +22,9 @@ Vue.component('message-form',{
         }
     },
     template:
+        '<div>'+
+        '<a class="btn btn-primary" href="/profile" role="button">Change profile</a>'+
+        '</div'+
         '<div>' +
             '<input type="text" placeholder="Write something" v-model="text"/>'+
             '<button type="button" class="btn btn-info" v-on:click="save">Save </button>'+

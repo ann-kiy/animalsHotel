@@ -12,8 +12,12 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
@@ -47,6 +51,23 @@ public class MainController {
         data.put("messages", messageRepo.findAll());
         model.addAttribute("frontendData", data);
         return "index";
+    }
+    @GetMapping("profile")
+    public String profile(Model model, @AuthenticationPrincipal User user){
+        if(user==null){
+            return "redirect:/index";
+        }
+        model.addAttribute("name", user.getName());
+        model.addAttribute("email", user.getEmail());
+        model.addAttribute("phone",user.getPhone());
+        model.addAttribute("locale",user.getLocale());
+        return "profile";
+    }
+    @PostMapping("profile")
+    public String changeProfile(User user,@AuthenticationPrincipal User user1, @RequestParam("file") MultipartFile file) throws IOException {
+        user1=userService.addImg(user1,file);
+        userService.updateUser(user,user1);
+        return "login";
     }
 
 }
