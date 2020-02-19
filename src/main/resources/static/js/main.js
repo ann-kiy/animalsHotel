@@ -95,12 +95,9 @@ Vue.component('messages-list', {
 
 var app = new Vue({
     el: '#app',
-    template: '<div>' +
-        '<div v-if="!profile">Необходимо авторизоваться через <a href="/login/google">Google</a></div>' +
-        '<div v-if="!profile">Необходимо авторизоваться через <a href="/login/facebook">Facebook</a></div>' +
-        '<div v-if="!profile">Необходимо авторизоваться через <a href="/login">почту</a></div>' +
-        '<div v-if="!profile"><a href="/registration">Зарегистрироваться </a></div>' +
-        '<div v-else >'+
+    template:
+        '<div >' +
+        '<div  >'+
             '<div>{{profile.name}}&nbsp;<a href="/logout">Выйти</a></div>'+
         '<div>' +
             '<img v-bind:src="src">'+

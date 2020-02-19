@@ -1,55 +1,283 @@
-<!DOCTYPE html>
+
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <meta charset="UTF-8">
-    <title>AnimalsHotel</title>
-    <script type="text/javascript" src="/webjars/js-cookie/js.cookie.js">
-        $.ajaxSetup({
-            beforeSend : function(xhr, settings) {
-                if (settings.type == 'POST' || settings.type == 'PUT'
-                    || settings.type == 'DELETE') {
-                    if (!(/^http:.*/.test(settings.url) || /^https:.*/
-                        .test(settings.url))) {
-                        // Only send the token to relative URLs i.e. locally.
-                        xhr.setRequestHeader("X-XSRF-TOKEN",
-                            Cookies.get('XSRF-TOKEN'));
-                    }
-                }
-            }
-        });
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-    <script th:inline="javascript">
+<!--    <meta charset="UTF-8">-->
+<!--    <meta charset="utf-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">-->
+<!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>AnimalsHotel</title>-->
+<!--    <script type="text/javascript" src="/webjars/js-cookie/js.cookie.js">-->
+<!--        $.ajaxSetup({-->
+<!--            beforeSend : function(xhr, settings) {-->
+<!--                if (settings.type == 'POST' || settings.type == 'PUT'-->
+<!--                    || settings.type == 'DELETE') {-->
+<!--                    if (!(/^http:.*/.test(settings.url) || /^https:.*/-->
+<!--                        .test(settings.url))) {-->
+<!--                        // Only send the token to relative URLs i.e. locally.-->
+<!--                        xhr.setRequestHeader("X-XSRF-TOKEN",-->
+<!--                            Cookies.get('XSRF-TOKEN'));-->
+<!--                    }-->
+<!--                }-->
+<!--            }-->
+<!--        });-->
+<!--    </script>-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>-->
+<!--    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>-->
+<!--    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>-->
+<script th:inline="javascript" xmlns:th="http://www.w3.org/1999/xhtml">
         var frontendData=[[${frontendData}]];
     </script>
-    <title>Title</title>
+<!--    <title>Title</title>-->
 </head>
 <body>
-<p th:utext="${message}"></p>
-<div>
-    <form  id="app"
-           action="/login"
-           method="post">
-        <div class="form-group">
-            <label for="inputEmail4">E-mail</label>
-            <input type="text" class="form-control" id="inputEmail4" name="username">
-        </div>
-        <div class="form-group">
-            <label for="inputPassword">Пароль</label>
-            <input type="password"   class="form-control" id="inputPassword" name="password">
+<!--<p th:utext="${message}"></p>-->
+<!--<div>-->
+<!--    <form  id="app"-->
+<!--           action="/login"-->
+<!--           method="post">-->
+<!--        <div class="form-group">-->
+<!--            <label for="inputEmail4">E-mail</label>-->
+<!--            <input type="text" class="form-control" id="inputEmail4" name="username">-->
+<!--        </div>-->
+<!--        <div class="form-group">-->
+<!--            <label for="inputPassword">Пароль</label>-->
+<!--            <input type="password"   class="form-control" id="inputPassword" name="password">-->
+<!--        </div>-->
+
+<!--        <button type="submit" class="btn btn-primary">Sign in</button>-->
+
+<!--    </form>-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->
+
+<link rel="stylesheet" href="http://bootstraptema.ru/plugins/2015/b-v3-3-6/bootstrap.min.css" />
+<script src="https://bootstraptema.ru/plugins/jquery/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="https://bootstraptema.ru/plugins/2015/b-v3-3-6/bootstrap.min.js"></script>
+<script src="https://bootstraptema.ru/_sf/3/394.js" type="text/javascript"></script>
+<script src="https://kit.fontawesome.com/63caa96024.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" type="text/css" href="/css/style.css">
+<style>
+    /* Demo Background */
+    /*body{background:url(/images/bg/bg-6.png)}*/
+
+    /* Form Style */
+    .form-horizontal{
+        background: #fff;
+        padding-bottom: 40px;
+        border-radius: 15px;
+        text-align: center;
+        border-color: #0d6aad;
+        border: #0f4bac;
+    }
+    .form-horizontal .heading{
+        display: block;
+        font-size: 35px;
+        font-weight: 700;
+        padding: 35px 0;
+        border-bottom: 1px solid #f0f0f0;
+        margin-bottom: 30px;
+    }
+    .form-horizontal .form-group{
+        padding: 0 40px;
+        margin: 0 0 25px 0;
+        position: relative;
+    }
+    .form-horizontal .form-control{
+        background: #f0f0f0;
+        border: none;
+        border-radius: 20px;
+        box-shadow: none;
+        padding: 0 20px 0 45px;
+        height: 40px;
+        transition: all 0.3s ease 0s;
+    }
+    .form-horizontal .form-control:focus{
+        background: #e0e0e0;
+        box-shadow: none;
+        outline: 0 none;
+    }
+    .form-horizontal .form-group i{
+        position: absolute;
+        top: 12px;
+        left: 60px;
+        font-size: 17px;
+        color: #c8c8c8;
+        transition : all 0.5s ease 0s;
+    }
+    .form-horizontal .form-control:focus + i{
+        color: #00b4ef;
+    }
+    .form-horizontal .fa-question-circle{
+        display: inline-block;
+        position: absolute;
+        top: 12px;
+        right: 60px;
+        font-size: 20px;
+        color: #808080;
+        transition: all 0.5s ease 0s;
+    }
+    .form-horizontal .fa-question-circle:hover{
+        color: #000;
+    }
+    .form-horizontal .main-checkbox{
+        float: left;
+        width: 20px;
+        height: 20px;
+        background: #11a3fc;
+        border-radius: 50%;
+        position: relative;
+        margin: 5px 0 0 5px;
+        border: 1px solid #11a3fc;
+    }
+    .form-horizontal .main-checkbox label{
+        width: 20px;
+        height: 20px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        cursor: pointer;
+    }
+    .form-horizontal .main-checkbox label:after{
+        content: "";
+        width: 10px;
+        height: 5px;
+        position: absolute;
+        top: 5px;
+        left: 4px;
+        border: 3px solid #fff;
+        border-top: none;
+        border-right: none;
+        background: transparent;
+        opacity: 0;
+        -webkit-transform: rotate(-45deg);
+        transform: rotate(-45deg);
+    }
+    .form-horizontal .main-checkbox input[type=checkbox]{
+        visibility: hidden;
+    }
+    .form-horizontal .main-checkbox input[type=checkbox]:checked + label:after{
+        opacity: 1;
+    }
+    .form-horizontal .text{
+        float: left;
+        margin-left: 7px;
+        line-height: 20px;
+        padding-top: 5px;
+        text-transform: capitalize;
+    }
+    .form-horizontal .btn{
+        float: right;
+        font-size: 14px;
+        color: #fff;
+        background: #00b4ef;
+        border-radius: 30px;
+        padding: 10px 25px;
+        border: none;
+        text-transform: capitalize;
+        transition: all 0.5s ease 0s;
+    }
+    .form-horizontal .social .circle{
+        background-color: #EEEEEE;
+        color: #FFFFFF;
+        border-radius: 100px;
+        display: inline-block;
+        margin: 0 17px;
+        padding: 10px;
+        width: 35;
+    }
+    .form-horizontal .social .circle .fa{
+        font-size: 16px;
+    }
+    .form-horizontal .social .facebook{
+        background-color: #455CA8;
+        color: #FFFFFF;
+    }
+    .form-horizontal .social .google{
+        background-color: #F74933;
+    }
+    .form-horizontal .division {
+        float: none;
+        margin: 0 auto 18px;
+        overflow: hidden;
+        position: relative;
+        text-align: center;
+        width: 100%;
+    }
+    .form-horizontal .division .line {
+        border-top: 1px solid #DFDFDF;
+        position: absolute;
+        top: 10px;
+        width: 34%;
+    }
+    .form-horizontal .division .line.l {
+        left: 0;
+    }
+    .form-horizontal .division .line.r {
+        right: 0;
+    }
+    @media only screen and (max-width: 479px){
+        .form-horizontal .form-group{
+            padding: 0 25px;
+        }
+        .form-horizontal .form-group i{
+            left: 45px;
+        }
+        .form-horizontal .btn{
+            padding: 10px 20px;
+        }
+    }
+</style>
+
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-offset-3 col-md-6">
+            <form class="form-horizontal"  method="post" action="/login">
+                <span class="heading">АВТОРИЗАЦИЯ</span>
+                <div class="social">
+                    <a id="google_login" class="circle google" href="/login/google">
+                        <i class="fab fa-google"></i>
+                    </a>
+                    <a id="facebook_login" class="circle facebook" href="/login/facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                </div>
+                <div class="division">
+                    <div class="line l"></div>
+                    <span>or</span>
+                    <div class="line r"></div>
+                </div>
+                <div class="form-group">
+                    <input type="email" class="form-control" id="inputEmail" placeholder="Email" name="username">
+                    <i class="fa fa-user"></i>
+                </div>
+                <div class="form-group help">
+                    <input type="password" class="form-control" id="inputPassword" placeholder="Password" name="password">
+                    <i class="fa fa-lock"></i>
+                    <a href="#" class="fa fa-question-circle"></a>
+                </div>
+                <div class="form-group">
+                    <div class="main-checkbox">
+                        <input type="checkbox" value="none" id="checkbox1" />
+                        <label for="checkbox1"></label>
+                    </div>
+                    <span class="text">Запомнить</span>
+                    <button type="submit" class="btn btn-default">ВХОД</button>
+                </div>
+            </form>
         </div>
 
-        <button type="submit" class="btn btn-primary">Sign in</button>
+    </div><!-- /.row -->
+</div><!-- /.container -->
 
-    </form>
-</div>
+<script>
+    var frontendData=[[${frontendData}]];
+
+
+</script>
 </body>
 </html>

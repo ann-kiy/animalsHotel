@@ -43,7 +43,7 @@ public class RegistrationController {
             model.put("message","User exists!");
             return "registration";
         }
-        return "/login"; 
+        return "/index";
     }
 
     @GetMapping("/activate/{code}")
@@ -54,6 +54,6 @@ public class RegistrationController {
         }else{
             model.addAttribute("message", "Activation code is not found!");
         }
-        return "login";
+        return "index";
     }
 }

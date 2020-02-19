@@ -40,8 +40,10 @@ public class MainController {
     @GetMapping
     public String main(@AuthenticationPrincipal User principal, @AuthenticationPrincipal Principal principal1, Model model) {
        HashMap<Object, Object> data = new HashMap<>();
-        if(principal==null && principal1==null)
+        if(principal==null && principal1==null){
             data.put("profile", null);
+            return "login";
+        }
         else if(principal==null) {
                 data.put("profile", userService.findByIdWeb(principal1.getName()).get());
         }else {
@@ -50,12 +52,12 @@ public class MainController {
 
         data.put("messages", messageRepo.findAll());
         model.addAttribute("frontendData", data);
-        return "index";
+            return "index";
     }
     @GetMapping("profile")
     public String profile(Model model, @AuthenticationPrincipal User user){
         if(user==null){
-            return "redirect:/index";
+            return "redirect:/login";
         }
         model.addAttribute("name", user.getName());
         model.addAttribute("email", user.getEmail());
