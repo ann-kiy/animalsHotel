@@ -3,31 +3,32 @@ package com.kiyanitsa.animalsHotel.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
-import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+
 @Data
 @Entity
 @Table
-@ToString(of={"id","text"})
-public class Message {
+public class Advertisement_accept {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonView(Views.Id.class)
     private Long id;
-    @JsonView(Views.IdName.class)
-    private String text;
 
-    @Column(updatable = false)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
-    @JsonView(Views.FullMessage.class)
+    @ManyToOne(fetch = FetchType.EAGER)
+    private User user;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern="dd-MM-yyyy HH:mm:ss")
     private LocalDateTime createDate;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    private User author;
+    private Type_animal type_animal;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    private User recipient;
+    private Breed_animal breed_animal;
+
+    private String condition;
+    private boolean state;
+    private String info;
 
 }
