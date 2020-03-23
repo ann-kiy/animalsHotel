@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,6 +22,8 @@ import java.util.UUID;
 
 @Service
 public class UserService implements UserDetailsService {
+    @Autowired
+    PasswordEncoder passwordEncoder;
     @Autowired
     UserDetailsRepo userRepository;
     @Autowired
@@ -49,7 +52,7 @@ public class UserService implements UserDetailsService {
         user.setRoles(Collections.singleton(Role.USER));
         user.setLastVisit(LocalDateTime.now());
         user.setActivationCode(UUID.randomUUID().toString());
-        //user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
 
        sendMessage(user);
@@ -116,5 +119,9 @@ public class UserService implements UserDetailsService {
         user.setActive(true);
         userRepository.save(user);
         return true;
+    }
+    public boolean isFullDataUser(User user){
+        return !user.getEmail().isEmpty() && !user.getName().isEmpty() &&
+                !user.getPhone().isEmpty();
     }
 }

@@ -169,6 +169,27 @@
         padding-top: 5px;
         text-transform: capitalize;
     }
+    .flex-col-c {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-flex-direction: column;
+        -moz-flex-direction: column;
+        -ms-flex-direction: column;
+        -o-flex-direction: column;
+        flex-direction: column;
+        -ms-align-items: center;
+        align-items: center;
+    }
+    .form-horizontal .textSign{
+        font-family: Poppins-Regular;
+        font-size: 14px;
+        line-height: 1.5;
+        color: #333333;
+        text-transform: uppercase;
+    }
     .form-horizontal .btn{
         float: right;
         font-size: 14px;
@@ -187,7 +208,7 @@
         display: inline-block;
         margin: 0 17px;
         padding: 10px;
-        width: 35;
+        width: 35px;
     }
     .form-horizontal .social .circle .fa{
         font-size: 16px;
@@ -268,16 +289,15 @@
                     <span class="text">Запомнить</span>
                     <button type="submit" class="btn btn-default">ВХОД</button>
                 </div>
+                <div class="flex-col-c">
+                    <span >Или зарегистрируйтесь, используя</span>
+                    <a href="/registration" class="textSign">Регистрация</a>
+                </div>
             </form>
         </div>
 
     </div><!-- /.row -->
 </div><!-- /.container -->
 
-<script>
-    var frontendData=[[${frontendData}]];
-
-
-</script>
 </body>
 </html>

@@ -34,7 +34,11 @@ public class RegistrationController {
 
     @PostMapping("/registration")
     public String addUser(Map<String,Object> model, User user, @RequestParam("file")MultipartFile file, @RequestParam("password2") String password2) throws IOException {
-        if(!user.getPassword().equals(password2)){
+    if(!userService.isFullDataUser(user)){
+            model.put("message","Не все обязательные поля заполненны!");
+            return "registration";
+    }
+    if(!user.getPassword().equals(password2)){
             model.put("message","Пароли не созпадают!");
             return "registration";
         }
@@ -43,7 +47,7 @@ public class RegistrationController {
             model.put("message","User exists!");
             return "registration";
         }
-        return "/index";
+        return "redirect:/login";
     }
 
     @GetMapping("/activate/{code}")
@@ -54,6 +58,6 @@ public class RegistrationController {
         }else{
             model.addAttribute("message", "Activation code is not found!");
         }
-        return "index";
+        return "login";
     }
 }

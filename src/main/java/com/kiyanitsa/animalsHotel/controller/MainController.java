@@ -65,11 +65,38 @@ public class MainController {
         model.addAttribute("locale",user.getLocale());
         return "profile";
     }
+//    @GetMapping("profile")
+//    public String profile(Model model, @AuthenticationPrincipal Principal user){
+//        if(user==null){
+//            return "redirect:/login";
+//        }
+//        User tempUser=userService.findByIdWeb(user.getName()).get();
+//        model.addAttribute("name", tempUser.getName());
+//        model.addAttribute("email", tempUser.getEmail());
+//        model.addAttribute("phone",tempUser.getPhone());
+//        model.addAttribute("locale",tempUser.getLocale());
+//        return "profile";
+//    }
     @PostMapping("profile")
-    public String changeProfile(User user,@AuthenticationPrincipal User user1, @RequestParam("file") MultipartFile file) throws IOException {
+    public String changeProfile(Map<String,Object> model, User user,@AuthenticationPrincipal User user1, @RequestParam("file") MultipartFile file) throws IOException {
+        if(!userService.isFullDataUser(user)){
+            model.put("message","Не все обязательные поля заполненны!");
+            model.put("name", user.getName());
+            model.put("email", user.getEmail());
+            model.put("phone",user.getPhone());
+            model.put("locale",user.getLocale());
+            return "profile";
+        }
         user1=userService.addImg(user1,file);
         userService.updateUser(user,user1);
-        return "login";
+        return "redirect:/login";
     }
+//    @PostMapping("profile")
+//    public String changeProfile(User user,@AuthenticationPrincipal Principal user1, @RequestParam("file") MultipartFile file) throws IOException {
+//        User tempUser=userService.findByIdWeb(user1.getName()).get();
+//        tempUser=userService.addImg(tempUser,file);
+//        userService.updateUser(user,tempUser);
+//        return "redirect:/login";
+//    }
 
 }
