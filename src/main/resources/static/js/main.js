@@ -56,7 +56,7 @@ Vue.component('message-row',{
     props:  ['message','editMethod','messages'],
     template:
         '<div>' +
-        '<i>({{message.id }})</i>{{message.text}}' +
+        '<i>({{message.id }})</i>{{message.text}}</i> '+'\t'+ '{{message.author.name}}' +
         '<span style="position: absolute; right: 0;">  ' +
             '<input type="button" value="Edit" @click="edit"/>'+
             '<input type="button" value="X" @click="del"/>'+

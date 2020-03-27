@@ -45,12 +45,11 @@ public class MainController {
             return "login";
         }
         else if(principal==null) {
-                data.put("profile", userService.findByIdWeb(principal1.getName()).get());
-        }else {
-                data.put("profile", principal);
-        }
+            principal= (User) userService.loadUserByUsername(principal1.getName());
 
-        data.put("messages", messageRepo.findAll());
+        }
+        data.put("profile", principal);
+        data.put("messages", messageRepo.findAllByAuthor(principal));
         model.addAttribute("frontendData", data);
             return "index";
     }
