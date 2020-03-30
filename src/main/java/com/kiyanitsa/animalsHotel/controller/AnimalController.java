@@ -5,7 +5,9 @@ import com.kiyanitsa.animalsHotel.services.AnimalService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -19,9 +21,10 @@ public class AnimalController {
     }
 
     @PostMapping
-    public Animal create(@RequestBody Animal animal, @AuthenticationPrincipal User user){
+    public Animal create(@RequestBody Animal animal, @RequestParam("file") MultipartFile file, @AuthenticationPrincipal User user) throws IOException {
         if(animalService.chekAnimal(animal)) {
             animal.setOwner(user);
+            animalService.addImg(animal,file);
             return animalService.getAnimalRepo().save(animal);
         }else{
             return null;
