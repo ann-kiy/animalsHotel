@@ -1,6 +1,5 @@
 package com.kiyanitsa.animalsHotel.domain;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -8,9 +7,11 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table
-public class Type_animal {
+public class BreedAnimal {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String type;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private TypeAnimal type;
+    private String name;
 }

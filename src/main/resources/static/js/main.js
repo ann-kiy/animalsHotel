@@ -24,6 +24,9 @@ Vue.component('message-form',{
     template:
     '<div>'+
         '<div>'+
+        '<a class="btn btn-primary" href="/pet" role="button">Добавить питомца</a>'+
+        '</div'+
+        '<div>'+
         '<a class="btn btn-primary" href="/profile" role="button">Change profile</a>'+
         '</div'+
         '<div>' +

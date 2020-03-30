@@ -1,7 +1,6 @@
 package com.kiyanitsa.animalsHotel.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -10,7 +9,7 @@ import java.time.LocalDateTime;
 @Data
 @Entity
 @Table
-public class Advertisement_accept {
+public class AdvertisementGive {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -18,17 +17,19 @@ public class Advertisement_accept {
     @ManyToOne(fetch = FetchType.EAGER)
     private User user;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Animal animal;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern="dd-MM-yyyy HH:mm:ss")
     private LocalDateTime createDate;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Type_animal type_animal;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
+    private LocalDateTime dateStart;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Breed_animal breed_animal;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
+    private LocalDateTime dateEnd;
 
     private String condition;
     private boolean state;
     private String info;
-
 }

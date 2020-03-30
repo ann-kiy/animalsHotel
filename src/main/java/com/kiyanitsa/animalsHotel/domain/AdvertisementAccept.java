@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Data
 @Entity
 @Table
-public class Advertisement_give {
+public class AdvertisementAccept {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -17,19 +17,17 @@ public class Advertisement_give {
     @ManyToOne(fetch = FetchType.EAGER)
     private User user;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Animal animal;
-
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern="dd-MM-yyyy HH:mm:ss")
     private LocalDateTime createDate;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
-    private LocalDateTime dateStart;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private TypeAnimal typeAnimal;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
-    private LocalDateTime dateEnd;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private BreedAnimal breedAnimal;
 
     private String condition;
     private boolean state;
     private String info;
+
 }

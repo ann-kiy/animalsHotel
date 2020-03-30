@@ -11,11 +11,14 @@ public class Animal {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private User owner;
     private String name;
+    private Sex sex;
     @ManyToOne(fetch = FetchType.EAGER)
-    private Type_animal type_animal;
+    private TypeAnimal typeAnimal;
     @ManyToOne(fetch = FetchType.EAGER)
-    private Breed_animal breed_animal;
+    private BreedAnimal breedAnimal;
     private byte age;
     private String img;
     private String info;
