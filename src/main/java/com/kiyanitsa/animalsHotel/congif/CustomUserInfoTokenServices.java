@@ -122,6 +122,7 @@ public class CustomUserInfoTokenServices implements ResourceServerTokenServices
             this.logger.debug("userinfo returned error: " + map.get("error"));
             throw new InvalidTokenException(accessToken);
         }
+
         return extractAuthentication(map);
     }
 
@@ -164,13 +165,27 @@ public class CustomUserInfoTokenServices implements ResourceServerTokenServices
      * @param map the source map
      * @return the principal or {@literal "unknown"}
      */
-    protected Object getPrincipal(Map<String, Object> map) {
+    protected User getPrincipal(Map<String, Object> map) {
+        String id="";
         if(map.containsKey("id"))
-            return  map.get("id");
+            id =(String) map.get("id");
         else if(map.containsKey("sub"))
-            return  map.get("sub");
-        else
-            return map;
+            id =(String) map.get("sub");
+
+        String finalId = id;
+        User user = userService.findByIdWeb(id).get();
+//                .orElseGet(() -> {
+//            User newUser = new User();
+//            newUser.setIdWeb(finalId);
+//            newUser.setName((String) map.get("name"));
+//            newUser.setEmail((String) map.get("email"));
+//            newUser.setActive(true);
+//            newUser.setPassword("null");
+//            return newUser;
+//        });
+//        user.setLastVisit(LocalDateTime.now());
+//        userService.saveUser(user);
+        return user;
 
     }
 

@@ -38,15 +38,11 @@ public class MainController {
     }
 
     @GetMapping
-    public String main(@AuthenticationPrincipal User principal, @AuthenticationPrincipal Principal principal1, Model model) {
+    public String main(@AuthenticationPrincipal User principal, Model model) {
        HashMap<Object, Object> data = new HashMap<>();
-        if(principal==null && principal1==null){
+        if(principal==null ){
             data.put("profile", null);
             return "login";
-        }
-        else if(principal==null) {
-            principal= (User) userService.loadUserByUsername(principal1.getName());
-
         }
         data.put("profile", principal);
         data.put("messages", messageRepo.findAllByAuthor(principal));
@@ -64,18 +60,7 @@ public class MainController {
         model.addAttribute("locale",user.getLocale());
         return "profile";
     }
-//    @GetMapping("profile")
-//    public String profile(Model model, @AuthenticationPrincipal Principal user){
-//        if(user==null){
-//            return "redirect:/login";
-//        }
-//        User tempUser=userService.findByIdWeb(user.getName()).get();
-//        model.addAttribute("name", tempUser.getName());
-//        model.addAttribute("email", tempUser.getEmail());
-//        model.addAttribute("phone",tempUser.getPhone());
-//        model.addAttribute("locale",tempUser.getLocale());
-//        return "profile";
-//    }
+
     @PostMapping("profile")
     public String changeProfile(Map<String,Object> model, User user,@AuthenticationPrincipal User user1, @RequestParam("file") MultipartFile file) throws IOException {
         if(!userService.isFullDataUser(user)){
@@ -90,12 +75,4 @@ public class MainController {
         userService.updateUser(user,user1);
         return "redirect:/login";
     }
-//    @PostMapping("profile")
-//    public String changeProfile(User user,@AuthenticationPrincipal Principal user1, @RequestParam("file") MultipartFile file) throws IOException {
-//        User tempUser=userService.findByIdWeb(user1.getName()).get();
-//        tempUser=userService.addImg(tempUser,file);
-//        userService.updateUser(user,tempUser);
-//        return "redirect:/login";
-//    }
-
 }

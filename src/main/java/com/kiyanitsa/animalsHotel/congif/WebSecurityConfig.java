@@ -1,9 +1,11 @@
 package com.kiyanitsa.animalsHotel.congif;
 
 
+import com.kiyanitsa.animalsHotel.domain.User;
 import com.kiyanitsa.animalsHotel.repo.UserDetailsRepo;
 import com.kiyanitsa.animalsHotel.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.PrincipalExtractor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -31,8 +33,10 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import javax.servlet.Filter;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Configuration
 
@@ -74,6 +78,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 .and().addFilterBefore(ssoFilter(), BasicAuthenticationFilter.class)
         .csrf().disable();
+    }
+
+
+    public User extractPrincipal(Map<String, Object> map){
+            String id =(String) map.get("sub");
+                    User user = userService.findByIdWeb(id).orElseGet(() -> {
+                User newUser = new User();
+                newUser.setIdWeb(id);
+                newUser.setName((String) map.get("name"));
+                newUser.setEmail((String) map.get("email"));
+                newUser.setActive(true);
+                newUser.setPassword("null");
+                return newUser;
+            });
+            user.setLastVisit(LocalDateTime.now());
+            userService.saveUser(user);
+        return user;
     }
 
     @Override
