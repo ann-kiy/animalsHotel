@@ -1,0 +1,68 @@
+INSERT INTO public.type_animal(id, type) VALUES (2, 'собаки');
+INSERT INTO public.type_animal(id, type) VALUES (3, 'грызуны');
+INSERT INTO public.type_animal(id, type) VALUES (4, 'птицы');
+INSERT INTO public.type_animal(id, type) VALUES (5, 'водный мир');
+INSERT INTO public.type_animal(id, type) VALUES (6, 'рептилии');
+INSERT INTO public.type_animal(id, type) VALUES (7, 'насекомые');
+
+
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (2, 'Оцикет', 1);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (3, 'Бурманская кошка', 1);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (4, 'Сибирская кошка', 1);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (5, 'Тонкинская кошка', 1);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (6, 'Русская голубая', 1);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (7, 'Бирманская кошка', 1);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (8, 'Норвежская лесная кошка', 1);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (9, 'Корниш-рекс', 1);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (10, 'Сиамская кошка', 1);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (11, 'Девон-рекс', 1);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (12, 'Ориентальная кошка', 1);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (13, 'Канадский сфинкс ', 1);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (14, 'Абиссинская кошка', 1);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (15, 'Шотландская вислоухая', 1);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (16, 'Американская короткошёрстная кошка', 1);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (17, 'Британская короткошёрстная кошка', 1);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (18, 'Рэгдолл', 1);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (19, 'Мейн-кун', 1);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (20, 'Персидская кошка', 1);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (21, 'Немецкий шпиц', 2);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (22, 'Йоркширский терьер', 2);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (23, 'Чихуахуа', 2);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (24, 'Немецкая овчарка', 2);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (25, 'Лабрадор-ретривер', 2);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (26, 'Хаски', 2);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (27, 'Джек-рассел-терьер', 2);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (28, 'Среднеазиатская овчарка', 2);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (29, 'Кавказская овчарка', 2);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (30, 'Вельш-корги пемброк', 2);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (31, 'Золотистый ретривер', 2);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (32, 'Французский бульдог', 2);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (33, 'Кокер-спаниель', 2);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (34, 'Английский бульдог', 2);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (35, 'Бигль', 2);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (36, 'Пудель', 2);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (37, 'Ротвейлер', 2);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (38, 'Боксер', 2);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (39, 'Мопс', 2);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (40, 'Курцхаар', 2);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (41, 'Хомяки', 3);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (42, 'Мыши', 3);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (43, 'Крысы', 3);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (44, 'Морские свинки', 3);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (45, 'Белки', 3);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (46, 'Бурундуки', 3);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (47, 'Дегу', 3);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (48, 'Песчанка', 3);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (49, 'Соня', 3);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (50, 'Тушканчик', 3);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (51, 'Шиншилла', 3);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (52, 'Ежи', 3);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (53, 'Кролики', 3);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (54, 'Зайцы', 3);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (55, 'Сурки', 3);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (56, 'Суслики', 3);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (57, 'Попугай', 4);
+INSERT INTO public.breed_animal(id, name, type_id) VALUES (58, 'Сокол', 4);
+
+
+
