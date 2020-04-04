@@ -35,7 +35,7 @@ public class AnimalController {
         return animal;
     }
     @GetMapping("user/{id}")
-    public List<Animal> getAnimals(User user){
+    public List<Animal> getAnimals(@PathVariable("id")User user){
         return animalService.getAnimalRepo().findAllByOwner(user);
     }
     @GetMapping("type/{id}")
