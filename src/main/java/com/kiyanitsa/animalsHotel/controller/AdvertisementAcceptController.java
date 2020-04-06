@@ -1,12 +1,15 @@
 package com.kiyanitsa.animalsHotel.controller;
 
 import com.kiyanitsa.animalsHotel.domain.AdvertisementAccept;
+import com.kiyanitsa.animalsHotel.domain.User;
 import com.kiyanitsa.animalsHotel.repo.AdvertisementAcceptRepo;
 import com.kiyanitsa.animalsHotel.repo.BreedAnimalRepo;
 import com.kiyanitsa.animalsHotel.repo.TypeAnimalRepo;
+import com.kiyanitsa.animalsHotel.services.AdvertisementAcceptService;
 import com.kiyanitsa.animalsHotel.specification.AdvertAcceptSpecificationsBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,33 +17,38 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Controller
+@RestController
+@RequestMapping("/advertisement_accept")
 public class AdvertisementAcceptController {
     @Autowired
-    private AdvertisementAcceptRepo repo;
-    @Autowired
-    private BreedAnimalRepo breedAnimalRepo;
-    @Autowired
-    private TypeAnimalRepo typeAnimalRepo;
+   private AdvertisementAcceptService service;
 
-    @RequestMapping(method = RequestMethod.GET, value = "/advertisement")
+    @GetMapping
     @ResponseBody
     public List<AdvertisementAccept> search(@RequestParam(value = "search") String search) {
-        AdvertAcceptSpecificationsBuilder builder = new AdvertAcceptSpecificationsBuilder();
-        Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),");
-        Matcher matcher = pattern.matcher(search + ",");
-        while (matcher.find()) {
-            if(matcher.group(1).equals("breedAnimal"))
-                builder.with(matcher.group(1), matcher.group(2), breedAnimalRepo.findById(Long.parseLong(matcher.group(3))).get());
-            else if(matcher.group(1).equals("typeAnimal"))
-                builder.with(matcher.group(1), matcher.group(2), typeAnimalRepo.findById(Long.parseLong(matcher.group(3))).get());
-            else
-                builder.with(matcher.group(1), matcher.group(2), matcher.group(3));
-        }
+        return service.filter(search);
+    }
 
-        Specification<AdvertisementAccept> spec = builder.build();
+    @GetMapping("{/id}")
+    public List<AdvertisementAccept> getAdvertId(@RequestParam("id") User user){
+        return service.getAdvertId(user);
+    }
 
-        return repo.findAll(spec);
+    @PostMapping
+    @ResponseBody
+    public AdvertisementAccept create(@RequestBody AdvertisementAccept advertisementAccept, @AuthenticationPrincipal User user){
+        return service.save(advertisementAccept, user);
+    }
+
+    @PutMapping("{id}")
+    @ResponseBody
+    public AdvertisementAccept update(@RequestBody AdvertisementAccept advertisementAccept, @RequestParam("id") AdvertisementAccept advertFromDB ){
+        return service.update(advertisementAccept,advertFromDB);
+    }
+
+    @DeleteMapping
+    public boolean delete(AdvertisementAccept advertisementAccept){
+        return service.delete(advertisementAccept);
     }
 
 }

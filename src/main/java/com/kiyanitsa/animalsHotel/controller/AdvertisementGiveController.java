@@ -1,52 +1,56 @@
 package com.kiyanitsa.animalsHotel.controller;
 
+import com.kiyanitsa.animalsHotel.domain.AdvertisementAccept;
 import com.kiyanitsa.animalsHotel.domain.AdvertisementGive;
+import com.kiyanitsa.animalsHotel.domain.User;
 import com.kiyanitsa.animalsHotel.repo.AdvertisementGiveRepo;
 import com.kiyanitsa.animalsHotel.repo.BreedAnimalRepo;
 import com.kiyanitsa.animalsHotel.repo.TypeAnimalRepo;
+import com.kiyanitsa.animalsHotel.services.AdvertisementAcceptService;
+import com.kiyanitsa.animalsHotel.services.AdvertisementGiveService;
 import com.kiyanitsa.animalsHotel.services.AnimalService;
 import com.kiyanitsa.animalsHotel.specification.AdvertAcceptSpecificationsBuilder;
 import com.kiyanitsa.animalsHotel.specification.AdvertGiveSpecificationBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-@Controller
+
+@RestController
+@RequestMapping("/advertisement_give")
 public class AdvertisementGiveController {
     @Autowired
-    private AnimalService animalService;
-    @Autowired
-    private AdvertisementGiveRepo repo;
-    @Autowired
-    private BreedAnimalRepo breedAnimalRepo;
-    @Autowired
-    private TypeAnimalRepo typeAnimalRepo;
+    private AdvertisementGiveService service;
 
-    @RequestMapping(method = RequestMethod.GET, value = "/advertisement_give")
+    @GetMapping
     @ResponseBody
     public List<AdvertisementGive> search(@RequestParam(value = "search") String search) {
-        AdvertGiveSpecificationBuilder builder = new AdvertGiveSpecificationBuilder();
-        Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),");
-        Matcher matcher = pattern.matcher(search + ",");
-        while (matcher.find()) {
-            if(matcher.group(1).equals("breedAnimal"))
-                builder.with(matcher.group(1), matcher.group(2), breedAnimalRepo.findById(Long.parseLong(matcher.group(3))).get());
-            else if(matcher.group(1).equals("typeAnimal"))
-                builder.with(matcher.group(1), matcher.group(2), typeAnimalRepo.findById(Long.parseLong(matcher.group(3))).get());
-            else
-                builder.with(matcher.group(1), matcher.group(2), matcher.group(3));
-        }
+        return service.filter(search);
+    }
 
-        Specification<AdvertisementGive> spec = builder.build();
-        return repo.findAll(spec);
-//        return repo.findAllByAnimal(animalService.filter(search));
+    @GetMapping("{/id}")
+    public List<AdvertisementGive> getAdvertId(@RequestParam("id") User user){
+        return service.getAdvertId(user);
+    }
+
+    @PostMapping
+    @ResponseBody
+    public AdvertisementGive create(@RequestBody AdvertisementGive advertisementGive, @AuthenticationPrincipal User user){
+        return service.save(advertisementGive, user);
+    }
+
+    @PutMapping("{id}")
+    @ResponseBody
+    public AdvertisementGive update(@RequestBody AdvertisementGive advertisementGive, @RequestParam("id") AdvertisementGive advertFromDB ){
+        return service.update(advertisementGive,advertFromDB);
+    }
+
+    @DeleteMapping
+    public boolean delete(AdvertisementGive advertisementGive){
+        return service.delete(advertisementGive);
     }
 }

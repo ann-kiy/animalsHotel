@@ -54,18 +54,18 @@ public class MainController {
         model.addAttribute("frontendData", data);
             return "index";
     }
-    @GetMapping("{id}")
-    public String showUser(@PathVariable("id") User principal, Model model) {
-        HashMap<Object, Object> data = new HashMap<>();
-        if(principal==null ){
-            data.put("profile", null);
-            return "login";
-        }
-        data.put("profile", principal);
-        data.put("messages", messageRepo.findAllByAuthor(principal));
-        model.addAttribute("frontendData", data);
-        return "index";
-    }
+//    @GetMapping("{id}")
+//    public String showUser(@PathVariable("id") User principal, Model model) {
+//        HashMap<Object, Object> data = new HashMap<>();
+//        if(principal==null ){
+//            data.put("profile", null);
+//            return "login";
+//        }
+//        data.put("profile", principal);
+//        data.put("messages", messageRepo.findAllByAuthor(principal));
+//        model.addAttribute("frontendData", data);
+//        return "index";
+//    }
     @GetMapping("profile")
     public String profile(Model model, @AuthenticationPrincipal User user){
         if(user==null){
