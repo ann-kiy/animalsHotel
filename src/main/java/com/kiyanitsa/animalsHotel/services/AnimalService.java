@@ -1,27 +1,52 @@
 package com.kiyanitsa.animalsHotel.services;
 
 import com.kiyanitsa.animalsHotel.domain.Animal;
-import com.kiyanitsa.animalsHotel.domain.Role;
-import com.kiyanitsa.animalsHotel.domain.User;
 import com.kiyanitsa.animalsHotel.repo.AnimalRepo;
+import com.kiyanitsa.animalsHotel.repo.BreedAnimalRepo;
+import com.kiyanitsa.animalsHotel.repo.TypeAnimalRepo;
+import com.kiyanitsa.animalsHotel.specification.AdvertAcceptSpecificationsBuilder;
+import com.kiyanitsa.animalsHotel.specification.AnimalSpecificationBuilder;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 @Data
 public class AnimalService {
+    @Autowired
     AnimalRepo animalRepo;
+    @Autowired
+    TypeAnimalRepo typeAnimalRepo;
+    @Autowired
+    BreedAnimalRepo breedAnimalRepo;
     @Value("${upload.path}")
     private String uploadPath;
+
+    public List<Animal> filter(String filter){
+        AnimalSpecificationBuilder builder = new AnimalSpecificationBuilder();
+        Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),");
+        Matcher matcher = pattern.matcher(filter + ",");
+        while (matcher.find()) {
+            if(matcher.group(1).equals("breedAnimal"))
+                builder.with(matcher.group(1), matcher.group(2), breedAnimalRepo.findById(Long.parseLong(matcher.group(3))).get());
+            else if(matcher.group(1).equals("typeAnimal"))
+                builder.with(matcher.group(1), matcher.group(2), typeAnimalRepo.findById(Long.parseLong(matcher.group(3))).get());
+            else
+                builder.with(matcher.group(1), matcher.group(2), matcher.group(3));
+        }
+        Specification<Animal> spec = builder.build();
+        return animalRepo.findAll(spec);
+    }
 
     public boolean chekAnimal(Animal animal){
    //     Animal animalFromDB=animalRepo.findById(animal.getId()).orElseGet(null);

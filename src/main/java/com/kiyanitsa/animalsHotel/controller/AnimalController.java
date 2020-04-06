@@ -30,6 +30,11 @@ public class AnimalController {
             return null;
         }
     }
+    @GetMapping
+    @ResponseBody
+    public List<Animal> filter(@RequestParam(value = "search") String search){
+        return animalService.filter(search);
+    }
     @GetMapping("{id}")
     public Animal getOne(@PathVariable("id") Animal animal){
         return animal;
