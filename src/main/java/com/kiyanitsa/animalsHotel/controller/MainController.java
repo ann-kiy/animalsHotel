@@ -4,7 +4,6 @@ package com.kiyanitsa.animalsHotel.controller;
 import com.kiyanitsa.animalsHotel.domain.User;
 import com.kiyanitsa.animalsHotel.repo.*;
 import com.kiyanitsa.animalsHotel.services.UserService;
-import com.kiyanitsa.animalsHotel.test.JPASpecificationsTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
@@ -52,7 +51,7 @@ public class MainController {
         data.put("profile", principal);
         data.put("messages", messageRepo.findAllByAuthor(principal));
         model.addAttribute("frontendData", data);
-            return "index";
+            return "header";
     }
 //    @GetMapping("{id}")
 //    public String showUser(@PathVariable("id") User principal, Model model) {

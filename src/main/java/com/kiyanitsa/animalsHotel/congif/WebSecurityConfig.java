@@ -24,6 +24,7 @@ import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticationProcessingFilter;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientContextFilter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.rememberme.AbstractRememberMeServices;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
@@ -44,6 +45,8 @@ import java.util.Map;
 @EnableOAuth2Client
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
+    private AccessDeniedHandler accessDeniedHandler;
+    @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
     private UserService userService;
@@ -63,7 +66,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .antMatcher("/**")
                 .authorizeRequests()
-                    .antMatchers("/advertisement**","/animal**","/message","/message/**","/", "/login**",  "/js/**","/webjars/js-cookie/js.cookie.js", "/error**","/logout**","/registration**","/activate/*","/profile**")
+                    .antMatchers("/advertisement**","/animal**","/message","/message/**","/", "/login**",  "/js/**","/webjars**","/webjars/js-cookie/js.cookie.js", "/error**","/logout**","/registration**","/activate/*","/profile**")
                     .permitAll()
                 .anyRequest().authenticated()
                 .and()
@@ -75,9 +78,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .logoutRequestMatcher(new AntPathRequestMatcher("/logout")).deleteCookies(AbstractRememberMeServices.SPRING_SECURITY_REMEMBER_ME_COOKIE_KEY)
                     .invalidateHttpSession(true)
                     .logoutSuccessUrl("/")
+                .and()
+                .exceptionHandling().accessDeniedHandler(accessDeniedHandler)
                 .and().csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 .and().addFilterBefore(ssoFilter(), BasicAuthenticationFilter.class)
-        .csrf().disable();
+
+                .csrf().disable()
+        ;
     }
 
 
