@@ -75,4 +75,10 @@ public class User implements UserDetails{
     public boolean isEnabled() {
         return isActive();
     }
+    public String getImg(){
+        if(img==null)
+            return "no_foto.png";
+        else
+            return img;
+    }
 }

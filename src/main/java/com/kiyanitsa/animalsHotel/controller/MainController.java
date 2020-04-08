@@ -49,22 +49,22 @@ public class MainController {
             return "login";
         }
         data.put("profile", principal);
-        data.put("messages", messageRepo.findAllByAuthor(principal));
+        data.put("messages", messageRepo.findAllByRecipient(principal));
         model.addAttribute("frontendData", data);
             return "header";
     }
-//    @GetMapping("{id}")
-//    public String showUser(@PathVariable("id") User principal, Model model) {
-//        HashMap<Object, Object> data = new HashMap<>();
-//        if(principal==null ){
-//            data.put("profile", null);
-//            return "login";
-//        }
-//        data.put("profile", principal);
-//        data.put("messages", messageRepo.findAllByAuthor(principal));
-//        model.addAttribute("frontendData", data);
-//        return "index";
-//    }
+    @GetMapping("user/{id}")
+    public String showUser(@PathVariable("id") User user, Model model) {
+        HashMap<Object, Object> data = new HashMap<>();
+        if(user==null ){
+            data.put("profile", null);
+            return "login";
+        }
+        data.put("profile", user);
+        data.put("messages", messageRepo.findAllByRecipient(user));
+        model.addAttribute("frontendData", data);
+        return "header";
+    }
     @GetMapping("profile")
     public String profile(Model model, @AuthenticationPrincipal User user){
         if(user==null){

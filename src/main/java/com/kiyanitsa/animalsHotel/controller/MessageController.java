@@ -47,7 +47,8 @@ public class MessageController {
     @PutMapping("{id}")
     public Message update(@PathVariable("id") Message messageFromBD,
                                      @RequestBody Message message) {
-        BeanUtils.copyProperties(message,messageFromBD,"id");
+        messageFromBD.setText(message.getText());
+        messageFromBD.setCreateDate(LocalDateTime.now());
         return messageRepo.save(messageFromBD);
     }
     @DeleteMapping("{id}")
