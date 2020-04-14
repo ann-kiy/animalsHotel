@@ -3,19 +3,16 @@ package com.kiyanitsa.animalsHotel.controller;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.kiyanitsa.animalsHotel.domain.Message;
 import com.kiyanitsa.animalsHotel.domain.User;
-import com.kiyanitsa.animalsHotel.domain.Views;
-import com.kiyanitsa.animalsHotel.exceptions.NotFoundException;
 import com.kiyanitsa.animalsHotel.repo.MessageRepo;
-import org.springframework.beans.BeanUtils;
+import com.kiyanitsa.animalsHotel.views.ViewMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/message")
@@ -27,13 +24,13 @@ public class MessageController {
     }
 
     @GetMapping
-    @JsonView(Views.IdName.class)
+    @JsonView(ViewMessage.IdName.class)
     public List<Message> list(){
         return messageRepo.findAll();
     }
 
     @GetMapping("{id}")
-    @JsonView(Views.FullMessage.class)
+    @JsonView(ViewMessage.FullMessage.class)
     public Message getOne(@PathVariable("id") Message message){
         return message;
     }
@@ -54,6 +51,10 @@ public class MessageController {
     @DeleteMapping("{id}")
     public void delete(@PathVariable("id") Message message){
         messageRepo.delete(message);
-
+    }
+    @MessageMapping("/changeMessage")
+    @SendTo("/topic/activity")
+    public Message change(Message message){
+        return messageRepo.save(message);
     }
 }

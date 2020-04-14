@@ -1,6 +1,9 @@
 package com.kiyanitsa.animalsHotel.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.kiyanitsa.animalsHotel.views.ViewMessage;
+import com.kiyanitsa.animalsHotel.views.ViewUser;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,9 +23,15 @@ import java.util.Set;
 public class User implements UserDetails{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+
+    @JsonView(ViewUser.Id.class)
     private Long id;
+
     private String idWeb;
+
+    @JsonView(ViewUser.IdName.class)
     private String name;
+
     private String img;
     private String email;
     private String phone;

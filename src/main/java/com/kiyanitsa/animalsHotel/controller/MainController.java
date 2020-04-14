@@ -1,10 +1,14 @@
 package com.kiyanitsa.animalsHotel.controller;
 
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.kiyanitsa.animalsHotel.domain.User;
 import com.kiyanitsa.animalsHotel.repo.*;
 import com.kiyanitsa.animalsHotel.services.UserService;
+import com.kiyanitsa.animalsHotel.views.ViewMessage;
+import com.kiyanitsa.animalsHotel.views.ViewUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import org.springframework.stereotype.Controller;
@@ -28,7 +32,8 @@ public class MainController {
     private  final BreedAnimalRepo breedAnimalRepo;
     private final TypeAnimalRepo typeAnimalRepo;
 
-
+    @Value("${spring.profiles.active}")
+    private String profile;
     @Autowired
     public MainController(UserService userService, MessageRepo messageRepo, AdvertisementAcceptRepo advertisementAcceptRepo, AnimalRepo animalRepo, BreedAnimalRepo breedAnimalRepo, TypeAnimalRepo typeAnimalRepo) {
         this.userService = userService;
@@ -37,6 +42,13 @@ public class MainController {
         this.animalRepo = animalRepo;
         this.breedAnimalRepo = breedAnimalRepo;
         this.typeAnimalRepo = typeAnimalRepo;
+    }
+
+    @ModelAttribute(value = "authUser")
+    public Long getAuth(@AuthenticationPrincipal User principal) {
+        if(principal==null)
+            return null;
+        return principal.getId();
     }
 
     @GetMapping
@@ -51,6 +63,7 @@ public class MainController {
         data.put("profile", principal);
         data.put("messages", messageRepo.findAllByRecipient(principal));
         model.addAttribute("frontendData", data);
+        model.addAttribute("isDevMode","dev".equals(profile));
             return "header";
     }
     @GetMapping("user/{id}")
@@ -63,6 +76,7 @@ public class MainController {
         data.put("profile", user);
         data.put("messages", messageRepo.findAllByRecipient(user));
         model.addAttribute("frontendData", data);
+        model.addAttribute("isDevMode","dev".equals(profile));
         return "header";
     }
     @GetMapping("profile")
