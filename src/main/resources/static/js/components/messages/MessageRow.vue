@@ -1,15 +1,20 @@
 <template xmlns:v-bind="http://www.w3.org/1999/xhtml">
-    <div>
+    <v-card class="my-2">
+        <v-card-title>{{message.author.name}}</v-card-title>
+        <v-card-text>
+            <v-avatar>
+                <img v-bind:src="'/img/'+message.author.img">
+            </v-avatar>
         <i>({{ message.id }})</i>
-        <img v-bind:src="'/img/'+message.author.img" style="max-height: 60px; max-width: 60px">
          {{ message.text }}
-       {{message.author.name}}
-        {{message.createDate}}
-        <span v-if="message.author.id===auth" style="position: absolute; right: 0">
-            <input type="button" value="Edit" @click="edit" />
-            <input type="button" value="X" @click="del" />
-        </span>
-    </div>
+
+        </v-card-text>
+        <v-card-actions v-if="message.author.id===auth" >
+            <v-btn class="mr-2" @click="edit">Редактировать</v-btn>
+            <v-icon @click="del">mdi-delete-forever</v-icon>
+            {{message.createDate}}
+        </v-card-actions>
+    </v-card>
 
 </template>
 <script>

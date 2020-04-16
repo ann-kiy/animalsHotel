@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "vue": "^2.6.11",
-    "vue-resource": "^1.5.1"
+    "vue-resource": "^1.5.1",
+    "vuetify": "^2.2.22"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
@@ -19,8 +20,14 @@
     "babel-loader": "^8.1.0",
     "bootstrap": "^4.4.1",
     "bootstrap-vue": "^2.11.0",
+    "css-loader": "^3.5.2",
+    "deepmerge": "^4.2.2",
+    "fibers": "^4.0.2",
+    "sass": "^1.26.3",
+    "sass-loader": "^8.0.2",
     "sockjs-client": "^1.4.0",
     "vue-loader": "^15.9.1",
+    "vue-style-loader": "^4.1.2",
     "vue-template-compiler": "^2.6.11",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11",

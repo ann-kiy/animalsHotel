@@ -3,8 +3,14 @@ import VueResource from 'vue-resource'
 import App from 'pages/App.vue'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import {connect} from "./util/ws"
+import vuetify from 'plagins/vuetify.js'
+import Vuetify from "vuetify";
 
-connect()
+
+if(frontendData.profile){
+    connect()
+}
+
 Vue.use(VueResource)
 
 
@@ -15,6 +21,7 @@ Vue.use(IconsPlugin)
 
 
 new Vue({
+    vuetify,
     el:'#app',
     render: a => a(App)
 })

@@ -6,8 +6,10 @@
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
 <!--    <div th:fragment="header-css">-->
-<!--        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">-->
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <!--        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">-->
 <!--    </div>-->
 <!--    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>-->
@@ -18,73 +20,11 @@
     </script>
 </head>
 <body>
+
+
 <div>
-    <b-navbar type="dark" variant="dark">
-        <b-navbar-nav>
-            <b-nav-item href="#">Home</b-nav-item>
-
-            <!-- Navbar dropdowns -->
-            <b-nav-item-dropdown text="Lang" right>
-                <b-dropdown-item href="#">EN</b-dropdown-item>
-                <b-dropdown-item href="#">ES</b-dropdown-item>
-                <b-dropdown-item href="#">RU</b-dropdown-item>
-                <b-dropdown-item href="#">FA</b-dropdown-item>
-            </b-nav-item-dropdown>
-
-            <b-nav-item-dropdown text="User" right>
-                <b-dropdown-item href="#">Account</b-dropdown-item>
-                <b-dropdown-item href="#">Settings</b-dropdown-item>
-            </b-nav-item-dropdown>
-        </b-navbar-nav>
-    </b-navbar>
-</div>
-<nav th:fragment="header" class="navbar  navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
-    <a class="navbar-brand" href="/">Mu-xru-mu</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarText">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="#">Главная <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Подать объявление
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">Взать</a>
-                    <a class="dropdown-item" href="#">Оставить</a>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Поиск</a>
-            </li>
-        </ul>
-        <span class="nav-item">
-             <img th:src="'/img/'+(${#authentication.getPrincipal().getImg()})" width="60" height="60" class="rounded-circle rounded-sm navbar-left">'
-        </span>
-        <span class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="navbar-text"  sec:authorize="isAuthenticated()"><span sec:authentication="name"></span></span>
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown1">
-                <a class="dropdown-item" href="#">Мои данные</a>
-                <a class="dropdown-item" href="#">Мои животные</a>
-                <a class="dropdown-item" href="#">Мои объявления взать</a>
-                <a class="dropdown-item" href="#">Мои объявления оставить</a>
-            </div>
-        </span>
-
-                <a class="navbar-text" th:href="@{/logout}">Выход</a>
-            </span>
+    <div id="app">
     </div>
-</nav>
-
-<div>
-
-    <div id="app"></div>
-
     <div>
             <script th:src="${isDevMode} ? 'http://localhost:8000/main.js':'/js/main.js'"></script>
     </div>

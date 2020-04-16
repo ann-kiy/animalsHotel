@@ -45,10 +45,10 @@ public class MainController {
     }
 
     @ModelAttribute(value = "authUser")
-    public Long getAuth(@AuthenticationPrincipal User principal) {
+    public User getAuth(@AuthenticationPrincipal User principal) {
         if(principal==null)
             return null;
-        return principal.getId();
+        return principal;
     }
 
     @GetMapping

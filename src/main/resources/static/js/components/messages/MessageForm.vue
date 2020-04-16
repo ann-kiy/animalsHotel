@@ -1,16 +1,18 @@
 <template xmlns:v-on="http:www.w3.org/1999/xhtml">
-             <div>
-             <div>
-                 <a class="btn btn-primary" href="/pet" role="button">Добавить питомца</a>
-                 </div>
-             <div>
-                 <a class="btn btn-primary" href="/profile" role="button">Change profile</a>
-                 </div>
-             <div> 
-                 <input type="text" placeholder="Write something" v-model="text"/>
-                 <button type="button" class="btn btn-info" v-on:click="save">Save </button>
-                 </div>
-             </div>
+    <v-container>
+        <v-row>
+                <v-btn class="mr-2" href="/pet">Добавить питомца</v-btn>
+
+                <v-btn  href="/profile">Change profile</v-btn>
+
+        </v-row>
+            <v-row>
+                <v-text-field
+                        placeholder="Write something" v-model="text"/>
+                <v-btn type="button"v-on:click="save">Save </v-btn>
+            </v-row>
+
+    </v-container>
 </template>
 <script>
     import {sendMessage} from "util/ws";
@@ -32,7 +34,7 @@
         },
         methods:{
          save() {
-             const auth={id:this.auth}
+             const auth={id:this.auth.id}
              const rec = {id:this.recipient}
              const message={id:this.id, author:auth, recipient:rec,text: this.text}
              sendMessage(message)
