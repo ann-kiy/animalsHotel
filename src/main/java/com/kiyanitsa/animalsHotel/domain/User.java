@@ -2,18 +2,13 @@ package com.kiyanitsa.animalsHotel.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonView;
-import com.kiyanitsa.animalsHotel.views.ViewMessage;
-import com.kiyanitsa.animalsHotel.views.ViewUser;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 
 @Data
@@ -24,12 +19,10 @@ public class User implements UserDetails{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
 
-    @JsonView(ViewUser.Id.class)
     private Long id;
 
     private String idWeb;
 
-    @JsonView(ViewUser.IdName.class)
     private String name;
 
     private String img;
@@ -37,6 +30,7 @@ public class User implements UserDetails{
     private String phone;
     private String locale;
     private String password;
+    private int rating;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))

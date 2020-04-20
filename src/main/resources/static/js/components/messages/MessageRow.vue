@@ -9,7 +9,7 @@
          {{ message.text }}
 
         </v-card-text>
-        <v-card-actions v-if="message.author.id===auth" >
+        <v-card-actions v-if="message.author.id===auth.id" >
             <v-btn class="mr-2" @click="edit">Редактировать</v-btn>
             <v-icon @click="del">mdi-delete-forever</v-icon>
             {{message.createDate}}

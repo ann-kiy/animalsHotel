@@ -26,8 +26,16 @@ public class AdvertisementAccept {
     @ManyToOne(fetch = FetchType.EAGER)
     private BreedAnimal breedAnimal;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
+    private LocalDateTime dateStart;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
+    private LocalDateTime dateEnd;
+
     private String condition;
     private boolean state;
     private String info;
+    private byte age;
+    private Sex sex;
 
 }

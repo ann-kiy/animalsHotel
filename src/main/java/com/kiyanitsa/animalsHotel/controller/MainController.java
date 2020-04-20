@@ -1,12 +1,9 @@
 package com.kiyanitsa.animalsHotel.controller;
 
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.kiyanitsa.animalsHotel.domain.User;
 import com.kiyanitsa.animalsHotel.repo.*;
 import com.kiyanitsa.animalsHotel.services.UserService;
-import com.kiyanitsa.animalsHotel.views.ViewMessage;
-import com.kiyanitsa.animalsHotel.views.ViewUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

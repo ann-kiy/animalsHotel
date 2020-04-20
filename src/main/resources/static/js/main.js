@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import VueResource from 'vue-resource'
+import 'api/resourse'
 import App from 'pages/App.vue'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import {connect} from "./util/ws"
@@ -10,16 +10,6 @@ import Vuetify from "vuetify";
 if(frontendData.profile){
     connect()
 }
-
-Vue.use(VueResource)
-
-
-// Install BootstrapVue
-Vue.use(BootstrapVue)
-// Optionally install the BootstrapVue icon components plugin
-Vue.use(IconsPlugin)
-
-
 new Vue({
     vuetify,
     el:'#app',

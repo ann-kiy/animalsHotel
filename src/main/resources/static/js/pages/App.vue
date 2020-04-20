@@ -62,6 +62,11 @@
                         <v-list-item @click="" href="">
                             <v-list-item-title>Мои объявления</v-list-item-title>
                         </v-list-item>
+                        <v-divider></v-divider>
+                        <v-list-item @click="" href="/logout">
+                            <v-icon>mdi-exit-to-app</v-icon>
+                            <v-list-item-title>Выход</v-list-item-title>
+                        </v-list-item>
                     </v-list>
                 </v-menu>
                 </div>
@@ -88,7 +93,6 @@
     import MessagesList from 'components/messages/MessageList.vue'
     import HeaderLine from 'components/head/HeaderLine.vue'
     import {addHandler} from "util/ws"
-    import {getIndex} from "util/collections"
 
     export default {
         props: {
@@ -109,12 +113,27 @@
         }
         },
         created(){
-            addHandler(data=>{
-                let index=getIndex(this.messages,data.id)
-                if(index>-1){
-                    this.messages.splice(index,1,data)
-                }else{
-                    this.messages.push(data)
+            addHandler(data => {
+                if (data.objectType === 'MESSAGE') {
+                    const index = this.messages.findIndex(item => item.id === data.body.id)
+                    switch (data.eventType) {
+                        case 'CREATE':
+                        case 'UPDATE':
+                            if (index > -1) {
+                                this.messages[index].text=data.body.text
+                                // this.messages.splice(index, 1, data.body)
+                            } else {
+                                this.messages.push(data.body)
+                            }
+                            break
+                        case 'REMOVE':
+                            this.messages.splice(index, 1)
+                            break
+                        default:
+                            console.error(`Looks like the event type if unknown "${data.eventType}"`)
+                    }
+                } else {
+                    console.error(`Looks like the object type if unknown "${data.objectType}"`)
                 }
             })
         }

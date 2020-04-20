@@ -15,7 +15,7 @@
     </v-container>
 </template>
 <script>
-    import {sendMessage} from "util/ws";
+    import messagesApi from "api/messages";
     export default {
         props:['messages', 'messageAttr'],
          data:function(){
@@ -34,29 +34,31 @@
         },
         methods:{
          save() {
-             const auth={id:this.auth.id}
-             const rec = {id:this.recipient}
-             const message={id:this.id, author:auth, recipient:rec,text: this.text}
-             sendMessage(message)
-             this.text=''
-             this.id=''
-             // const rec = {id:this.recipient}
-             // const message={recipient:rec, text: this.text}
-             // if(this.id){
-             //     messageApi.update({id:this.id}, {text:this.text}).then(result =>
-             //         result.json().then(data =>{
-             //             const index=getIndex(this.messages,data.id)
-             //             this.messages.splice(index,1,data)
-             //             this.text=''
-             //             this.id=''
-             //         }))
-             // }else {
-             //     this.$resource('/message{/id}').save({}, message).then(result =>
-             //         result.json().then(data => {
-             //             this.messages.push(data)
-             //             this.text = ''
-             //         }))
-             // }
+             const auth={id:this.auth.id, name:this.auth.name, img:this.auth.img}
+             const rec = {id:this.recipient, name:this.recipient.name, img:this.recipient.img}
+             const message={id:this.id, author:auth, recipient:rec, text: this.text}
+
+             if (this.id) {
+                 messagesApi.update(message).then(result =>
+                     result.json().then(data => {
+                         const index = this.messages.findIndex(item => item.id === data.id)
+                         this.messages.splice(index, 1, data)
+                     })
+                 )
+             } else {
+                 messagesApi.add(message).then(result =>
+                     result.json().then(data => {
+                         const index = this.messages.findIndex(item => item.id === data.id)
+                         if (index > -1) {
+                             this.messages.splice(index, 1, data)
+                         } else {
+                             this.messages.push(data)
+                         }
+                     })
+                 )
+             }
+             this.text = ''
+             this.id = ''
          }
      }
     }
