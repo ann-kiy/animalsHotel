@@ -134,6 +134,7 @@ public class CustomUserInfoTokenServices implements ResourceServerTokenServices
             newUser.setEmail((String) map.get("email"));
             newUser.setActive(true);
             newUser.setPassword("null");
+            newUser.setRating((float) 0.0);
             return newUser;
         });
         user.setLastVisit(LocalDateTime.now());

@@ -54,8 +54,8 @@ public class MainController {
 //        a.givenLast_whenGettingListOfUsers_thenCorrect(advertisementAcceptRepo,typeAnimalRepo,breedAnimalRepo);
         HashMap<Object, Object> data = new HashMap<>();
         if(principal==null ){
-            data.put("profile", null);
-            return "login";
+            model.addAttribute("isDevMode","dev".equals(profile));
+            return "redirect:/login";
         }
         data.put("profile", principal);
         data.put("messages", messageRepo.findAllByRecipient(principal));
@@ -63,12 +63,18 @@ public class MainController {
         model.addAttribute("isDevMode","dev".equals(profile));
             return "header";
     }
+    @GetMapping("login")
+    public String login(Model model){
+        model.addAttribute("frontendData", null);
+        model.addAttribute("isDevMode", "dev".equals(profile));
+        return "header";
+    }
     @GetMapping("user/{id}")
     public String showUser(@PathVariable("id") User user, Model model) {
         HashMap<Object, Object> data = new HashMap<>();
         if(user==null ){
             data.put("profile", null);
-            return "login";
+            //return "login";
         }
         data.put("profile", user);
         data.put("messages", messageRepo.findAllByRecipient(user));

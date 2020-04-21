@@ -30,7 +30,7 @@ public class User implements UserDetails{
     private String phone;
     private String locale;
     private String password;
-    private int rating;
+    private float rating;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))

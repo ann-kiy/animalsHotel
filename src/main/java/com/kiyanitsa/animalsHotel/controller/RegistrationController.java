@@ -27,7 +27,7 @@ public class RegistrationController {
 //    @Autowired
 //    private PasswordEncoder passwordEncoder;
 @GetMapping("/registration")
-    public String registration()
+    public String registration(Model nodel)
     {
         return "registration";
     }
@@ -47,7 +47,7 @@ public class RegistrationController {
             model.put("message","User exists!");
             return "registration";
         }
-        return "redirect:/login";
+        return "login";
     }
 
     @GetMapping("/activate/{code}")

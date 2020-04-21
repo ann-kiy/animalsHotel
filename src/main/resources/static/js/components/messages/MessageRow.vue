@@ -18,19 +18,21 @@
 
 </template>
 <script>
+    import {mapActions} from 'vuex'
     export default {
-         props:  ['message','editMessage','deleteMessage','messages'],
+         props:  ['message','editMessage'],
          data:function(){
              return{
              auth:auth
              }
          },
         methods:{
+            ...mapActions(['removeMessageAction']),
             edit() {
                 this.editMessage(this.message)
                  },
             del() {
-                this.deleteMessage(this.message)
+                this.removeMessageAction(this.message)
                  }
              }
     }

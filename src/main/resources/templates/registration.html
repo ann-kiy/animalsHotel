@@ -1,82 +1,25 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!doctype html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
+    <!-- Required meta tags -->
     <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <meta charset="UTF-8">
-    <title>AnimalsHotel</title>
-    <script type="text/javascript" src="/webjars/js-cookie/js.cookie.js">
-        $.ajaxSetup({
-            beforeSend : function(xhr, settings) {
-                if (settings.type == 'POST' || settings.type == 'PUT'
-                    || settings.type == 'DELETE') {
-                    if (!(/^http:.*/.test(settings.url) || /^https:.*/
-                        .test(settings.url))) {
-                        // Only send the token to relative URLs i.e. locally.
-                        xhr.setRequestHeader("X-XSRF-TOKEN",
-                            Cookies.get('XSRF-TOKEN'));
-                    }
-                }
-            }
-        });
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <script th:inline="javascript">
-        var frontendData=[[${frontendData}]];
+        var auth=[[${authUser}]];
     </script>
-    <title>Title</title>
 </head>
 <body>
-Добавление нового пользователя
-<p th:utext="${message}">Welcome to our grocery store!</p>
 <div>
-<form  id="app"
-       @submit="checkForm"
-       action="/registration"
-       method="post"
-        enctype="multipart/form-data">
-        <div class="form-group">
-            <label for="inputSurname">ФИО</label>
-            <input type="text" class="form-control" id="inputSurname" name="name">
-        </div>
-    <div class="form-group">
-        <label for="inputEmail4">E-mail</label>
-        <input type="email" class="form-control" id="inputEmail4" name="email">
+    <div id="app">
     </div>
-    <div class="form-group">
-        <label for="inputPhone">Телефон</label>
-        <input type="text"   class="form-control" id="inputPhone"  name="phone">
+    <div>
+        <script th:src="${isDevMode} ? 'http://localhost:8000/main.js':'/js/main.js'"></script>
     </div>
-    <div class="form-group">
-        <label for="inputAddress">Адрес</label>
-        <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St" name="locale">
-    </div>
-    <div class="form-group">
-        <label for="inputPassword">Пароль</label>
-        <input type="password"   class="form-control" id="inputPassword" name="password">
-    </div>
-    <div class="form-group">
-        <label for="inputPassword2">Повторите пароль</label>
-        <input type="password"   class="form-control" id="inputPassword2" name="password2">
-    </div>
-    <input type="file" id="validatedCustomFile"  name="file">
-<!--    <div class="custom-file">-->
-<!--        <label for="validatedCustomFile">Фото</label>-->
-<!--        <input type="file" class="custom-file-input" id="validatedCustomFile"  name="img">-->
-<!--        <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>-->
-<!--        <div class="invalid-feedback">Example invalid custom file feedback</div>-->
-<!--    </div>-->
-
-
-    <button type="submit" class="btn btn-primary">Sign in</button>
-
-</form>
 </div>
 </body>
 </html>

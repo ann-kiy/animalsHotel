@@ -52,6 +52,7 @@ public class UserService implements UserDetailsService {
         user.setRoles(Collections.singleton(Role.USER));
         user.setLastVisit(LocalDateTime.now());
         user.setActivationCode(UUID.randomUUID().toString());
+        user.setRating((float) 0.0);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
 
