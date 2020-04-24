@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import messagesApi from 'api/messages.js'
+import userApi from 'api/users.js'
 
 Vue.use(Vuex);
 export default  new Vuex.Store({
@@ -10,9 +11,10 @@ export default  new Vuex.Store({
         profile: frontendData?frontendData.profile:null,
         auth:auth,
         drawer: null,
+        isActivated:isActivated
     },
     getters:{
-        sortedMessages: state=>state.messages.sort((a,b)=>-(a.id-b.id))
+        sortedMessages: state=>(state.messages || []).sort((a,b)=>-(a.id-b.id))
     },
     mutations: {
        addMessageMutation(state, message){
@@ -42,6 +44,12 @@ export default  new Vuex.Store({
         }
     },
     actions:{
+        async addUserAction(user,file){
+            var data = new FormData;
+            data.set('user', user);
+            data.set('file', file);
+            const result= await userApi.add(data)
+        },
         async addMessageAction({commit,state}, message){
             const result= await messagesApi.add(message)
             const data=await result.json()

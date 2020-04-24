@@ -1,11 +1,13 @@
 package com.kiyanitsa.animalsHotel.controller;
 
 import com.kiyanitsa.animalsHotel.domain.User;
+import com.kiyanitsa.animalsHotel.model.UserAndFile;
 import com.kiyanitsa.animalsHotel.repo.UserDetailsRepo;
 import com.kiyanitsa.animalsHotel.services.UserService;
 import org.dom4j.rule.Mode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,43 +23,38 @@ import java.util.UUID;
 public class RegistrationController {
     @Autowired
     private UserService userService;
-
-
+    @Value("${spring.profiles.active}")
+    private String profile;
 
 //    @Autowired
 //    private PasswordEncoder passwordEncoder;
-@GetMapping("/registration")
-    public String registration(Model nodel)
+@ModelAttribute(value = "isDevMode")
+public boolean isDevMode() {
+    return "dev".equals(profile);
+}
+
+    @GetMapping("/registration")
+    public String registration()
     {
-        return "registration";
+        return "header";
     }
 
     @PostMapping("/registration")
-    public String addUser(Map<String,Object> model, User user, @RequestParam("file")MultipartFile file, @RequestParam("password2") String password2) throws IOException {
-    if(!userService.isFullDataUser(user)){
-            model.put("message","Не все обязательные поля заполненны!");
-            return "registration";
-    }
-    if(!user.getPassword().equals(password2)){
-            model.put("message","Пароли не созпадают!");
-            return "registration";
-        }
+    public String addUser(User user, @RequestPart("file") MultipartFile file) throws IOException {
         user=userService.addImg(user,file);
-        if(!userService.saveUser(user)){
-            model.put("message","User exists!");
-            return "registration";
-        }
-        return "login";
+        userService.saveUser(user);
+        return "header";
     }
 
     @GetMapping("/activate/{code}")
     public String activate(Model model, @PathVariable String code){
+//        User user=userService.findByCode(code);
         boolean isActivated = userService.activateUser(code);
         if(isActivated){
-            model.addAttribute("message", "User successfully activated");
+            model.addAttribute("isActivated", true);
         }else{
-            model.addAttribute("message", "Activation code is not found!");
+            model.addAttribute("isActivated", false);
         }
-        return "login";
+        return "header";
     }
 }

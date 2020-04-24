@@ -111,6 +111,10 @@ public class UserService implements UserDetailsService {
         return userRepository.findByIdWeb(id);
     }
 
+    public User findByCode(String code){
+        return userRepository.findByActivationCode(code);
+    }
+
     public boolean activateUser(String code) {
         User user=userRepository.findByActivationCode(code);
         if(user==null){

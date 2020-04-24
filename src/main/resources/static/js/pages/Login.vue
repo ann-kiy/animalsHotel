@@ -1,4 +1,4 @@
-<template>
+<template xmlns:th="http://www.w3.org/1999/xhtml">
     <div id="app">
         <v-app>
             <form  method="post" action="/login">
@@ -10,7 +10,7 @@
                             <v-card class="v-header py-2 mx-auto my-n12" max-width="364" raised>
                                 <v-card-title>
                                     <v-row justify="center" color="white">
-                                        <h4>Login</h4>
+                                        <h4>Вход</h4>
                                     </v-row>
                                 </v-card-title>
                                 <v-card-actions>
@@ -27,6 +27,12 @@
                             </v-card>
                         </v-card-title><br />
                         <v-card-text class="my-4">
+                            <v-alert v-if="isActivated" type="success">
+                                Аккаунт активирован
+                            </v-alert>
+                            <v-alert v-if="isActivated==='false'" type="error">
+                                I'm an error alert.
+                            </v-alert>
                             <v-text-field label="Email"
                                           name="username"
                                           prepend-icon="mdi-email"
@@ -60,7 +66,11 @@
     </div>
 </template>
 <script>
+    import {mapState} from 'vuex'
 
+    export default {
+        computed:mapState(['isActivated'])
+    }
 
 </script>
 <style>

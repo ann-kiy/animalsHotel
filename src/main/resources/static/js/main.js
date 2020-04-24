@@ -7,7 +7,9 @@ import store from 'store/store.js'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import {connect} from "./util/ws"
 import vuetify from 'plagins/vuetify.js'
-import Vuetify from "vuetify";
+import Vuetify from 'vuetify'
+import VueMask from 'v-mask'
+Vue.use(VueMask);
 
 
 if(frontendData){

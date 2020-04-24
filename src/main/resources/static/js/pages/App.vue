@@ -45,6 +45,11 @@
                     console.error(`Looks like the object type if unknown "${data.objectType}"`)
                 }
             })
+        },
+        beforeMount() {
+            if (this.profile==null) {
+                this.$router.replace('/login')
+            }
         }
     }
 
