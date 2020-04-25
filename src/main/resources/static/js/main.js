@@ -1,3 +1,10 @@
+const settings = {
+    apiKey: '01c977d4-510b-47ea-bdfc-2e5eb7e9235b',
+    lang: 'ru_RU',
+    coordorder: 'latlong',
+    version: '2.1'
+}
+
 import Vue from 'vue'
 import '@babel/polyfill'
 import 'api/resourse'
@@ -10,6 +17,9 @@ import vuetify from 'plagins/vuetify.js'
 import Vuetify from 'vuetify'
 import VueMask from 'v-mask'
 Vue.use(VueMask);
+
+import YmapPlugin from 'vue-yandex-maps'
+Vue.use(YmapPlugin, settings)
 
 
 if(frontendData){

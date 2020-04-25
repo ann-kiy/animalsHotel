@@ -73,6 +73,7 @@
                                     >
                                         <v-text-field
                                                 name="locale"
+                                                id="locale"
                                                 v-model="locale"
                                                 :rules="[rules.required]"
                                                 prepend-icon="mdi-map-marker"
@@ -142,9 +143,26 @@
         </v-app>
 </template>
 <script>
+    const settings = {
+        apiKey: '01c977d4-510b-47ea-bdfc-2e5eb7e9235b',
+        lang: 'ru_RU',
+        coordorder: 'latlong',
+        version: '2.1'
+    }
     import {mapActions} from 'vuex'
     import {TheMask} from 'vue-the-mask'
+    import {  loadYmap } from 'vue-yandex-maps'
+
+
+    function init() {
+        // Создаем выпадающую панель с поисковыми подсказками и прикрепляем ее к HTML-элементу по его id.
+        var suggestView1 = new ymaps.SuggestView('locale');
+    }
     export default {
+        async mounted() {
+            await loadYmap({ ...settings, debug: true });
+            ymaps.ready(init)
+        },
         components: {TheMask},
         data () {
             return {

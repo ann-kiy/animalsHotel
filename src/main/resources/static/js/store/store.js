@@ -12,6 +12,7 @@ export default  new Vuex.Store({
         auth:auth,
         drawer: null,
         isActivated:isActivated
+
     },
     getters:{
         sortedMessages: state=>(state.messages || []).sort((a,b)=>-(a.id-b.id))
