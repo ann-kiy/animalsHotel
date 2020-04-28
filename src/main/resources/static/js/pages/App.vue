@@ -1,10 +1,9 @@
 <template xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
     <v-app id="inspire">
         <header-line v-if="profile"/>
-        <v-content>
-
-            <router-view></router-view>
-            <v-container class="fill-height" fluid>
+        <v-content >
+            <v-container class=" justify-content" style="background-color: #bcddff">
+                <router-view></router-view>
             </v-container>
         </v-content>
     </v-app>

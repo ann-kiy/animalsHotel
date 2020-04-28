@@ -30,7 +30,7 @@ public class AnimalController {
             return null;
         }
     }
-    @GetMapping
+    @GetMapping("filter")
     @ResponseBody
     public List<Animal> filter(@RequestParam(value = "search") String search){
         return animalService.filter(search);
@@ -39,7 +39,8 @@ public class AnimalController {
     public Animal getOne(@PathVariable("id") Animal animal){
         return animal;
     }
-    @GetMapping("user/{id}")
+
+    @GetMapping("usr{id}")
     public List<Animal> getAnimals(@PathVariable("id")User user){
         return animalService.getAnimalRepo().findAllByOwner(user);
     }

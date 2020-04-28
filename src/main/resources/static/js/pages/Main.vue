@@ -1,113 +1,128 @@
 <template xmlns:v-bind="http://www.w3.org/1999/xhtml">
-    <v-row>
-        <v-col cols="4">
-            <v-card>
-                <v-card-title>
-                    <v-avatar size="80" class="mr-3">
-                        <img v-bind:src="src">
-                    </v-avatar>
-                    {{profile.name}}
-                    <v-rating  v-model="rating"></v-rating>
+    <v-container>
+        <v-row>
+            <v-col cols="4">
+                <v-card>
+                    <v-card-title>
+                        <v-avatar size="80" class="mr-3">
+                            <img v-bind:src="src">
+                        </v-avatar>
+                        {{profile.name}}
+                        <v-rating v-model="profile.rating"></v-rating>
 
-                </v-card-title>
-                <v-divider></v-divider>
-                <v-card-text>
-                    <v-text-field
-                            disabled
-                            label="Prepend"
-                            prepend-icon="mdi-phone-classic"
-                    ></v-text-field>
-                    <v-text-field
-                            disabled
-                            label="Prepend"
-                            prepend-icon="mdi-email"
-                    ></v-text-field>
-                    <v-text-field
-                            disabled
-                            label="Prepend"
-                            prepend-icon="mdi-map-marker"
-                    ></v-text-field>
-                </v-card-text>
-            </v-card>
-            <!--            <v-card-->
-            <!--                    class="mx-auto"-->
-            <!--                    max-width="400"-->
-            <!--            >-->
-            <!--                <v-img-->
-            <!--                        class="white&#45;&#45;text align-end"-->
-            <!--                        height="200px"-->
-            <!--                        src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"-->
-            <!--                >-->
-            <!--                    <v-card-title>Top 10 Australian beaches</v-card-title>-->
-            <!--                </v-img>-->
+                    </v-card-title>
+                    <v-divider></v-divider>
+                    <v-card-text>
+                        <p>
+                            <v-icon>mdi-phone-classic</v-icon>
+                            {{profile.phone}}
+                        </p>
+                        <p>
+                            <v-icon>mdi-email</v-icon>
+                            {{profile.email}}
+                        </p>
+                        <p>
+                            <v-icon>mdi-map-marker</v-icon>
+                            {{profile.locale}}
+                        </p>
+                    </v-card-text>
+                </v-card>
 
-            <!--                <v-card-subtitle class="pb-0">Number 10</v-card-subtitle>-->
+            </v-col>
+            <v-col  fluid cols="8">
+                <v-row>
+                    <v-bottom-navigation
+                            grow
+                            color="primary"
+                            class="m-2"
 
-            <!--                <v-card-text class="text&#45;&#45;primary">-->
-            <!--                    <div>Whitehaven Beach</div>-->
+                    >
+                        <v-btn class="m-2" min-width="60">
+                            <span>Добавить животное</span>
+                            <v-icon>mdi-cat</v-icon>
+                        </v-btn>
 
-            <!--                    <div>Whitsunday Island, Whitsunday Islands</div>-->
-            <!--                </v-card-text>-->
+                        <v-btn class="m-2">
+                            <span>Добавить объявление</span>
+                            <v-icon>mdi-view-grid-plus</v-icon>
+                        </v-btn>
 
-            <!--                <v-card-actions>-->
-            <!--                    <v-btn-->
-            <!--                            color="orange"-->
-            <!--                            text-->
-            <!--                    >-->
-            <!--                        Share-->
-            <!--                    </v-btn>-->
+                        <v-btn class="m-2">
+                            <span>Найти объявление</span>
+                            <v-icon>mdi-magnify</v-icon>
+                        </v-btn>
+                    </v-bottom-navigation>
+                </v-row>
+                <v-row>
+                    <v-tabs
+                            fixed-tabs
+                            background-color="indigo"
+                            v-model="tabs"
+                            dark
+                    >
+                        <v-tab href="#tabs-1">
+                            Мои животные
+                        </v-tab>
+                        <v-tab href="#tabs-2">
+                            Мои объявления
+                        </v-tab>
+                        <v-tab href="#tabs-3">
+                            Мои подписки
+                        </v-tab>
+                    </v-tabs>
+                </v-row>
+                    <v-tabs-items v-model="tabs">
+                        <v-tab-item
+                                    v-for="i in 3"
+                                    :key="i"
+                                    :value="'tabs-' + i"
+                        >
+                            <v-row fluid>
+                                <v-col cols-12>
+                                <animals-form  :items=animalsByUser></animals-form>
+                                </v-col>
+                            </v-row>
+                            <!--                        <v-card flat>-->
+                            <!--                            <v-card-text v-text="text"></v-card-text>-->
+                            <!--                        </v-card>-->
+                        </v-tab-item>
+                    </v-tabs-items>
 
-            <!--                    <v-btn-->
-            <!--                            color="orange"-->
-            <!--                            text-->
-            <!--                    >-->
-            <!--                        Explore-->
-            <!--                    </v-btn>-->
-            <!--                </v-card-actions>-->
-            <!--            </v-card>-->
-        </v-col>
-        <v-col cols="8"
+            </v-col>
 
-        >
-        </v-col>
-    </v-row>
+        </v-row>
+    </v-container>
 </template>
 <script>
-    import {mapState,mapMutations} from 'vuex'
+    import {mapState, mapActions} from 'vuex'
+    import AnimalsForm from 'components/animals/AnimalsForm.vue'
+
+    const axios = require('axios')
 
     export default {
-        computed:mapState(['profile', 'src']),
+        computed: mapState(['profile', 'src']),
+        methods: {
+            ...mapActions(['getAnimalsAction'])
+        },
+        components: {
+            AnimalsForm
+        },
         data() {
+            animalsByUser:[]
             return {
-                hasSaved: false,
-                isEditing: null,
-                model: null,
-                states: [
-                    {name: 'Florida', abbr: 'FL', id: 1},
-                    {name: 'Georgia', abbr: 'GA', id: 2},
-                    {name: 'Nebraska', abbr: 'NE', id: 3},
-                    {name: 'California', abbr: 'CA', id: 4},
-                    {name: 'New York', abbr: 'NY', id: 5},
-                ],
+                animalsByUser: [],
+                tabs: null,
+                text: 'Здесь инфа ...........................................................ююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююю...........',
             }
         },
-
-        methods: {
-            customFilter(item, queryText, itemText) {
-                const textOne = item.name.toLowerCase()
-                const textTwo = item.abbr.toLowerCase()
-                const searchText = queryText.toLowerCase()
-
-                return textOne.indexOf(searchText) > -1 ||
-                    textTwo.indexOf(searchText) > -1
-            },
-            save() {
-                this.isEditing = !this.isEditing
-                this.hasSaved = true
-            },
-        },
+        mounted() {
+            axios
+                .get('/animal/usr1')
+                .then(response => (this.animalsByUser = response.data));
+        }
     }
 </script>
+
 <style>
 
 </style>

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import messagesApi from 'api/messages.js'
 import userApi from 'api/users.js'
+import animalApi from 'api/animals.js'
 
 Vue.use(Vuex);
 export default  new Vuex.Store({
@@ -11,13 +12,17 @@ export default  new Vuex.Store({
         profile: frontendData?frontendData.profile:null,
         auth:auth,
         drawer: null,
-        isActivated:isActivated
+        isActivated:isActivated,
+        animalsByUser:[]
 
     },
     getters:{
         sortedMessages: state=>(state.messages || []).sort((a,b)=>-(a.id-b.id))
     },
     mutations: {
+        getAnimalsByUserMutation(state,animals){
+            state.animalsByUser=animals
+        },
        addMessageMutation(state, message){
             state.messages=[
                 ...state.messages,
@@ -50,6 +55,12 @@ export default  new Vuex.Store({
             data.set('user', user);
             data.set('file', file);
             const result= await userApi.add(data)
+        },
+        async getAnimalsAction({commit},id){
+            const result= await animalApi.get(id).then(response => {
+                this.animalsByUser = response.data;
+            })
+            commit('getAnimalsByUserMutation', result)
         },
         async addMessageAction({commit,state}, message){
             const result= await messagesApi.add(message)

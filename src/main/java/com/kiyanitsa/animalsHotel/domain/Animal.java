@@ -22,5 +22,13 @@ public class Animal {
     private byte age;
     private String img;
     private String info;
+    private float rating;
+
+    public String getImg(){
+        if(img==null)
+            return "no_foto.png";
+        else
+            return img;
+    }
 
 }
