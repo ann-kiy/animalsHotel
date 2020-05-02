@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface BreedAnimalRepo extends JpaRepository<BreedAnimal,Long> {
     List<BreedAnimal> findAllByType(TypeAnimal typeAnimal);
+    BreedAnimal findByName(String name);
 }

@@ -37,20 +37,24 @@
                             class="m-2"
 
                     >
-                        <v-btn class="m-2" min-width="60">
-                            <span>Добавить животное</span>
-                            <v-icon>mdi-cat</v-icon>
-                        </v-btn>
 
-                        <v-btn class="m-2">
+                        <router-link tag="v-btn" to="/animal" class="m-2" min-width="60">
+
+                                <span>Добавить животное</span>
+                                <v-icon>mdi-cat</v-icon>
+
+
+                        </router-link>
+
+                        <router-link tag="v-btn" to="/animal" class="m-2">
                             <span>Добавить объявление</span>
                             <v-icon>mdi-view-grid-plus</v-icon>
-                        </v-btn>
+                        </router-link>
 
-                        <v-btn class="m-2">
+                        <router-link tag="v-btn" to="/animal" class="m-2">
                             <span>Найти объявление</span>
                             <v-icon>mdi-magnify</v-icon>
-                        </v-btn>
+                        </router-link>
                     </v-bottom-navigation>
                 </v-row>
                 <v-row>
@@ -71,7 +75,7 @@
                         </v-tab>
                     </v-tabs>
                 </v-row>
-                    <v-tabs-items v-model="tabs">
+                    <v-tabs-items tag="v-row" v-model="tabs">
                         <v-tab-item
                                     v-for="i in 3"
                                     :key="i"
@@ -102,7 +106,10 @@
     export default {
         computed: mapState(['profile', 'src']),
         methods: {
-            ...mapActions(['getAnimalsAction'])
+            ...mapActions(['getAnimalsAction']),
+            routeAnimal(){
+                this.$router.replace('/animal')
+            }
         },
         components: {
             AnimalsForm
@@ -117,7 +124,7 @@
         },
         mounted() {
             axios
-                .get('/animal/usr1')
+                .get('/animal/usr'+this.profile.id)
                 .then(response => (this.animalsByUser = response.data));
         }
     }

@@ -1,8 +1,11 @@
 package com.kiyanitsa.animalsHotel.controller;
 
 import com.kiyanitsa.animalsHotel.domain.*;
+import com.kiyanitsa.animalsHotel.repo.BreedAnimalRepo;
+import com.kiyanitsa.animalsHotel.repo.TypeAnimalRepo;
 import com.kiyanitsa.animalsHotel.services.AnimalService;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,15 +18,30 @@ import java.util.List;
 public class AnimalController {
 
     private final AnimalService animalService;
+    private final TypeAnimalRepo typeAnimalRepo;
+    private final BreedAnimalRepo breedAnimalRepo;
 
-    public AnimalController(AnimalService animalService) {
+    public AnimalController(AnimalService animalService, TypeAnimalRepo typeAnimalRepo, BreedAnimalRepo breedAnimalRepo) {
         this.animalService = animalService;
+        this.typeAnimalRepo = typeAnimalRepo;
+        this.breedAnimalRepo = breedAnimalRepo;
+    }
+    @Value("${spring.profiles.active}")
+    private String profile;
+
+    @ModelAttribute(value = "isDevMode")
+    public boolean isDevMode() {
+        return "dev".equals(profile);
     }
 
-    @PostMapping
-    public Animal create(@RequestBody Animal animal, @RequestParam("file") MultipartFile file, @AuthenticationPrincipal User user) throws IOException {
+
+    @PostMapping(consumes = "multipart/form-data")
+    public Animal create( String type, String breed, Sex sexx, Animal animal, @RequestParam MultipartFile file, @AuthenticationPrincipal User user) throws IOException {
         if(animalService.chekAnimal(animal)) {
             animal.setOwner(user);
+            animal.setSex(sexx);
+            animal.setTypeAnimal(typeAnimalRepo.findByType(type));
+            animal.setBreedAnimal(breedAnimalRepo.findByName(breed));
             animalService.addImg(animal,file);
             return animalService.getAnimalRepo().save(animal);
         }else{
