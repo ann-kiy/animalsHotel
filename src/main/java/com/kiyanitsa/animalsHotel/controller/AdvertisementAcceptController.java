@@ -1,27 +1,29 @@
 package com.kiyanitsa.animalsHotel.controller;
 
 import com.kiyanitsa.animalsHotel.domain.AdvertisementAccept;
+import com.kiyanitsa.animalsHotel.domain.Sex;
 import com.kiyanitsa.animalsHotel.domain.User;
-import com.kiyanitsa.animalsHotel.repo.AdvertisementAcceptRepo;
 import com.kiyanitsa.animalsHotel.repo.BreedAnimalRepo;
 import com.kiyanitsa.animalsHotel.repo.TypeAnimalRepo;
 import com.kiyanitsa.animalsHotel.services.AdvertisementAcceptService;
-import com.kiyanitsa.animalsHotel.specification.AdvertAcceptSpecificationsBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @RestController
-@RequestMapping("/advertisement_accept")
+@RequestMapping("/advertisement")
 public class AdvertisementAcceptController {
     @Autowired
    private AdvertisementAcceptService service;
+    private final TypeAnimalRepo typeAnimalRepo;
+    private final BreedAnimalRepo breedAnimalRepo;
+
+    public AdvertisementAcceptController(TypeAnimalRepo typeAnimalRepo, BreedAnimalRepo breedAnimalRepo) {
+        this.typeAnimalRepo = typeAnimalRepo;
+        this.breedAnimalRepo = breedAnimalRepo;
+    }
 
     @GetMapping
     @ResponseBody
@@ -35,8 +37,7 @@ public class AdvertisementAcceptController {
     }
 
     @PostMapping
-    @ResponseBody
-    public AdvertisementAccept create(@RequestBody AdvertisementAccept advertisementAccept, @AuthenticationPrincipal User user){
+    public AdvertisementAccept create( @RequestBody AdvertisementAccept advertisementAccept, @AuthenticationPrincipal User user){
         return service.save(advertisementAccept, user);
     }
 

@@ -46,7 +46,7 @@
 
                         </router-link>
 
-                        <router-link tag="v-btn" to="/animal" class="m-2">
+                        <router-link tag="v-btn" to="/advertisement" class="m-2">
                             <span>Добавить объявление</span>
                             <v-icon>mdi-view-grid-plus</v-icon>
                         </router-link>

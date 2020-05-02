@@ -1,9 +1,12 @@
 package com.kiyanitsa.animalsHotel.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -26,11 +29,11 @@ public class AdvertisementAccept {
     @ManyToOne(fetch = FetchType.EAGER)
     private BreedAnimal breedAnimal;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
-    private LocalDateTime dateStart;
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    private LocalDate dateStart;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
-    private LocalDateTime dateEnd;
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    private LocalDate dateEnd;
 
     private String condition;
     private boolean state;
