@@ -71,7 +71,7 @@
                 </v-menu>
             </div>
             <v-btn icon href="">
-                <v-icon>mdi-view-grid-plus</v-icon>
+                <router-link tag="v-icon" to="/advertisement">mdi-view-grid-plus</router-link>
             </v-btn>
             <v-btn icon href="">
                 <v-icon>mdi-magnify</v-icon>

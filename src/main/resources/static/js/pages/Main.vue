@@ -32,6 +32,7 @@
             <v-col  fluid cols="8">
                 <v-row>
                     <v-bottom-navigation
+                            v-if="profile.id==auth.id"
                             grow
                             color="primary"
                             class="m-2"
@@ -83,7 +84,8 @@
                         >
                             <v-row fluid>
                                 <v-col cols-12>
-                                <animals-form  :items=animalsByUser></animals-form>
+                                <animals-form v-if="i==1" :items=animalsByUser></animals-form>
+                                    <advertisement-form v-if="i==2" :items=advertsByUser></advertisement-form>
                                 </v-col>
                             </v-row>
                             <!--                        <v-card flat>-->
@@ -100,11 +102,12 @@
 <script>
     import {mapState, mapActions} from 'vuex'
     import AnimalsForm from 'components/animals/AnimalsForm.vue'
+    import AdvertisementForm from 'components/ advertisements/AdvertisementForm.vue'
 
     const axios = require('axios')
 
     export default {
-        computed: mapState(['profile', 'src']),
+        computed: mapState(['profile', 'src', 'auth']),
         methods: {
             ...mapActions(['getAnimalsAction']),
             routeAnimal(){
@@ -112,11 +115,14 @@
             }
         },
         components: {
-            AnimalsForm
+            AnimalsForm,
+            AdvertisementForm
         },
         data() {
             animalsByUser:[]
+            advertsByUser:[]
             return {
+                advertsByUser:[],
                 animalsByUser: [],
                 tabs: null,
                 text: 'Здесь инфа ...........................................................ююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююю...........',
@@ -126,6 +132,9 @@
             axios
                 .get('/animal/usr'+this.profile.id)
                 .then(response => (this.animalsByUser = response.data));
+            axios
+                .get('/advertisement/usr'+this.profile.id)
+                .then(response => (this.advertsByUser = response.data));
         }
     }
 </script>

@@ -15,7 +15,7 @@ const routes = [
     { path: '/advertisement', component: AddAdvert },
     { path: '/animal', component: AddAnimal },
     { path: '/', component: Main },
-    { path: '*', component: MessageList }
+    { path: '*', component: Main }
 ]
 
 export  default new VueRouter({

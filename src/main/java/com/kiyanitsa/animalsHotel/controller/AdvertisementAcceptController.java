@@ -17,13 +17,7 @@ import java.util.List;
 public class AdvertisementAcceptController {
     @Autowired
    private AdvertisementAcceptService service;
-    private final TypeAnimalRepo typeAnimalRepo;
-    private final BreedAnimalRepo breedAnimalRepo;
 
-    public AdvertisementAcceptController(TypeAnimalRepo typeAnimalRepo, BreedAnimalRepo breedAnimalRepo) {
-        this.typeAnimalRepo = typeAnimalRepo;
-        this.breedAnimalRepo = breedAnimalRepo;
-    }
 
     @GetMapping
     @ResponseBody
@@ -32,10 +26,15 @@ public class AdvertisementAcceptController {
     }
 
     @GetMapping("{/id}")
-    public List<AdvertisementAccept> getAdvertId(@RequestParam("id") User user){
-        return service.getAdvertId(user);
+    public List<AdvertisementAccept> getAdvertId(@PathVariable("id") AdvertisementAccept advertisementAccept){
+        return service.getAdvertId(advertisementAccept);
     }
 
+    @GetMapping("usr{id}")
+    public List<AdvertisementAccept> getAdvertUserId(@PathVariable("id") User user){
+
+        return service.getAdvertUserId(user);
+    }
     @PostMapping
     public AdvertisementAccept create( @RequestBody AdvertisementAccept advertisementAccept, @AuthenticationPrincipal User user){
         return service.save(advertisementAccept, user);

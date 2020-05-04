@@ -207,24 +207,23 @@
     </v-container>
 </template>
 <script>
-    import {mapActions} from 'vuex'
     import {TheMask} from 'vue-the-mask'
+    import {mapState, mapActions} from 'vuex'
 
     const axios = require('axios')
 
     export default {
+        computed: mapState(['itemAge', 'itemsText', 'itemCondition']),
         mounted() {
             axios
                 .get('/model')
                 .then(response => (this.typeAnimals = response.data));
         },
-        components: {TheMask},
         data() {
 
             return {
                 typeAnimals: [],
                 breedAnimals: [],
-                itemAge: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
                 selectType: '',
                 errorMessages: '',
                 info: null,
@@ -241,28 +240,7 @@
                 rules: {
                     required: value => !!value || 'Не заполнено',
                 },
-                itemsText: [
-                    'м',
-                    'ж'
-                ],
-                itemCondition:[
-                    "Бузвозмездно",
-                    "За вознаграждение",
-                    "За деньги"
-                ],
-            }
-        },
-        computed: {
-            form() {
-                return {
-                    name: this.name,
-                    sex: this.sex,
-                    typeAnimal: this.selectType,
-                    breedAnimal: this.selectBreed,
-                    age: this.selectAge,
-                    info: this.info,
-                    file: ''
-                }
+
             }
         },
         methods: {
