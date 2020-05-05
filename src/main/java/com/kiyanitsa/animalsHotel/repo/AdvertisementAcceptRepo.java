@@ -1,6 +1,7 @@
 package com.kiyanitsa.animalsHotel.repo;
 
 import com.kiyanitsa.animalsHotel.domain.AdvertisementAccept;
+import com.kiyanitsa.animalsHotel.domain.Animal;
 import com.kiyanitsa.animalsHotel.domain.User;
 import com.kiyanitsa.animalsHotel.specification.AdvertAcceptSpecification;
 import org.springframework.data.jpa.repository.JpaRepository;

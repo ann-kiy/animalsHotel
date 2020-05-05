@@ -26,7 +26,7 @@ public class AdvertisementAcceptController {
     }
 
     @GetMapping("{/id}")
-    public List<AdvertisementAccept> getAdvertId(@PathVariable("id") AdvertisementAccept advertisementAccept){
+    public AdvertisementAccept getAdvertId(@PathVariable("id") AdvertisementAccept advertisementAccept){
         return service.getAdvertId(advertisementAccept);
     }
 

@@ -68,8 +68,8 @@ public class AdvertisementAcceptService {
         }
         return false;
     }
-    public List<AdvertisementAccept> getAdvertId(AdvertisementAccept advertisementAccept){
-        return repo.findByIdAndState(advertisementAccept,true);
+    public AdvertisementAccept getAdvertId(AdvertisementAccept advertisementAccept){
+        return advertisementAccept;
     }
     public List<AdvertisementAccept> getAdvertUserId(User user){
         return repo.findAllByUserAndState(user,true);

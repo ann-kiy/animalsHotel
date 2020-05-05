@@ -17,12 +17,10 @@ public class ResponseService {
 
     public void respond(Response response){
         Response testR=responseRepo.findByUserAndAdvertisement(response.getUser(),response.getAdvertisement());
-        if(testR==null){
             response.setCreateDate(LocalDateTime.now());
             response.setState(true);
             response.setStateRecipient(false);
             responseRepo.save(response);
-        }
     }
     public void confirm(Response response){
         Response testR=responseRepo.findByUserAndAdvertisement(response.getUser(),response.getAdvertisement());
@@ -31,12 +29,15 @@ public class ResponseService {
             responseRepo.save(response);
         }
     }
-    public void delete(Response response){
-        Response testR=responseRepo.findByUserAndAdvertisement(response.getUser(),response.getAdvertisement());
+    public void delete(AdvertisementAccept advertisementAccept, User user){
+        Response testR=responseRepo.findByUserAndAdvertisement( user, advertisementAccept);
         if(testR!=null){
-            response.setState(false);
-            responseRepo.save(response);
+            testR.setState(false);
+            responseRepo.save(testR);
         }
+    }
+    public List<Response> getRespByAdvert(AdvertisementAccept advertisementAccept){
+        return responseRepo.findByAdvertisementAndState(advertisementAccept,true);
     }
     public List<Response> getByUser(User user){
         if(user!=null){
@@ -61,6 +62,9 @@ public class ResponseService {
             return  responseRepo.findByUserAndAdvertisementAndState(user,advertisement, true);
         }
         return null;
+    }
+    public boolean isRes(AdvertisementAccept advertisementAccept, User user){
+        return responseRepo.findByUserAndAdvertisementAndState(user, advertisementAccept, true) != null;
     }
 
 }
