@@ -15,6 +15,9 @@ export default  new Vuex.Store({
         drawer: null,
         isActivated:isActivated,
         anim:[],
+        anim1:[],
+        advert:[],
+        changeAdvert:null,
         itemsText: [
             'м',
             'ж'
@@ -29,18 +32,33 @@ export default  new Vuex.Store({
     },
     getters:{
         sortedMessages: state=>(state.messages || []).sort((a,b)=>-(a.id-b.id)),
-        animalsByUser:state=>{
-            let animals=[]
+        animalsAuthByUser:state=>{
             axios
                 .get('/animal/usr'+state.auth.id)
-                .then(response => (state.anim=response.data))
-             return state.anim
+                .then(response => (state.anim1=response.data))
+             return state.anim1
 
-        }
+        },
+        advertsByUser:state=>{
+            axios
+                .get('/advertisement/usr'+state.profile.id)
+                .then(response => (state.advert = response.data));
+            return state.advert
+        },
+        animalsByUser:state=>{
+            axios
+                .get('/animal/usr'+state.profile.id)
+                .then(response => (state.anim=response.data))
+            return state.anim
+
+        },
     },
     mutations: {
-        getAnimalsByUserMutation(state,animals){
-            state.animalsByUser=animals
+        setChangeAdvertMutation(state,advert){
+            state.changeAdvert=advert
+        },
+        resetChangeAdvertMutation(state){
+            state.changeAdvert=null
         },
        addMessageMutation(state, message){
             state.messages=[
@@ -69,6 +87,12 @@ export default  new Vuex.Store({
         }
     },
     actions:{
+        async resetChangeAdvertAction({commit}){
+          commit('resetChangeAdvertMutation')
+        },
+        async setChangeAdvertAction({commit}, advert){
+          commit('setChangeAdvertMutation', advert);
+        },
         async addUserAction(user,file){
             var data = new FormData;
             data.set('user', user);

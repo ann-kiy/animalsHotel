@@ -56,9 +56,12 @@ public class AdvertisementAcceptService {
         return repo.save(advertisementAccept);
     }
     public AdvertisementAccept update(AdvertisementAccept advert1, AdvertisementAccept advert2){
+        advert1.setUser(advert2.getUser());
         BeanUtils.copyProperties(advert1,advert2,"id");
-        advert1.setCreateDate(LocalDateTime.now());
-        return repo.save(advert1);
+
+        advert2.setState(true);
+        advert2.setCreateDate(LocalDateTime.now());
+        return repo.save(advert2);
     }
     public boolean delete(AdvertisementAccept advertisementAccept){
         if(repo.existsById(advertisementAccept.getId())){

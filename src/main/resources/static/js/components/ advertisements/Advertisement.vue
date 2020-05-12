@@ -1,4 +1,5 @@
 <template>
+    <v-row>
     <v-dialog v-model="dialog" scrollable >
         <template  v-slot:activator="{ on }">
             <v-card class="my-2" width="100%">
@@ -16,18 +17,19 @@
                 <v-card-text v-if="advertisement.info">{{advertisement.info}}</v-card-text>
                 <v-card-text>{{advertisement.createDate}}</v-card-text>
                 <div class="text-right" v-if="profile.id===auth.id">
-                    <v-btn color="error" fab small dark>
+                    <v-btn @click="del" color="error" fab small dark>
                         <v-icon>mdi-trash-can-outline</v-icon>
                     </v-btn>
-                    <v-btn color="primary" fab small dark>
+                    <v-btn @click="change" color="primary" fab small dark>
                         <v-icon>mdi-pencil</v-icon>
                     </v-btn>
+
                     <v-badge
                             v-if="countResp>0"
                             color="red"
                             :content="countResp"
                     >
-                        <v-btn class="mx-2" fab small dark color="teal">
+                        <v-btn @click="dialog2 = !dialog2" class="mx-2" fab small dark color="teal">
                             <v-icon dark>mdi-format-list-bulleted-square</v-icon>
                         </v-btn>
                     </v-badge>
@@ -38,7 +40,7 @@
             <v-card-title>Выберите питомца, которого ходите пристроить</v-card-title>
             <v-divider></v-divider>
             <v-card-text style="height: 300px;">
-                <v-autocomplete v-model="dialogm1" :items="animalsByUser" filled
+                <v-autocomplete v-model="dialogm1" :items="animalsAuthByUser" filled
                                 color="blue-grey lighten-2"
                                 label="Select"
                                 name="name"
@@ -52,7 +54,7 @@
                         >
                             <v-avatar left>
                                 <v-img v-if="data.item.img" :src="'/img/'+data.item.img"></v-img>
-                                <v-img v-else :src="'/img/'+no_foto.png"></v-img>
+                                <v-img v-else :src="tempImg"></v-img>
                             </v-avatar>
                             {{ data.item.name }}
                         </v-chip>
@@ -61,7 +63,7 @@
                         <template >
                             <v-list-item-avatar>
                                 <img v-if="data.item.img" :src="'/img/'+data.item.img">
-                                <img v-else :src="'/img/'+no_foto.png")>
+                                <img v-else :src="tempImg">
                             </v-list-item-avatar>
                             <v-list-item-content>
                                 <v-list-item-title v-text="data.item.name"></v-list-item-title>
@@ -79,14 +81,42 @@
             </v-card-actions>
         </v-card>
     </v-dialog>
+    <v-dialog
+            v-model="dialog2"
+            max-width="500px"
+    >
+        <v-card>
+            <v-card-title>
+                Dialog 2
+            </v-card-title>
+            <v-card-text>
+
+<!--                <v-select-->
+<!--                        :items="select"-->
+<!--                        label="A Select List"-->
+<!--                        item-value="text"-->
+<!--                ></v-select>-->
+            </v-card-text>
+            <v-card-actions>
+                <v-btn
+                        color="primary"
+                        text
+                        @click="dialog2 = false"
+                >
+                    Close
+                </v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
+    </v-row>
 </template>
 <script>
-    import {mapState,  mapGetters} from 'vuex'
+    import {mapState,  mapGetters, mapActions} from 'vuex'
     const axios = require('axios')
 
     export default {
-        props: ['advertisement'],
-        computed: {...mapState(['profile', 'auth']), ...mapGetters(['animalsByUser'])},
+        props: ['advertisement','deleteAdvert'],
+        computed: {...mapState(['profile', 'auth']), ...mapGetters(['animalsAuthByUser'])},
         mounted() {
             axios
                 .get('/response/'+this.advertisement.id)
@@ -98,12 +128,14 @@
         },
         data() {
             return {
+                tempImg:"/img/no_foto.png",
                 selectItem:null,
                 dialogm1: '',
                 responses:[],
                 countResp:0,
                 isResp:false,
                 dialog: false,
+                dialog2: false,
                 overlay: false,
                 type: this.advertisement.typeAnimal ? this.advertisement.typeAnimal.type : "Любой",
                 breed: this.advertisement.breedAnimal ? this.advertisement.breedAnimal.name : "Любая"
@@ -117,7 +149,7 @@
                     .post('/response',{
                         user:{id:this.auth.id},
                         advertisement:{id:this.advertisement.id},
-                        animal:{id:this.animalsByUser.filter(function (number) {
+                        animal:{id:this.animalsAuthByUser.filter(function (number) {
                             return number.name === name
                         })[0].id}
                     });
@@ -129,6 +161,14 @@
                 axios
                     .delete('/response/'+this.advertisement.id);
                 this.isResp=false
+            },
+            del(){
+                this.deleteAdvert(this.advertisement)
+            },
+            ...mapActions(['setChangeAdvertAction']),
+            change(){
+                this.setChangeAdvertAction(this.advertisement)
+                this.$router.replace('/advertisement')
             }
         }
     }

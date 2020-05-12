@@ -15,7 +15,8 @@
                         pd="10"
                         lg="3"
                 >
-                   <advertisement-profile :advertisement="item"></advertisement-profile>
+                   <advertisement-profile :advertisement="item"
+                                            :deleteAdvert="deleteAdvert"></advertisement-profile>
                 </v-row>
             </template>
         </v-data-iterator>
@@ -23,6 +24,7 @@
 </template>
 <script>
     import AdvertisementProfile from 'components/ advertisements/Advertisement.vue'
+    const axios = require('axios')
 
     export default {
         props:['items'],
@@ -53,6 +55,10 @@
             updateItemsPerPage (number) {
                 this.itemsPerPage = number
             },
+            deleteAdvert(advert){
+                axios
+                    .delete('/advertisement/'+advert.id);
+            }
         },
     }
 </script>

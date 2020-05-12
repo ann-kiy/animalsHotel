@@ -42,12 +42,12 @@ public class AdvertisementAcceptController {
 
     @PutMapping("{id}")
     @ResponseBody
-    public AdvertisementAccept update(@RequestBody AdvertisementAccept advertisementAccept, @RequestParam("id") AdvertisementAccept advertFromDB ){
+    public AdvertisementAccept update(@RequestBody AdvertisementAccept advertisementAccept, @PathVariable("id") AdvertisementAccept advertFromDB ){
         return service.update(advertisementAccept,advertFromDB);
     }
 
-    @DeleteMapping
-    public boolean delete(AdvertisementAccept advertisementAccept){
+    @DeleteMapping("{id}")
+    public boolean delete(@PathVariable("id") AdvertisementAccept advertisementAccept){
         return service.delete(advertisementAccept);
     }
 

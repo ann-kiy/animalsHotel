@@ -196,8 +196,8 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-row justify="center">
-                        <v-btn block disable @click="sent" text color="#0f4bac"> Зарегистрировать
-                        </v-btn>
+                        <v-btn v-if="!changeAdvert" block disable @click="sent" text color="#0f4bac"> Зарегистрировать</v-btn>
+                        <v-btn v-else block disable @click="sent" text color="#0f4bac"> Изменить</v-btn>
                     </v-row>
                 </v-card-actions>
 
@@ -213,11 +213,26 @@
     const axios = require('axios')
 
     export default {
-        computed: mapState(['itemAge', 'itemsText', 'itemCondition']),
+        computed: mapState(['itemAge', 'itemsText', 'itemCondition','changeAdvert']),
         mounted() {
             axios
                 .get('/model')
                 .then(response => (this.typeAnimals = response.data));
+            if(this.changeAdvert!=null) {
+                if(this.changeAdvert.typeAnimal!=null) {
+                    axios
+                        .get('/model/' + this.changeAdvert.typeAnimal.type)
+                        .then(response => (this.breedAnimals = response.data));
+                }
+                this.info = this.changeAdvert.info?this.changeAdvert.info:""
+                this.start= this.changeAdvert.dateStart
+                this.end = this.changeAdvert.dateEnd
+                this.selectType=this.changeAdvert.typeAnimal!=null?this.changeAdvert.typeAnimal:""
+                this.selectBreed=this.changeAdvert.breedAnimal!=null?this.changeAdvert.breedAnimal:""
+                this.selectAge=this.changeAdvert.age?this.changeAdvert.age:""
+                this.selectCondition=this.changeAdvert.condition
+                this.selectSex=this.changeAdvert.sex?this.changeAdvert.sex:null
+            }
         },
         data() {
 
@@ -226,8 +241,8 @@
                 breedAnimals: [],
                 selectType: '',
                 errorMessages: '',
-                info: null,
-                start: null,
+                info: "",
+                start: '',
                 endMenu: null,
                 startMenu: null,
                 selectCondition:'',
@@ -266,13 +281,12 @@
             handleFileUpload() {
                 this.file = this.$refs.file.files[0];
             },
+            ...mapActions(['resetChangeAdvertAction']),
             sent() {
                 if (this.checkForm()) {
                     var type = this.selectType
                     var breed = this.selectBreed
-
-                    axios
-                        .post('/advertisement', {
+                    let adv={
                             'dateStart': new Date(this.start).toISOString().split("T")[0],
                             'dateEnd': new Date(this.end).toISOString().split("T")[0],
                             'sex': this.selectSex,
@@ -285,9 +299,19 @@
                             'breedAnimal': this.breedAnimals.filter(function (number) {
                                 return number.name === breed
                             })[0]
-                        }, {
-                            'Content-Type': 'multipart/form-data'
-                        })
+                        }
+                        if(this.changeAdvert==null) {
+                            axios
+                                .post('/advertisement', adv, {
+                                    'Content-Type': 'multipart/form-data'
+                                })
+                        }else{
+                            axios
+                                .put('/advertisement/'+this.changeAdvert.id, adv, {
+                                    'Content-Type': 'multipart/form-data'
+                                })
+                        }
+                    this.resetChangeAdvertAction()
                     this.$router.replace('/')
                 }
             }

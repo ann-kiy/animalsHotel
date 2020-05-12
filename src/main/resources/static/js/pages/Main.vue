@@ -5,7 +5,7 @@
                 <v-card>
                     <v-card-title>
                         <v-avatar size="80" class="mr-3">
-                            <img v-bind:src="src">
+                            <img v-bind:src="'/img/'+profile.img">
                         </v-avatar>
                         {{profile.name}}
                         <v-rating v-model="profile.rating"></v-rating>
@@ -100,14 +100,14 @@
     </v-container>
 </template>
 <script>
-    import {mapState, mapActions} from 'vuex'
+    import {mapState, mapActions, mapGetters} from 'vuex'
     import AnimalsForm from 'components/animals/AnimalsForm.vue'
     import AdvertisementForm from 'components/ advertisements/AdvertisementForm.vue'
 
     const axios = require('axios')
 
     export default {
-        computed: mapState(['profile', 'src', 'auth']),
+        computed: {...mapState(['profile', 'src', 'auth']), ...mapGetters(['advertsByUser', 'animalsByUser'])},
         methods: {
             ...mapActions(['getAnimalsAction']),
             routeAnimal(){
@@ -119,22 +119,10 @@
             AdvertisementForm
         },
         data() {
-            animalsByUser:[]
-            advertsByUser:[]
-            return {
-                advertsByUser:[],
-                animalsByUser: [],
+           return {
                 tabs: null,
                 text: 'Здесь инфа ...........................................................ююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююююю...........',
             }
-        },
-        mounted() {
-            axios
-                .get('/animal/usr'+this.profile.id)
-                .then(response => (this.animalsByUser = response.data));
-            axios
-                .get('/advertisement/usr'+this.profile.id)
-                .then(response => (this.advertsByUser = response.data));
         }
     }
 </script>
