@@ -84,18 +84,14 @@
     <v-dialog
             v-model="dialog2"
             max-width="500px"
+            scrollable
     >
         <v-card>
             <v-card-title>
-                Dialog 2
+                Отклики
             </v-card-title>
             <v-card-text>
-
-<!--                <v-select-->
-<!--                        :items="select"-->
-<!--                        label="A Select List"-->
-<!--                        item-value="text"-->
-<!--                ></v-select>-->
+                <response-form :items="responses" :delResp="delRespByResp"></response-form>
             </v-card-text>
             <v-card-actions>
                 <v-btn
@@ -103,7 +99,7 @@
                         text
                         @click="dialog2 = false"
                 >
-                    Close
+                    Выход
                 </v-btn>
             </v-card-actions>
         </v-card>
@@ -112,10 +108,14 @@
 </template>
 <script>
     import {mapState,  mapGetters, mapActions} from 'vuex'
+    import ResponseForm from 'components/responses/ResponseForm.vue'
     const axios = require('axios')
 
     export default {
         props: ['advertisement','deleteAdvert'],
+        components:{
+            ResponseForm
+        },
         computed: {...mapState(['profile', 'auth']), ...mapGetters(['animalsAuthByUser'])},
         mounted() {
             axios
@@ -155,6 +155,17 @@
                     });
                 this.isResp=true
 
+            },
+            delRespByResp(resp){
+                axios
+                    .delete('/response/by'+resp.id);
+                const updateIndex=this.responses.findIndex(item=>item.id=resp.id)
+                if(updateIndex>-1){
+                    this.responses=[
+                        ...this.responses.slice(0,updateIndex),
+                        ...this.responses.slice(updateIndex+1)
+                    ]
+                }
             },
             delResp(){
                 this.dialog = false

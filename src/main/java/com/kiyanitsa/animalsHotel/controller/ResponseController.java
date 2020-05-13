@@ -45,8 +45,18 @@ public class ResponseController {
         responseService.confirm(response);
     }
 
+    @PostMapping("cancel/{id}")
+    public void cancel(@PathVariable("id") Response response){
+        responseService.cancel(response);
+    }
+
     @DeleteMapping("{id}")
     public void delete(@PathVariable("id") AdvertisementAccept advertisementAccept,@AuthenticationPrincipal User user){
         responseService.delete(advertisementAccept,user);
+    }
+
+    @DeleteMapping("/by{id}")
+    public void deleteByResp(@PathVariable("id") Response response){
+        responseService.deleteByResp(response);
     }
 }
