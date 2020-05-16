@@ -12,7 +12,7 @@ public interface ResponseRepo  extends JpaRepository<Response,Long> {
     Response findByUserAndAdvertisementAndState(User user, AdvertisementAccept advertisement, boolean state);
     Response findByUserAndAdvertisement(User user, AdvertisementAccept advertisement);
     List<Response> findByUserAndState(User user, boolean state);
-    List<Response> findByAdvertisementAndState(AdvertisementAccept advertisement, boolean state);
+    List<Response> findByAdvertisementAndStateAndAnimal_State(AdvertisementAccept advertisement, boolean state, boolean animalState);
     List<Response> findByAdvertisement_UserAndState(User user, boolean state);
 
 }

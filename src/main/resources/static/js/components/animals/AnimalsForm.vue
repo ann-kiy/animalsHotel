@@ -16,7 +16,7 @@
                             md="4"
                             lg="3"
                     >
-                        <animal-profile :animal="item"></animal-profile>
+                        <animal-profile :animal="item" :deleteAnimal="deleteAnimal"></animal-profile>
                     </v-col>
                 </v-row>
             </template>
@@ -81,6 +81,7 @@
 </template>
 <script>
     import AnimalProfile from 'components/animals/Animal.vue'
+    const axios = require('axios')
 
     export default {
         props:['items'],
@@ -111,6 +112,10 @@
             updateItemsPerPage (number) {
                 this.itemsPerPage = number
             },
+            deleteAnimal(animal){
+                axios
+                    .delete('/animal/'+animal.id);
+            }
         },
     }
 </script>

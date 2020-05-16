@@ -18,6 +18,7 @@ export default  new Vuex.Store({
         anim1:[],
         advert:[],
         changeAdvert:null,
+        changeAnimal:null,
         itemsText: [
             'м',
             'ж'
@@ -54,6 +55,12 @@ export default  new Vuex.Store({
         },
     },
     mutations: {
+        setChangeAnimalMutation(state,animal){
+            state.changeAnimal=animal
+        },
+        resetChangeAnimalMutation(state){
+            state.changeAnimal=null
+        },
         setChangeAdvertMutation(state,advert){
             state.changeAdvert=advert
         },
@@ -87,6 +94,12 @@ export default  new Vuex.Store({
         }
     },
     actions:{
+        async resetChangeAnimalAction({commit}){
+            commit('resetChangeAnimalMutation')
+        },
+        async setChangeAnimalAction({commit}, animal){
+            commit('setChangeAnimalMutation', animal);
+        },
         async resetChangeAdvertAction({commit}){
           commit('resetChangeAdvertMutation')
         },

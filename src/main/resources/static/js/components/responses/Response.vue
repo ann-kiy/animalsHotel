@@ -1,6 +1,6 @@
 <template>
     <v-row>
-        <v-col cols="6">
+        <v-col cols="7">
     <v-list-item
             @click="dialog2 = !dialog2"
             :key="item.id"
@@ -15,10 +15,10 @@
             <v-list-item-subtitle v-html="item.createDate"></v-list-item-subtitle>
         </v-list-item-content>
     </v-list-item>
-        </v-col>
-        <v-col cols="6">
-        <v-btn v-if="!item.stateRecipient" color="blue" @click="confirm" dark large>Подтвердить</v-btn>
-        <v-btn v-else color="error"  @click="cancel" dark large>Отменить</v-btn>
+        </v-col >
+        <v-col cols="5"  align-self="center" class="raz">
+        <v-btn v-if="!item.stateRecipient" color="blue" @click="confirm" dark small>Подтвердить</v-btn>
+        <v-btn v-else color="error"  @click="cancel" dark small>Отменить</v-btn>
         <v-btn @click="del" color="error" fab small dark>
             <v-icon>mdi-trash-can-outline</v-icon>
         </v-btn>
@@ -28,21 +28,7 @@
             persistent
             max-width="600px"
     >
-        <v-card>
-            <v-card-title>
-                Отклики
-            </v-card-title>
-                <animal-view :animal="item.animal" :isEditing="false"></animal-view>
-            <v-card-actions>
-                <v-btn
-                        color="primary"
-                        text
-                        @click="dialog2 = false"
-                >
-                    Выход
-                </v-btn>
-            </v-card-actions>
-        </v-card>
+        <animal-view :animal="item.animal" :isEditing="false" :close="closeD"></animal-view>
     </v-dialog>
     </v-row>
 </template>
@@ -76,10 +62,15 @@
             del(){
                 this.delResp(this.item)
                // this.item=null
+            },
+            closeD(){
+                this.dialog2 = false
             }
         }
     }
 </script>
 <style>
-
+    .raz {
+        text-align: right;
+    }
 </style>

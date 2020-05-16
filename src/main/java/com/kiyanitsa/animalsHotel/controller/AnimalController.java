@@ -60,7 +60,7 @@ public class AnimalController {
 
     @GetMapping("usr{id}")
     public List<Animal> getAnimals(@PathVariable("id")User user){
-        return animalService.getAnimalRepo().findAllByOwner(user);
+        return animalService.getAnimalRepo().findAllByOwnerAndState(user,true);
     }
     @GetMapping("type/{id}")
     public List<Animal> getAnimalsType(TypeAnimal typeAnimal){
@@ -78,14 +78,30 @@ public class AnimalController {
     public List<Animal> getAnimalsSex(Sex sex){
         return animalService.getAnimalRepo().findAllBySex(sex);
     }
+
     @PutMapping("{id}")
-    public Animal update(@PathVariable("id") Animal animalFromBD,
-                          @RequestBody Animal animal) {
-        BeanUtils.copyProperties(animal,animalFromBD,"id");
+        public Animal update(@PathVariable("id") Animal animalFromBD,
+                String type, String breed, Sex sexx, Animal animal) throws IOException {
+            animal.setOwner(animalFromBD.getOwner());
+            animal.setImg(animalFromBD.getImg());
+            animal.setSex(sexx);
+            animal.setTypeAnimal(typeAnimalRepo.findByType(type));
+            animal.setBreedAnimal(breedAnimalRepo.findByName(breed));
+//        if(file!=null)
+//            animalService.addImg(animal,file);
+            BeanUtils.copyProperties(animal,animalFromBD,"id");
         return animalService.getAnimalRepo().save(animalFromBD);
+    }
+    @PostMapping("{id}")
+    public Animal setAnimal(@PathVariable("id") Animal animal,
+                         @RequestParam MultipartFile file) throws IOException {
+        if(file!=null)
+            animalService.addImg(animal,file);
+        return animalService.getAnimalRepo().save(animal);
     }
     @DeleteMapping("{id}")
     public void delete(@PathVariable("id") Animal animal){
-        animalService.getAnimalRepo().delete(animal);
+        animal.setState(false);
+        animalService.getAnimalRepo().save(animal);
     }
 }

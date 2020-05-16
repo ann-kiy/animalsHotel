@@ -8,7 +8,7 @@ package com.kiyanitsa.animalsHotel.repo;
         import java.util.List;
 
 public interface AnimalRepo extends JpaRepository<Animal, Long>, JpaSpecificationExecutor<Animal> {
-        List<Animal> findAllByOwner(User user);
+        List<Animal> findAllByOwnerAndState(User user, boolean state);
         List<Animal> findAllByTypeAnimal(TypeAnimal typeAnimal);
        List<Animal> findAllByBreedAnimal(BreedAnimal breed_animal);
         List<Animal> findAllByAge(byte age);

@@ -23,6 +23,7 @@ public class Animal {
     private String img;
     private String info;
     private float rating;
+    private boolean state;
 
     public String getImg(){
         if(img==null)

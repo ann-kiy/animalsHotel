@@ -50,7 +50,7 @@ public class ResponseService {
         }
     }
     public List<Response> getRespByAdvert(AdvertisementAccept advertisementAccept){
-        return responseRepo.findByAdvertisementAndState(advertisementAccept,true);
+        return responseRepo.findByAdvertisementAndStateAndAnimal_State(advertisementAccept,true,true);
     }
     public List<Response> getByUser(User user){
         if(user!=null){
@@ -66,7 +66,7 @@ public class ResponseService {
     }
     public List<Response> getByAdvertisement(AdvertisementAccept advertisement){
         if(advertisement!=null){
-            return  responseRepo.findByAdvertisementAndState(advertisement,true);
+            return  responseRepo.findByAdvertisementAndStateAndAnimal_State(advertisement,true, true);
         }
         return null;
     }

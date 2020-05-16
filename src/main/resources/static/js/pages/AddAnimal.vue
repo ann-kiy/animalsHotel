@@ -108,8 +108,9 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-row justify="center">
-                        <v-btn block disable @click="sent" text color="#0f4bac"> Зарегистрировать
+                        <v-btn v-if="!changeAnimal" block disable @click="sent" text color="#0f4bac"> Зарегистрировать
                         </v-btn>
+                        <v-btn v-else block disable @click="sent" text color="#0f4bac"> Изменить</v-btn>
                     </v-row>
                 </v-card-actions>
 
@@ -119,16 +120,31 @@
     </v-container>
 </template>
 <script>
-    import {mapActions} from 'vuex'
+    import {mapState, mapActions} from 'vuex'
     import {TheMask} from 'vue-the-mask'
 
     const axios = require('axios')
 
     export default {
+        computed:{...mapState(['itemAge', 'itemsText', 'itemCondition','changeAnimal']),
+        },
         mounted() {
             axios
                 .get('/model')
                 .then(response => (this.typeAnimals = response.data));
+            if(this.changeAnimal!=null) {
+                if (this.changeAnimal.typeAnimal != null) {
+                    axios
+                        .get('/model/' + this.changeAnimal.typeAnimal.type)
+                        .then(response => (this.breedAnimals = response.data));
+                }
+                this.name=this.changeAnimal.name
+                this.selectType=this.changeAnimal.typeAnimal!=null?this.changeAnimal.typeAnimal.type:""
+                this.selectBreed=this.changeAnimal.breedAnimal!=null?this.changeAnimal.breedAnimal.name:""
+                this.selectAge=this.changeAnimal.age?this.changeAnimal.age:""
+                this.selectSex=this.changeAnimal.sex?this.changeAnimal.sex:null
+                this.info=this.changeAnimal.info
+            }
         },
         components: {TheMask},
         data() {
@@ -136,12 +152,11 @@
             return {
                 typeAnimals: [],
                 breedAnimals: [],
-                itemAge: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
                 selectType: '',
                 errorMessages: '',
                 info: '',
                 name: '',
-                file: "",
+                file: null,
                 selectAge: '',
                 selectSex: '',
                 selectBreed: '',
@@ -150,10 +165,6 @@
                     min: v => v.length >= 8 || 'Минимум 8 символов',
                     eqvelsPassword: () => this.password == this.password2 || "Пароли не совпадают"
                 },
-                itemsText: [
-                    'м',
-                    'ж'
-                ],
                 itemsValue: [
                     0,
                     1
@@ -161,23 +172,12 @@
                 z: null
             }
         },
-        computed: {
-            form() {
-                return {
-                    name: this.name,
-                    sex: this.sex,
-                    typeAnimal: this.selectType,
-                    breedAnimal: this.selectBreed,
-                    age: this.selectAge,
-                    info: this.info,
-                    file: ''
-                }
-            }
-        },
         methods: {
             ...mapActions(['addUserAction']),
+            ...mapActions(['resetChangeAnimalAction']),
+            ...mapActions(['setChangeAnimalAction']),
             checkForm: function () {
-                if (this.file !== "" && this.name !== "" && this.selectType !== "" && this.selectSex !== "" && this.selectAge !== "") {
+                if (this.name !== "" && this.selectType !== "" && this.selectSex !== "" && this.selectAge !== "") {
                     this.errorMessages = ""
                     return true
                 } else {
@@ -200,17 +200,32 @@
             sent() {
                 if (this.checkForm()) {
                     const form = new FormData()
-                    form.append('file', this.file)
                     form.append('name', this.name)
                     form.append('sexx', this.selectSex)
                     form.append('type', this.selectType)
                     form.append('breed', this.selectBreed)
                     form.append('age', this.selectAge)
                     form.append('info', this.info)
-                    axios
-                        .post('/animal', form, {
-                            'Content-Type': 'multipart/form-data'
-                        })
+                    if(!this.changeAnimal) {
+                        form.append('file', this.file)
+                        axios
+                            .post('/animal', form, {
+                                'Content-Type': 'multipart/form-data'
+                            })
+                    }else{
+                        axios
+                            .put('/animal/'+this.changeAnimal.id,form, {
+                                'Content-Type': 'multipart/form-data'
+                            })
+                        if(this.file){
+                            const form1 = new FormData()
+                            form1.append('file', this.file)
+                            axios
+                                .post('/animal/'+this.changeAnimal.id,form1, {
+                                    'Content-Type': 'multipart/form-data'
+                                })
+                        }
+                    }
                     this.$router.replace('/')
                 }
             }

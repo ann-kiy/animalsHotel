@@ -89,19 +89,17 @@
         <v-card>
             <v-card-title>
                 Отклики
+                <v-row >
+                    <v-col class="raz">
+                        <v-btn  @click="dialog2 = false" class="mx-2" fab dark x-small color="primary">
+                            <v-icon dark>mdi-close</v-icon>
+                        </v-btn>
+                    </v-col>
+                </v-row>
             </v-card-title>
             <v-card-text>
                 <response-form :items="responses" :delResp="delRespByResp"></response-form>
             </v-card-text>
-            <v-card-actions>
-                <v-btn
-                        color="primary"
-                        text
-                        @click="dialog2 = false"
-                >
-                    Выход
-                </v-btn>
-            </v-card-actions>
         </v-card>
     </v-dialog>
     </v-row>

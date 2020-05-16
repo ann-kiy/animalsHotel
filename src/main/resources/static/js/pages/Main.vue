@@ -26,6 +26,21 @@
                             {{profile.locale}}
                         </p>
                     </v-card-text>
+                    <v-card-actions>
+                        <v-fab-transition>
+                            <v-btn
+                                    @click=""
+                                    color="pink"
+                                    dark
+                                    bottom
+                                    absolute
+                                    right
+                                    fab
+                            >
+                                <v-icon>mdi-pencil</v-icon>
+                            </v-btn>
+                        </v-fab-transition>
+                    </v-card-actions>
                 </v-card>
 
             </v-col>
