@@ -72,7 +72,6 @@
                                             md="4"
                                     >
                                         <v-text-field
-                                                name="locale"
                                                 id="locale"
                                                 v-model="locale"
                                                 :rules="[rules.required]"
@@ -94,6 +93,7 @@
                                         ></v-file-input>
                                     </v-row>
                                     <v-row
+                                            v-if="!auth"
                                             cols="12"
                                             md="4"
                                     >
@@ -130,12 +130,12 @@
                             </v-card-text>
                             <v-card-actions>
                                 <v-row justify="center">
-                                    <v-btn block disable  type="submit" text color="success"> Зарегистрироваться
+                                    <v-btn v-if="!auth" block disable  type="submit" text color="success"> Зарегистрироваться
+                                    </v-btn>
+                                    <v-btn v-else block disable  type="submit" text color="success"> Изменить
                                     </v-btn>
                                 </v-row>
                             </v-card-actions>
-
-
                         </v-card>
                         </form>
                     </v-container>
@@ -149,7 +149,7 @@
         coordorder: 'latlong',
         version: '2.1'
     }
-    import {mapActions} from 'vuex'
+    import {mapActions, mapState} from 'vuex'
     import {TheMask} from 'vue-the-mask'
     import {  loadYmap } from 'vue-yandex-maps'
 
@@ -162,6 +162,11 @@
         async mounted() {
             await loadYmap({ ...settings, debug: true });
             ymaps.ready(init)
+
+            this.name=this.auth?this.auth.name:null
+            this.email=this.auth?this.auth.email:null
+            this.phone=this.auth?this.auth.phone:null
+            this.locale=this.auth?this.auth.locale:null
         },
         components: {TheMask},
         data () {
@@ -185,6 +190,7 @@
             }
         },
         computed: {
+            ...mapState(['auth']),
             form () {
                 return {
                     name: this.name,
@@ -199,7 +205,7 @@
             ...mapActions(['addUserAction']),
             created() {
                 if(this.password==this.password2){
-                    this.addUserAction(this.form, this.file)
+                    this.updateUserAction(this.form, this.file)
                     this.$router.replace('/login')
                 }else{
                     this.errorMessages='Пароли не совпадают'

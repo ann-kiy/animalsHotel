@@ -83,7 +83,6 @@ export default  new Vuex.Store({
 
         },
         removeMessageMutation(state, message){
-
             const updateIndex=state.messages.findIndex(item=>item.id=message.id)
             if(updateIndex>-1){
                 state.messages=[
@@ -91,6 +90,18 @@ export default  new Vuex.Store({
                     ...state.messages.slice(updateIndex+1)
                 ]
             }
+        },
+        changeProfileMutation(state, user){
+            state.profile.phone=user.phone
+            state.profile.name=user.name
+            state.profile.locale=user.locale
+            state.profile.email=user.email
+
+            state.auth.phone=user.phone
+            state.auth.name=user.name
+            state.auth.locale=user.locale
+            state.auth.email=user.email
+
         }
     },
     actions:{
@@ -111,6 +122,27 @@ export default  new Vuex.Store({
             data.set('user', user);
             data.set('file', file);
             const result= await userApi.add(data)
+        },
+        async updateUserAction({state, commit},user){
+            var data = new FormData;
+            data.set('user', user);
+            // const result= await userApi.add(data)
+            axios
+                .put('/profile',user)
+                // .then(response => {
+                     commit('changeProfileMutation',user)
+
+        },
+        async updateImgUserAction({state, commit},file){
+            var data = new FormData;
+            data.set('file', file);
+            // const result= await userApi.add(data)
+            axios
+                .post('/profile',data)
+                // .then(response=>(state.profile=response.data))
+            // .then(response => {
+            // commit('changeProfileMutation',user)
+
         },
         async getAnimalsAction({commit},id){
             const result= await animalApi.get(id).then(response => {

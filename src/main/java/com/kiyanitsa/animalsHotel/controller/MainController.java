@@ -1,6 +1,7 @@
 package com.kiyanitsa.animalsHotel.controller;
 
 
+import com.kiyanitsa.animalsHotel.domain.Animal;
 import com.kiyanitsa.animalsHotel.domain.User;
 import com.kiyanitsa.animalsHotel.repo.*;
 import com.kiyanitsa.animalsHotel.services.UserService;
@@ -45,7 +46,7 @@ public class MainController {
     public User getAuth(@AuthenticationPrincipal User principal) {
         if(principal==null)
             return null;
-        return principal;
+        return userService.findById(principal.getId());
     }
 
     @GetMapping
@@ -57,8 +58,9 @@ public class MainController {
             model.addAttribute("isDevMode","dev".equals(profile));
             return "redirect:/login";
         }
-        data.put("profile", principal);
-        data.put("messages", messageRepo.findAllByRecipient(principal));
+        User user=userService.findById(principal.getId());
+        data.put("profile", user);
+        data.put("messages", messageRepo.findAllByRecipient(user));
         model.addAttribute("frontendData", data);
         model.addAttribute("isDevMode","dev".equals(profile));
             return "header";
@@ -94,18 +96,20 @@ public class MainController {
         return "profile";
     }
 
+    @PutMapping("profile")
+    public User changeProfile( @RequestBody User user, MultipartFile file, @AuthenticationPrincipal User userFromBD) throws IOException {
+        if(file!=null)
+            userFromBD=userService.addImg(userFromBD,file);
+        return userService.updateUser(user,userFromBD);
+//        return null;
+    }
+
     @PostMapping("profile")
-    public String changeProfile(Map<String,Object> model, User user,@AuthenticationPrincipal User user1, @RequestParam("file") MultipartFile file) throws IOException {
-        if(!userService.isFullDataUser(user)){
-            model.put("message","Не все обязательные поля заполненны!");
-            model.put("name", user.getName());
-            model.put("email", user.getEmail());
-            model.put("phone",user.getPhone());
-            model.put("locale",user.getLocale());
-            return "profile";
-        }
-        user1=userService.addImg(user1,file);
-        userService.updateUser(user,user1);
-        return "redirect:/login";
+    public void setAnimal(@AuthenticationPrincipal User user,
+                            @RequestParam MultipartFile file) throws IOException {
+        user=userService.findById(user.getId());
+        if(file!=null)
+            user=userService.addImg(user,file);
+        userService.saveUser(user);
     }
 }

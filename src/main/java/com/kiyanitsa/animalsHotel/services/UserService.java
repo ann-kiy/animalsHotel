@@ -59,7 +59,7 @@ public class UserService implements UserDetailsService {
        sendMessage(user);
         return true;
     }
-    public void updateUser(User user, User userFBD){
+    public User updateUser(User user, User userFBD){
         boolean isEmailChange=(!user.getEmail().equals(userFBD.getEmail()) && !user.getEmail().equals(""));
         userFBD.setName(user.getName());
         userFBD.setLocale(user.getLocale());
@@ -71,6 +71,7 @@ public class UserService implements UserDetailsService {
             sendMessage(userFBD);
         }
         userRepository.save(userFBD);
+        return userFBD;
     }
 
     private void sendMessage(User user) {
@@ -103,6 +104,10 @@ public class UserService implements UserDetailsService {
             return null;
         User user =userRepository.findByIdWeb(email).get();
         return user;
+
+    }
+    public User findById(Long id){
+        return userRepository.findById(id).get();
 
     }
     public Optional<User> findByIdWeb(String id){
