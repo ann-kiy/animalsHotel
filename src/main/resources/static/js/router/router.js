@@ -6,6 +6,7 @@ import Login from 'pages/Login.vue'
 import Main from 'pages/Main.vue'
 import AddAnimal from 'pages/AddAnimal.vue'
 import AddAdvert from 'pages/AddAdvertisement.vue'
+import SearchForm from 'components/search/SearchForm.vue'
 
 Vue.use(VueRouter)
 
@@ -14,6 +15,7 @@ const routes = [
     { path: '/login', component: Login },
     { path: '/advertisement', component: AddAdvert },
     { path: '/animal', component: AddAnimal },
+    { path: '/search', component: SearchForm },
     { path: '/', component: Main },
     { path: '*', component: Main }
 ]

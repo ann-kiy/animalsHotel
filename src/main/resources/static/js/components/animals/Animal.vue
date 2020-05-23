@@ -34,10 +34,10 @@
                                 <v-btn @click="dialog2=!dialog2" color="warning" fab small dark>
                                     <v-icon>mdi-eye</v-icon>
                                 </v-btn>
-                                <v-btn @click="change" color="primary" fab small dark>
+                                <v-btn v-if="animal.owner.id==auth.id" @click="change" color="primary" fab small dark>
                                     <v-icon>mdi-pencil</v-icon>
                                 </v-btn>
-                                <v-btn @click="del" color="error" fab small dark>
+                                <v-btn v-if="animal.owner.id==auth.id" @click="del" color="error" fab small dark>
                                     <v-icon>mdi-trash-can-outline</v-icon>
                                 </v-btn>
                             </v-col>
@@ -62,6 +62,9 @@
 
     export default {
         props:  ['animal','deleteAnimal'],
+        computed:{
+            ...mapState(['auth'])
+        },
         components:{
             AnimalView
         },

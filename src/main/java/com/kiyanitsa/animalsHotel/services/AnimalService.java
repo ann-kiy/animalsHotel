@@ -38,11 +38,11 @@ public class AnimalService {
         Matcher matcher = pattern.matcher(filter + ",");
         while (matcher.find()) {
             if(matcher.group(1).equals("breedAnimal"))
-                builder.with(matcher.group(1), matcher.group(2), breedAnimalRepo.findById(Long.parseLong(matcher.group(3))).get());
+                builder.with(matcher.group(1), matcher.group(2), breedAnimalRepo.findById(Long.parseLong(matcher.group(3))).get(), matcher.group(4));
             else if(matcher.group(1).equals("typeAnimal"))
-                builder.with(matcher.group(1), matcher.group(2), typeAnimalRepo.findById(Long.parseLong(matcher.group(3))).get());
+                builder.with(matcher.group(1), matcher.group(2), typeAnimalRepo.findById(Long.parseLong(matcher.group(3))).get(), matcher.group(4));
             else
-                builder.with(matcher.group(1), matcher.group(2), matcher.group(3));
+                builder.with(matcher.group(1), matcher.group(2), matcher.group(3), matcher.group(4));
         }
         Specification<Animal> spec = builder.build();
         return animalRepo.findAll(spec);

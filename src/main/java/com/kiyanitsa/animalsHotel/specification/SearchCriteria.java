@@ -9,10 +9,12 @@ public class SearchCriteria {
     private String key;
     private String operation;
     private Object value;
-    public SearchCriteria(String key, String operation, Object value) {
+    private String split;
+    public SearchCriteria(String key, String operation, Object value,  String split) {
         this.key=key;
         this.operation=operation;
         this.value=value;
+        this.split=split;
     }
 
 //    public SearchCriteria(String key, String operation, BreedAnimal value) {
@@ -27,6 +29,8 @@ public class SearchCriteria {
 //    }
 
     public boolean isOrPredicate() {
+        if(split.equals(";"))
+            return true;
         return false;
     }
 }

@@ -8,7 +8,7 @@
                             <img v-bind:src="'/img/'+profile.img">
                         </v-avatar>
                         {{profile.name}}
-                        <v-btn @click="dialog1=true" icon class="text-right" color="pink" x-small>
+                        <v-btn v-if="profile.id==auth.id" @click="dialog1=true" icon class="text-right" color="pink" x-small>
                             <v-icon>mdi-lead-pencil</v-icon>
                         </v-btn>
                         <v-rating v-model="profile.rating"></v-rating>
@@ -22,7 +22,7 @@
                                 {{profile.phone}}
                             </v-col>
                             <v-col cols="2">
-                                <v-btn @click="dialog2=true" icon class="text-right" color="pink" x-small>
+                                <v-btn v-if="profile.id==auth.id" @click="dialog2=true" icon class="text-right" color="pink" x-small>
                                     <v-icon>mdi-lead-pencil</v-icon>
                                 </v-btn>
                             </v-col>
@@ -33,7 +33,7 @@
                                 {{profile.email}}
                             </v-col>
                             <v-col cols="2">
-                                <v-btn @click="dialog3=true" icon class="text-right" color="pink" x-small>
+                                <v-btn v-if="profile.id==auth.id" @click="dialog3=true" icon class="text-right" color="pink" x-small>
                                     <v-icon>mdi-lead-pencil</v-icon>
                                 </v-btn>
                             </v-col>
@@ -45,7 +45,7 @@
 
                             </v-col>
                             <v-col cols="2">
-                                        <v-btn @click="open" icon class="text-right" color="pink" x-small>
+                                        <v-btn v-if="profile.id==auth.id" @click="open" icon class="text-right" color="pink" x-small>
                                             <v-icon>mdi-lead-pencil</v-icon>
                                         </v-btn>
                                     <v-dialog v-model="dialog4" id="loc">
@@ -89,10 +89,13 @@
                                             </v-col>
                                         </v-row>
                                         <v-row>
-                                            <v-label> Фото питомца
+                                            <v-col cols="4" align-self="center">
+                                                <v-label>Новое фото</v-label>
+                                            </v-col>
+                                            <v-col cols="8">
                                                 <input tag="v-file-input" type="file" id="file" ref="file"
                                                        v-on:change="handleFileUpload()"/>
-                                            </v-label>
+                                            </v-col>
                                         </v-row>
                                     </v-card-text>
                                     <v-card-actions>
@@ -146,21 +149,6 @@
 
                         </v-row>
                     </v-card-text>
-                    <v-card-actions>
-                        <v-fab-transition>
-                            <v-btn
-                                    @click="goChange"
-                                    color="pink"
-                                    dark
-                                    bottom
-                                    absolute
-                                    right
-                                    fab
-                            >
-                                <v-icon>mdi-pencil</v-icon>
-                            </v-btn>
-                        </v-fab-transition>
-                    </v-card-actions>
                 </v-card>
 
             </v-col>
@@ -183,7 +171,7 @@
                             <span>Добавить объявление</span>
                             <v-icon>mdi-view-grid-plus</v-icon>
                         </router-link>
-                        <router-link tag="v-btn" to="/animal" class="m-2">
+                        <router-link tag="v-btn" to="/search" class="m-2">
                             <span>Найти объявление</span>
                             <v-icon>mdi-magnify</v-icon>
                         </router-link>

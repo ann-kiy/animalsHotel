@@ -14,8 +14,8 @@ public class AdvertAcceptSpecificationsBuilder {
         params = new ArrayList<SearchCriteria>();
     }
 
-    public AdvertAcceptSpecificationsBuilder with(String key, String operation, Object value) {
-        params.add(new SearchCriteria(key, operation, value));
+    public AdvertAcceptSpecificationsBuilder with(String key, String operation, Object value, String split) {
+        params.add(new SearchCriteria(key, operation, value, split));
         return this;
     }
 
@@ -31,7 +31,7 @@ public class AdvertAcceptSpecificationsBuilder {
         Specification result = specs.get(0);
 
         for (int i = 1; i < params.size(); i++) {
-            result = params.get(i)
+            result = params.get(i-1)
                     .isOrPredicate()
                     ? Specification.where(result)
                     .or(specs.get(i))

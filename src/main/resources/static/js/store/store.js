@@ -11,6 +11,8 @@ export default  new Vuex.Store({
         src: frontendData?"/img/"+auth.img:null,
         messages: frontendData?frontendData.messages:null,
         profile: frontendData?frontendData.profile:null,
+        type:null,
+        breed:null,
         auth:auth,
         drawer: null,
         isActivated:isActivated,
@@ -53,6 +55,12 @@ export default  new Vuex.Store({
             return state.anim
 
         },
+        typeAnimal:state => {
+            axios
+                .get('/model')
+                .then(response => (state.type = response.data))
+            return state.type
+        }
     },
     mutations: {
         setChangeAnimalMutation(state,animal){

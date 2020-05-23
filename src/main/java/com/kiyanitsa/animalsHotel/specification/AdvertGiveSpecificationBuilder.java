@@ -14,8 +14,8 @@ public class AdvertGiveSpecificationBuilder {
         params = new ArrayList<SearchCriteria>();
     }
 
-    public AdvertGiveSpecificationBuilder with(String key, String operation, Object value) {
-        params.add(new SearchCriteria(key, operation, value));
+    public AdvertGiveSpecificationBuilder with(String key, String operation, Object value, String split) {
+        params.add(new SearchCriteria(key, operation, value, split));
         return this;
     }
 

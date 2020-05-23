@@ -15,8 +15,8 @@ public class AnimalSpecificationBuilder {
         params = new ArrayList<SearchCriteria>();
     }
 
-    public AnimalSpecificationBuilder with(String key, String operation, Object value) {
-        params.add(new SearchCriteria(key, operation, value));
+    public AnimalSpecificationBuilder with(String key, String operation, Object value, String split) {
+        params.add(new SearchCriteria(key, operation, value, split));
         return this;
     }
 
