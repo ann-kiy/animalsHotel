@@ -1,5 +1,5 @@
 <template>
-    <v-container>
+    <v-container >
         <v-row>
             <v-col cols="12">
                 <v-card>
@@ -8,10 +8,11 @@
                     </v-card-title>
                     <v-card-text>
                         <v-row>
-                            <v-col cols="4">
+                            <v-col cols="3">
                                 <v-combobox
                                         v-model="selectType"
                                         :items="typeAnimal"
+                                        @click="this.breedAnimals=null"
                                         item-text="type"
                                         name="typeAnimal"
                                         label="Тип питомца"
@@ -19,7 +20,7 @@
                                         dense
                                 ></v-combobox>
                             </v-col>
-                            <v-col cols="4">
+                            <v-col cols="3">
                                 <v-combobox
                                         v-model="selectBreed"
                                         :items="breedAnimals"
@@ -31,7 +32,7 @@
                                         dense
                                 ></v-combobox>
                             </v-col>
-                            <v-col cols="4">
+                            <v-col cols="3">
                                 <v-combobox
                                         v-model="selectSex"
                                         :items="itemsText"
@@ -41,31 +42,15 @@
                                         dense
                                 ></v-combobox>
                             </v-col>
-                        </v-row>
-                        <v-row>
-                            <v-col cols="12">
-                                <header>Возраст</header>
+                            <v-col cols="3">
+                                <v-combobox
+                                        v-model="selectAge"
+                                        :items="itemAge"
+                                        label="Возраст"
+                                        outlined
+                                        dense
+                                ></v-combobox>
                             </v-col>
-                            <v-col cols="6">
-                                    <v-slider
-                                            v-model="selectAgeA"
-                                            label="От"
-                                            thumb-color='red'
-                                            thumb-label="always"
-                                            thumb-size="20"
-                                            max="15"
-                                    ></v-slider>
-                            </v-col>
-                                <v-col cols="6">
-                                    <v-slider
-                                            v-model="selectAgeB"
-                                            label="до"
-                                            thumb-color='red'
-                                            thumb-label="always"
-                                            thumb-size="20"
-                                            max="15"
-                                    ></v-slider>
-                                </v-col>
                         </v-row>
                         <v-row justify="space-around">
                             <v-col cols="12">
@@ -182,6 +167,7 @@
                                 <v-btn
                                         color="primary"
                                         depressed
+                                        @click="search"
                                 >
                                     <v-icon left>mdi-layers-search-outline</v-icon>
                                     Найти
@@ -192,13 +178,22 @@
                 </v-card>
             </v-col>
         </v-row>
+        <v-row>
+            <v-col  cols="12">
+                <advertisement-form  :items=searchAdvert></advertisement-form>
+            </v-col>
+        </v-row>
     </v-container>
 </template>
 <script>
     import {mapState, mapActions, mapGetters} from 'vuex'
+    import AdvertisementForm from 'components/ advertisements/AdvertisementForm.vue'
     const axios = require('axios')
 
     export default {
+        components:{
+            AdvertisementForm
+        },
         computed:{
             ...mapState(['itemAge', 'itemsText', 'itemCondition']),
             ...mapGetters(['typeAnimal'])
@@ -211,15 +206,14 @@
                 selectSex: null,
                 breedAnimals:null,
                 selectCondition:null,
-                selectAgeA:0,
-                selectAgeB:0,
                 if1:null,
                 if2:null,
                 if3:null,
                 startMenu:false,
                 endMenu:false,
                 end:null,
-                start:null
+                start:null,
+                searchAdvert:[]
             }
         },
         methods:{
@@ -232,25 +226,62 @@
                 if(i==1) {
                     this.if2 = false
                     this.if3 = false
+                    this.selectCondition="Бузвозмездно"
                 }else if(i==2){
                     this.if1 = false
                     this.if3 = false
+                    this.selectCondition="За вознаграждение"
                 }else{
                     this.if2 = false
                     this.if1 = false
+                    this.selectCondition="За деньги"
                 }
             },
             getStringQuery(){
-                let query=""
-                query+="typeAnimal:"+this.selectType?this.selectType.id:null
-                query+=",breedAnimal:"+this.breedAnimal?this.selectBreed.id:null
 
-
+                // query+=" ,breedAnimal:"+this.selectBreed!=null?this.selectBreed.id:null
+                return query;
             },
             search(){
+                let query=""
+                if(this.selectType) {
+                    query = "typeAnimal:"
+                    query+=this.selectType.id
+                    query += "; typeAnimal:0"
+                    if(this.selectBreed){
+                        query += ", breedAnimal:"
+                        query+=this.selectBreed.id
+                        query += "; breedAnimal:0"
+                    }
 
+                }
+                if(this.selectSex){
+                    query += ", sex:"
+                    query+=this.selectSex
+                    query += "; sex:-1"
+                }
+                if(this.selectAge){
+                    query += ", age:"
+                    query+=this.selectAge
+                    query += "; age:0"
+                }
+                if(this.selectCondition){
+                    query += ", condition:"
+                    query+=this.selectCondition
+                }
+                if(this.start) {
+                    query += ", dateStart<"
+                    query += this.start
+                }
+                if(this.end) {
+                    query += ", dateEnd>"
+                    query += this.end
+                }
+
+                query+=", state:true"
                 axios
-                    .post('/advertisement')
+                    .get('/advertisement?search= '+query)
+                    .then(response=>{this.searchAdvert=response.data})
             }
         }
     }

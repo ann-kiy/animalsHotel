@@ -1,8 +1,8 @@
 <template xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
-    <v-app id="inspire">
+    <v-app id="inspire" >
         <header-line v-if="profile"/>
-        <v-content >
-            <v-container class=" justify-content" style="background-color: #bcddff">
+        <v-content style="margin-left: 10%; margin-right: 10%">
+            <v-container class=" justify-content" style="background-color: #bcddff; ">
                 <router-view></router-view>
             </v-container>
         </v-content>

@@ -51,17 +51,22 @@ public class AdvertisementAcceptService {
             else if(matcher.group(1).equals("sex")){
                 if(matcher.group(3).equals("м"))
                     builder.with(matcher.group(1), matcher.group(2), Sex.м,matcher.group(4));
-                else
+                else if(matcher.group(3).equals("ж"))
                     builder.with(matcher.group(1), matcher.group(2), Sex.ж,matcher.group(4));
-
+                else
+                    builder.with(matcher.group(1), matcher.group(2), null,matcher.group(4));
             }else if(matcher.group(1).equals("state")){
                 builder.with(matcher.group(1), matcher.group(2), Boolean.valueOf(matcher.group(3)),matcher.group(4));
             }else if(matcher.group(1).equals("dateStart") || matcher.group(1).equals("dateEnd") || matcher.group(1).equals("createDate")){
 //                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 //                Date date=Date.from(LocalDateTime.parse(matcher.group(3), formatter).atZone(ZoneId.systemDefault()).toInstant());
                 builder.with(matcher.group(1), matcher.group(2), LocalDate.parse(matcher.group(3)),matcher.group(4));
-            }else
-                builder.with(matcher.group(1), matcher.group(2), matcher.group(3), matcher.group(4));
+            }else {
+                if(matcher.group(3).equals("-1"))
+                    builder.with(matcher.group(1), matcher.group(2), null, matcher.group(4));
+                else
+                    builder.with(matcher.group(1), matcher.group(2), matcher.group(3), matcher.group(4));
+            }
         }
 
         Specification<AdvertisementAccept> spec = builder.build();

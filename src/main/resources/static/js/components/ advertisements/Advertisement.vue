@@ -4,8 +4,8 @@
         <template  v-slot:activator="{ on }">
             <v-card class="my-2" width="100%">
                 <v-card-title>Тип:{{type}} Порода:{{breed}}
-                    <v-btn v-if="profile.id!=auth.id && !isResp" v-on="on"  small color="primary" dark>Откликнуться</v-btn>
-                    <v-btn v-if="profile.id!=auth.id && isResp" @click="delResp" small color="error" dark>Отменить</v-btn>
+                    <v-btn v-if="advertisement.user.id!=auth.id && !isResp" v-on="on"  small color="primary" dark>Откликнуться</v-btn>
+                    <v-btn v-if="advertisement.user.id!=auth.id && isResp" @click="delResp" small color="error" dark>Отменить</v-btn>
 <!--                    <v-btn v-if="profile.id!=auth.id" :disabled="isResp" v-on="on" class="mx-2" fab small dark color="teal">-->
 <!--                        <v-icon dark>mdi-plus-box-multiple</v-icon>-->
 <!--                    </v-btn>-->
@@ -16,7 +16,7 @@
                 <v-card-text v-if="advertisement.sex">{{advertisement.sex}}</v-card-text>
                 <v-card-text v-if="advertisement.info">{{advertisement.info}}</v-card-text>
                 <v-card-text>{{advertisement.createDate}}</v-card-text>
-                <div class="text-right" v-if="profile.id===auth.id">
+                <div class="text-right" v-if="advertisement.user.id===auth.id">
                     <v-btn @click="del" color="error" fab small dark>
                         <v-icon>mdi-trash-can-outline</v-icon>
                     </v-btn>

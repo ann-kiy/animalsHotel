@@ -1,8 +1,8 @@
 <template>
     <v-container fluid>
         <v-data-iterator
+                v-if="items.length>0"
                 :items="items"
-                :items-per-page.sync="itemsPerPage"
                 hide-default-footer
         >
 
@@ -33,28 +33,10 @@
         },
         data () {
             return {
-                itemsPerPageArray: [4, 8, 12],
-                page: 1,
-                itemsPerPage: 4,
                 animals:this.items
-
-            }
-        },
-        computed: {
-            numberOfPages () {
-                return Math.ceil(this.items.length / this.itemsPerPage)
             }
         },
         methods: {
-            nextPage () {
-                if (this.page + 1 <= this.numberOfPages) this.page += 1
-            },
-            formerPage () {
-                if (this.page - 1 >= 1) this.page -= 1
-            },
-            updateItemsPerPage (number) {
-                this.itemsPerPage = number
-            },
             deleteAdvert(advert){
                 axios
                     .delete('/advertisement/'+advert.id);
