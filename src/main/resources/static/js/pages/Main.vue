@@ -3,7 +3,7 @@
         <v-row>
             <v-col cols="4">
                 <v-card>
-                    <v-card-title>
+                    <v-card-title class="text-center">
                         <v-avatar size="80" class="mr-3">
                             <img v-bind:src="'/img/'+profile.img">
                         </v-avatar>
@@ -42,7 +42,6 @@
                             <v-col cols="10">
                                 <v-icon>mdi-map-marker</v-icon>
                                 {{profile.locale}}
-
                             </v-col>
                             <v-col cols="2">
                                         <v-btn v-if="profile.id==auth.id" @click="open" icon class="text-right" color="pink" x-small>
@@ -148,6 +147,13 @@
                             </v-dialog>
 
                         </v-row>
+                        <v-row>
+                            <v-col class="text-center">
+                                <v-btn>
+                                    Мои отклики
+                                </v-btn>
+                            </v-col>
+                        </v-row>
                     </v-card-text>
                 </v-card>
 
@@ -190,8 +196,8 @@
                         <v-tab href="#tabs-2">
                             Мои объявления
                         </v-tab>
-                        <v-tab href="#tabs-3">
-                            Мои подписки
+                        <v-tab v-if="profile.id==auth.id" href="#tabs-3">
+                            Мои отклики
                         </v-tab>
                     </v-tabs>
                 </v-row>
@@ -205,6 +211,7 @@
                             <v-col cols-12>
                                 <animals-form v-if="i==1" :items=animalsByUser></animals-form>
                                 <advertisement-form v-if="i==2" :items=advertsByUser></advertisement-form>
+                                <response-form v-if="i==3":items=responsesByUser :delResp="delRespByResp"></response-form>
                             </v-col>
                         </v-row>
                     </v-tab-item>
@@ -231,6 +238,7 @@
     const axios = require('axios')
     import {TheMask} from 'vue-the-mask'
     import {  loadYmap } from 'vue-yandex-maps'
+    import ResponseForm from 'components/responses/MyResponsesForm.vue'
 
 
     function init() {
@@ -239,7 +247,7 @@
     export default {
         computed: {
             ...mapState(['profile', 'src', 'auth']),
-            ...mapGetters(['advertsByUser', 'animalsByUser']),
+            ...mapGetters(['advertsByUser', 'responsesByUser','animalsByUser']),
             form() {
                 return {
                     name: this.name ? this.name : this.auth.name,
@@ -280,12 +288,17 @@
             },
             handleFileUpload() {
                 this.file = this.$refs.file.files[0];
-            }
+            },
+            delRespByResp(resp){
+                axios
+                    .delete('/response/by'+resp.id);
+            },
         },
         components: {
             TheMask,
             AnimalsForm,
-            AdvertisementForm
+            AdvertisementForm,
+            ResponseForm
         },
         data() {
             return {

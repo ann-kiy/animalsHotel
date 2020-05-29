@@ -31,4 +31,8 @@ public class ModelDataController {
     public List<BreedAnimal> allBreedType(@PathVariable("type") String typeAnimal){
         return breedAnimalRepo.findAllByType(typeAnimalRepo.findByType(typeAnimal));
     }
+    @GetMapping("/breed")
+    public List<BreedAnimal> allBreed(){
+        return breedAnimalRepo.findAll();
+    }
 }

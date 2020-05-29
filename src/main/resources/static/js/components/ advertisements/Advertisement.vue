@@ -13,6 +13,24 @@
                 <v-card-subtitle>C {{advertisement.dateStart}} до {{advertisement.dateEnd}}</v-card-subtitle>
                 <v-card-actions>{{advertisement.condition}}</v-card-actions>
                 <v-card-text v-if="advertisement.age">{{advertisement.age}}</v-card-text>
+                <v-card-text  v-if="advertisement.user.id!=auth.id">
+                    <v-label> Хозяйн
+                        <v-list-item
+                                :href=link
+                                ripple>
+                            <v-list-item-avatar>
+                                <img v-if="advertisement.user.img" :src="'/img/'+advertisement.user.img">
+                                <img v-else :src=tempImg>
+                            </v-list-item-avatar>
+                            <v-list-item-content>
+                                <v-list-item-title v-html="advertisement.user.name"></v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                    </v-label>
+                </v-card-text>
+                <v-card-text v-if="advertisement.user.id!=auth.id">
+                    {{advertisement.user.locale}}
+                </v-card-text>
                 <v-card-text v-if="advertisement.sex">{{advertisement.sex}}</v-card-text>
                 <v-card-text v-if="advertisement.info">{{advertisement.info}}</v-card-text>
                 <v-card-text>{{advertisement.createDate}}</v-card-text>
@@ -136,7 +154,8 @@
                 dialog2: false,
                 overlay: false,
                 type: this.advertisement.typeAnimal ? this.advertisement.typeAnimal.type : "Любой",
-                breed: this.advertisement.breedAnimal ? this.advertisement.breedAnimal.name : "Любая"
+                breed: this.advertisement.breedAnimal ? this.advertisement.breedAnimal.name : "Любая",
+                link:'/user/'+this.advertisement.user.id
             }
         },
         methods:{

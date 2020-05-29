@@ -15,6 +15,7 @@ export default  new Vuex.Store({
         breed:null,
         auth:auth,
         drawer: null,
+        response:null,
         isActivated:isActivated,
         anim:[],
         anim1:[],
@@ -48,6 +49,12 @@ export default  new Vuex.Store({
                 .then(response => (state.advert = response.data));
             return state.advert
         },
+        responsesByUser:state=>{
+            axios
+                .get('/response/user')
+                .then(response => (state.response = response.data));
+            return state.response
+        },
         animalsByUser:state=>{
             axios
                 .get('/animal/usr'+state.profile.id)
@@ -60,7 +67,13 @@ export default  new Vuex.Store({
                 .get('/model')
                 .then(response => (state.type = response.data))
             return state.type
-        }
+        },
+        // breedAnimal:state => {
+        //     axios
+        //         .get('/model/breed')
+        //         .then(response => (state.breed = response.data))
+        //     return state.breed
+        // }
     },
     mutations: {
         setChangeAnimalMutation(state,animal){
