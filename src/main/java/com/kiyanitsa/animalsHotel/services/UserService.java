@@ -134,4 +134,5 @@ public class UserService implements UserDetailsService {
         return !user.getEmail().isEmpty() && !user.getName().isEmpty() &&
                 !user.getPhone().isEmpty();
     }
+
 }

@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -39,6 +40,9 @@ public class User implements UserDetails{
 
     private boolean active;
     private String activationCode;
+
+//    @OneToMany(mappedBy = "user", orphanRemoval = true)
+//    private List<Comment> comments;
   //  @ElementCollection(fetch = FetchType.EAGER)
 
 //    private Set<Long> id_animals;

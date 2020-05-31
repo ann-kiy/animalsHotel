@@ -12,17 +12,7 @@
                     <h2 class="title primary--text">{{animal.name}}</h2>
                     {{animal.info}}
                 </v-card-text>
-                <v-card-title>
-                    <v-rating
-                            :value=animal.rating
-                            :disabled="true"
-                            dense
-                            color="orange"
-                            background-color="orange"
-                            hover
-                            class="mr-2"
-                    ></v-rating>
-                </v-card-title>
+
                 <v-fade-transition>
                     <v-overlay
                             v-if="hover"

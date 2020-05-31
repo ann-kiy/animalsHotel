@@ -1,7 +1,6 @@
 package com.kiyanitsa.animalsHotel.controller;
 
 
-import com.kiyanitsa.animalsHotel.domain.Animal;
 import com.kiyanitsa.animalsHotel.domain.User;
 import com.kiyanitsa.animalsHotel.repo.*;
 import com.kiyanitsa.animalsHotel.services.UserService;
@@ -16,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/")
@@ -29,17 +27,19 @@ public class MainController {
     private final AnimalRepo animalRepo;
     private  final BreedAnimalRepo breedAnimalRepo;
     private final TypeAnimalRepo typeAnimalRepo;
+    private final CommentRepo commentRepo;
 
     @Value("${spring.profiles.active}")
     private String profile;
     @Autowired
-    public MainController(UserService userService, MessageRepo messageRepo, AdvertisementAcceptRepo advertisementAcceptRepo, AnimalRepo animalRepo, BreedAnimalRepo breedAnimalRepo, TypeAnimalRepo typeAnimalRepo) {
+    public MainController(UserService userService, MessageRepo messageRepo, AdvertisementAcceptRepo advertisementAcceptRepo, AnimalRepo animalRepo, BreedAnimalRepo breedAnimalRepo, TypeAnimalRepo typeAnimalRepo, CommentRepo commentRepo) {
         this.userService = userService;
         this.messageRepo = messageRepo;
         this.advertisementAcceptRepo = advertisementAcceptRepo;
         this.animalRepo = animalRepo;
         this.breedAnimalRepo = breedAnimalRepo;
         this.typeAnimalRepo = typeAnimalRepo;
+        this.commentRepo = commentRepo;
     }
 
     @ModelAttribute(value = "authUser")
@@ -61,6 +61,7 @@ public class MainController {
         User user=userService.findById(principal.getId());
         data.put("profile", user);
         data.put("messages", messageRepo.findAllByRecipient(user));
+        data.put("comments", commentRepo.findAllByUser(user));
         model.addAttribute("frontendData", data);
         model.addAttribute("isDevMode","dev".equals(profile));
             return "header";
@@ -80,6 +81,7 @@ public class MainController {
         }
         data.put("profile", user);
         data.put("messages", messageRepo.findAllByRecipient(user));
+        data.put("comments", commentRepo.findAllByUser(user));
         model.addAttribute("frontendData", data);
         model.addAttribute("isDevMode","dev".equals(profile));
         return "header";

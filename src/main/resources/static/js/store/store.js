@@ -11,6 +11,7 @@ export default  new Vuex.Store({
         src: frontendData?"/img/"+auth.img:null,
         messages: frontendData?frontendData.messages:null,
         profile: frontendData?frontendData.profile:null,
+        comments:frontendData?frontendData.comments:null,
         type:null,
         breed:null,
         auth:auth,

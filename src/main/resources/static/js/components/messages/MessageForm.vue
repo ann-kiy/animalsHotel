@@ -1,11 +1,5 @@
 <template xmlns:v-on="http:www.w3.org/1999/xhtml">
     <v-container>
-        <v-row>
-                <v-btn class="mr-2" href="/pet">Добавить питомца</v-btn>
-
-                <v-btn  href="/profile">Change profile</v-btn>
-
-        </v-row>
             <v-row>
                 <v-text-field
                         placeholder="Write something" v-model="text"/>

@@ -11,7 +11,12 @@
                         <v-btn v-if="profile.id==auth.id" @click="dialog1=true" icon class="text-right" color="pink" x-small>
                             <v-icon>mdi-lead-pencil</v-icon>
                         </v-btn>
-                        <v-rating v-model="profile.rating"></v-rating>
+                        <v-rating v-model="profile.rating"
+                                  color="yellow accent-4"
+                                  dense
+                                  half-increments
+                                  readonly
+                                  class="pb-2"></v-rating>
 
                     </v-card-title>
                     <v-divider></v-divider>
@@ -149,9 +154,19 @@
                         </v-row>
                         <v-row>
                             <v-col class="text-center">
-                                <v-btn>
-                                    Мои отклики
+                                <v-btn v-if="profile.id!=auth.id" @click="dialogCreate=true">
+                                    Оставить отзыв
                                 </v-btn>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col class="text-center">
+                                <router-link tag="v-btn" to="/message" v-if="profile.id==auth.id">
+                                    Мои сообщения
+                                </router-link>
+                                <router-link tag="v-btn" to="/message" v-else>
+                                   Написать
+                                </router-link>
                             </v-col>
                         </v-row>
                     </v-card-text>
@@ -191,19 +206,22 @@
                             dark
                     >
                         <v-tab href="#tabs-1">
-                            Мои животные
+                            Животные
                         </v-tab>
                         <v-tab href="#tabs-2">
-                            Мои объявления
+                            Объявления
                         </v-tab>
                         <v-tab v-if="profile.id==auth.id" href="#tabs-3">
-                            Мои отклики
+                            Отклики
+                        </v-tab>
+                        <v-tab href="#tabs-4">
+                            Отзывы
                         </v-tab>
                     </v-tabs>
                 </v-row>
                 <v-tabs-items tag="v-row" v-model="tabs">
                     <v-tab-item
-                            v-for="i in 3"
+                            v-for="i in 4"
                             :key="i"
                             :value="'tabs-' + i"
                     >
@@ -212,17 +230,17 @@
                                 <animals-form v-if="i==1" :items=animalsByUser></animals-form>
                                 <advertisement-form v-if="i==2" :items=advertsByUser></advertisement-form>
                                 <response-form v-if="i==3":items=responsesByUser :delResp="delRespByResp"></response-form>
+                                <comments-form v-if="i==4" :items=comments></comments-form>
                             </v-col>
                         </v-row>
                     </v-tab-item>
                 </v-tabs-items>
             </v-col>
-
-
-
+            <v-dialog v-model="dialogCreate" max-width="500px">
+                <comment-create-form></comment-create-form>
+            </v-dialog>
         </v-row>
     </div>
-
 </template>
 <script>
     const settings = {
@@ -239,6 +257,8 @@
     import {TheMask} from 'vue-the-mask'
     import {  loadYmap } from 'vue-yandex-maps'
     import ResponseForm from 'components/responses/MyResponsesForm.vue'
+    import CommentsForm from 'components/comments/CommentsForm.vue'
+    import CommentCreateForm from 'components/comments/CommentCreateForm.vue'
 
 
     function init() {
@@ -246,7 +266,7 @@
     }
     export default {
         computed: {
-            ...mapState(['profile', 'src', 'auth']),
+            ...mapState(['profile', 'src', 'auth','comments']),
             ...mapGetters(['advertsByUser', 'responsesByUser','animalsByUser']),
             form() {
                 return {
@@ -298,11 +318,14 @@
             TheMask,
             AnimalsForm,
             AdvertisementForm,
-            ResponseForm
+            ResponseForm,
+            CommentsForm,
+            CommentCreateForm
         },
         data() {
             return {
                 tabs: null,
+                dialogCreate:false,
                 dialog1: false,
                 dialog2: false,
                 dialog3: false,

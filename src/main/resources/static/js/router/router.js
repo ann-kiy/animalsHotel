@@ -12,6 +12,7 @@ Vue.use(VueRouter)
 
 const routes = [
     { path: '/registration', component: Registration },
+    { path: '/message', component: MessageList},
     { path: '/login', component: Login },
     { path: '/advertisement', component: AddAdvert },
     { path: '/animal', component: AddAnimal },
