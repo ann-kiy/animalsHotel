@@ -30,7 +30,10 @@
             </v-row>
             <v-row>
                 <v-col>
-                    <v-btn @click="createComment">
+                    <v-btn v-if="comment" @click="createComment">
+                        Изменить
+                    </v-btn>
+                    <v-btn v-else @click="createComment">
                         Опубликовать
                     </v-btn>
                 </v-col>
@@ -39,22 +42,31 @@
     </v-card>
 </template>
 <script>
-    import {mapState} from 'vuex'
+    import {mapState, mapActions} from 'vuex'
 
     const axios = require('axios')
 
     export default {
+        props:['close', 'comment'],
         computed: mapState(['auth', 'profile']),
         data(){
             return{
-                text:null,
-                rating:0
+                text:this.comment?this.comment.text:null,
+                rating:this.comment?this.comment.rating:0,
+                id:this.comment?this.comment.id:''
             }
         },
         methods:{
+            ...mapActions(['addCommentAction']),
+            ...mapActions(['updateCommentAction']),
             createComment(){
-                axios
-                    .post('/comment', {text:this.text, user:{id:this.profile.id}, rating:this.rating})
+                let comment={id:this.id,text:this.text, user:{id:this.profile.id, name:this.profile.name}, author:{id:this.auth.id, name:this.auth.name, img:this.auth.img},rating:this.rating}
+                if(comment){
+                    this.updateCommentAction(comment)
+                }else {
+                    this.addCommentAction(comment)
+                }
+                this.close()
             }
         }
     }

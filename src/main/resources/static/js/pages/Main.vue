@@ -230,14 +230,14 @@
                                 <animals-form v-if="i==1" :items=animalsByUser></animals-form>
                                 <advertisement-form v-if="i==2" :items=advertsByUser></advertisement-form>
                                 <response-form v-if="i==3":items=responsesByUser :delResp="delRespByResp"></response-form>
-                                <comments-form v-if="i==4" :items=comments></comments-form>
+                                <comments-form v-if="i==4" :items=sortedComments ></comments-form>
                             </v-col>
                         </v-row>
                     </v-tab-item>
                 </v-tabs-items>
             </v-col>
             <v-dialog v-model="dialogCreate" max-width="500px">
-                <comment-create-form></comment-create-form>
+                <comment-create-form :close="closeDialogComment"></comment-create-form>
             </v-dialog>
         </v-row>
     </div>
@@ -267,7 +267,7 @@
     export default {
         computed: {
             ...mapState(['profile', 'src', 'auth','comments']),
-            ...mapGetters(['advertsByUser', 'responsesByUser','animalsByUser']),
+            ...mapGetters(['advertsByUser', 'responsesByUser','animalsByUser', 'sortedComments']),
             form() {
                 return {
                     name: this.name ? this.name : this.auth.name,
@@ -313,6 +313,9 @@
                 axios
                     .delete('/response/by'+resp.id);
             },
+            closeDialogComment(){
+                this.dialogCreate=false
+            }
         },
         components: {
             TheMask,

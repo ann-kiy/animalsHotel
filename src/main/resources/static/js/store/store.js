@@ -28,7 +28,7 @@ export default  new Vuex.Store({
             'ж'
         ],
         itemCondition:[
-            "Бузвозмездно",
+            "Безвозмездно",
             "За вознаграждение",
             "За деньги"
         ],
@@ -37,6 +37,8 @@ export default  new Vuex.Store({
     },
     getters:{
         sortedMessages: state=>(state.messages || []).sort((a,b)=>-(a.id-b.id)),
+        sortedComments: state=>(state.comments || []).sort((a,b)=>{var dateA=new Date(a.createDate), dateB=new Date(b.createDate)
+            return dateB-dateA}),
         animalsAuthByUser:state=>{
             axios
                 .get('/animal/usr'+state.auth.id)
@@ -96,7 +98,7 @@ export default  new Vuex.Store({
             ]
        },
         updateMessageMutation(state, message){
-            const updateIndex=state.messages.findIndex(item=>item.id=message.id)
+            const updateIndex=state.messages.findIndex(item=>item.id==message.id)
             state.messages=[
                 ...state.messages.slice(0,updateIndex),
                 message,
@@ -105,13 +107,39 @@ export default  new Vuex.Store({
 
         },
         removeMessageMutation(state, message){
-            const updateIndex=state.messages.findIndex(item=>item.id=message.id)
+            const updateIndex=state.messages.findIndex(item=>item.id==message.id)
             if(updateIndex>-1){
                 state.messages=[
                     ...state.messages.slice(0,updateIndex),
                     ...state.messages.slice(updateIndex+1)
                 ]
             }
+        },
+        removeCommentMutation(state, comment){
+            const updateIndex=state.comments.findIndex(item=>item.id==comment.id)
+            if(updateIndex>-1){
+                state.comments=[
+                    ...state.comments.slice(0,updateIndex),
+                    ...state.comments.slice(updateIndex+1)
+                ]
+            }
+        },
+        addCommentMutation(state, comment){
+            state.comments=[
+               comment,
+                ...state.comments
+            ]
+        },
+        updateCommentMutation(state, comment){
+            const updateIndex=state.comments.findIndex(item=>item.id===comment.id)
+            if(updateIndex>-1){
+                state.comments=[
+                    ...state.comments.slice(0,updateIndex),
+                    comment,
+                    ...state.comments.slice(updateIndex+1)
+                ]
+            }
+
         },
         changeProfileMutation(state, user){
             state.profile.phone=user.phone
@@ -127,6 +155,21 @@ export default  new Vuex.Store({
         }
     },
     actions:{
+        async removeCommentAction({commit}, comment){
+            axios
+                .delete("/comment/"+comment.id)
+            commit('removeCommentMutation', comment)
+        },
+        async addCommentAction({commit}, comment){
+            commit('addCommentMutation', comment)
+            axios
+                .post('/comment', comment)
+        },
+        async updateCommentAction({commit}, comment){
+            axios
+                .put("/comment/"+comment.id, comment)
+            commit('updateCommentMutation', comment)
+        },
         async resetChangeAnimalAction({commit}){
             commit('resetChangeAnimalMutation')
         },
@@ -134,7 +177,7 @@ export default  new Vuex.Store({
             commit('setChangeAnimalMutation', animal);
         },
         async resetChangeAdvertAction({commit}){
-          commit('resetChangeAdvertMutation')
+            commit('resetChangeAdvertMutation')
         },
         async setChangeAdvertAction({commit}, advert){
           commit('setChangeAdvertMutation', advert);

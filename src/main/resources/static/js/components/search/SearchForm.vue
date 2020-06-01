@@ -56,7 +56,7 @@
                             <v-col cols="12">
                                 <header>Условие приема</header>
                             </v-col>
-                            <v-switch v-model="if1" @change="selectCond(1)" class="mx-2" label="Бузвозмездно"></v-switch>
+                            <v-switch v-model="if1" @change="selectCond(1)" class="mx-2" label="Безвозмездно"></v-switch>
                             <v-switch v-model="if2" @change="selectCond(2)" class="mx-2" label="За вознаграждение"></v-switch>
                             <v-switch v-model="if3" @change="selectCond(3)" class="mx-2" label="За деньги"></v-switch>
                         </v-row>
@@ -226,7 +226,7 @@
                 if(i==1) {
                     this.if2 = false
                     this.if3 = false
-                    this.selectCondition="Бузвозмездно"
+                    this.selectCondition="Безвозмездно"
                 }else if(i==2){
                     this.if1 = false
                     this.if3 = false

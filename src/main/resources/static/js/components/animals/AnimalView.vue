@@ -20,20 +20,6 @@
                         <v-avatar size="130" class="mr-3" >
                             <v-img :src="src"></v-img>
                         </v-avatar>
-                        <v-row>
-                            <v-col class="text-center">
-                                <v-rating
-                                    v-model=animal.rating
-                                    color="yellow darken-3"
-                                    background-color="grey darken-1"
-                                    dense
-                                    half-increments
-                                    hover
-                                    size="30"
-                            ></v-rating>
-                                <p>({{this.animal.rating}})</p>
-                            </v-col>
-                        </v-row>
                     </v-col>
                     <v-col cols="8">
                         <v-row>

@@ -7,6 +7,7 @@ import com.kiyanitsa.animalsHotel.repo.UserDetailsRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -29,9 +30,23 @@ public class CommentService {
         userDetailsRepo.save(user);
     }
     public Comment create(Comment comment, User user){
+        comment.setCreateDate(LocalDateTime.now());
         comment.setAuthor(user);
         commentRepo.save(comment);
-        updateUserRating(comment.getUser());
+        updateUserRating(userDetailsRepo.findById(comment.getUser().getId()).get());
         return comment;
+    }
+
+    public void deleteComment(Comment comment) {
+        commentRepo.delete(comment);
+        updateUserRating(userDetailsRepo.findById(comment.getUser().getId()).get());
+    }
+
+    public void updateComment(Comment commentFBD, Comment comment){
+        commentFBD.setText(comment.getText());
+        commentFBD.setRating(comment.getRating());
+        commentFBD.setCreateDate(LocalDateTime.now());
+        commentRepo.save(commentFBD);
+        updateUserRating(userDetailsRepo.findById(commentFBD.getUser().getId()).get());
     }
 }
