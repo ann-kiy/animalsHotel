@@ -196,7 +196,7 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-row justify="center">
-                        <v-btn v-if="!changeAdvert" block disable @click="sent" text color="#0f4bac"> Зарегистрировать</v-btn>
+                        <v-btn v-if="!changeAdvert" block disable @click="sent" text color="#0f4bac"> Подать</v-btn>
                         <v-btn v-else block disable @click="sent" text color="#0f4bac"> Изменить</v-btn>
                     </v-row>
                 </v-card-actions>

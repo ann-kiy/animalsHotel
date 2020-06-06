@@ -4,15 +4,18 @@
             <v-col cols="12">
                 <v-card>
                     <v-card-title>
-                        Задайте фильтры
+                        Поиск объявлений
                     </v-card-title>
                     <v-card-text>
                         <v-row>
+                            <v-col cols="12">
+                                <header>Укажите фильтры</header>
+                            </v-col>
                             <v-col cols="3">
                                 <v-combobox
                                         v-model="selectType"
                                         :items="typeAnimal"
-                                        @click="this.breedAnimals=null"
+                                        @click="this.breedAnimals=[]"
                                         item-text="type"
                                         name="typeAnimal"
                                         label="Тип питомца"
@@ -51,6 +54,39 @@
                                         dense
                                 ></v-combobox>
                             </v-col>
+                        </v-row>
+                        <v-row v-if="animalsAuthByUser.length!=0">
+                            <v-autocomplete v-model="animal" :items="animalsAuthByUser" filled
+                                            color="blue-grey lighten-2"
+                                            label="Или выберете питомца"
+                            >
+                                <template v-slot:selection="data">
+                                    <v-chip
+                                            v-bind="data.item"
+                                            :input-value="data.selected"
+                                            close
+                                    >
+                                        <v-avatar left>
+                                            <v-img v-if="data.item.img" :src="'/img/'+data.item.img"></v-img>
+                                            <v-img v-else :src="tempImg"></v-img>
+                                        </v-avatar>
+                                        {{ data.item.name }}
+                                    </v-chip>
+                                </template>
+                                <template v-slot:item="data">
+                                    <template >
+                                        <v-list-item-avatar>
+                                            <img v-if="data.item.img" :src="'/img/'+data.item.img">
+                                            <img v-else :src="tempImg">
+                                        </v-list-item-avatar>
+                                        <v-list-item-content>
+                                            <v-list-item-title v-text="data.item.name"></v-list-item-title>
+                                            <!--                                <v-list-item-subtitle v-html="data.item.group"></v-list-item-subtitle>-->
+                                        </v-list-item-content>
+                                    </template>
+                                </template>
+
+                            </v-autocomplete>
                         </v-row>
                         <v-row justify="space-around">
                             <v-col cols="12">
@@ -196,7 +232,7 @@
         },
         computed:{
             ...mapState(['itemAge', 'itemsText', 'itemCondition']),
-            ...mapGetters(['typeAnimal'])
+            ...mapGetters(['typeAnimal', 'animalsAuthByUser'])
         },
         data(){
             return{
@@ -206,14 +242,16 @@
                 selectSex: null,
                 breedAnimals:null,
                 selectCondition:null,
-                if1:null,
-                if2:null,
-                if3:null,
+                if1:false,
+                if2:false,
+                if3:false,
                 startMenu:false,
                 endMenu:false,
                 end:null,
                 start:null,
-                searchAdvert:[]
+                searchAdvert:[],
+                tempImg: "/img/no_foto.png",
+                animal:null
             }
         },
         methods:{
@@ -238,34 +276,48 @@
                 }
             },
             getStringQuery(){
-
-                // query+=" ,breedAnimal:"+this.selectBreed!=null?this.selectBreed.id:null
-                return query;
-            },
-            search(){
                 let query=""
-                if(this.selectType) {
-                    query = "typeAnimal:"
-                    query+=this.selectType.id
-                    query += "; typeAnimal:0"
-                    if(this.selectBreed){
-                        query += ", breedAnimal:"
-                        query+=this.selectBreed.id
-                        query += "; breedAnimal:0"
-                    }
+                if(this.animal){
+                        query = "typeAnimal:"
+                        query += this.animal.typeAnimal.id
+                        query += "; typeAnimal:0"
 
+                            query += ", breedAnimal:"
+                            query += this.animal.breedAnimal.id
+                            query += "; breedAnimal:0"
+
+                        query += ", sex:"
+                        query += this.animal.sex
+                        query += "; sex:-1"
+
+                        query += ", age:"
+                        query += this.animal.age
+                        query += "; age:0"
+                }else {
+                    if (this.selectType) {
+                        query = "typeAnimal:"
+                        query += this.selectType.id
+                        query += "; typeAnimal:0"
+                        if (this.selectBreed) {
+                            query += ", breedAnimal:"
+                            query += this.selectBreed.id
+                            query += "; breedAnimal:0"
+                        }
+
+                    }
+                    if (this.selectSex) {
+                        query += ", sex:"
+                        query += this.selectSex
+                        query += "; sex:-1"
+                    }
+                    if (this.selectAge) {
+                        query += ", age:"
+                        query += this.selectAge
+                        query += "; age:0"
+                    }
                 }
-                if(this.selectSex){
-                    query += ", sex:"
-                    query+=this.selectSex
-                    query += "; sex:-1"
-                }
-                if(this.selectAge){
-                    query += ", age:"
-                    query+=this.selectAge
-                    query += "; age:0"
-                }
-                if(this.selectCondition){
+                // !((this.if1===false) && (this.if2===false) && (this.if3===false))
+                if(!((this.if1===false) && (this.if2===false) && (this.if3===false))){
                     query += ", condition:"
                     query+=this.selectCondition
                 }
@@ -279,8 +331,11 @@
                 }
 
                 query+=", state:true"
+                return query;
+            },
+            search(){
                 axios
-                    .get('/advertisement?search= '+query)
+                    .get('/advertisement?search= '+this.getStringQuery())
                     .then(response=>{this.searchAdvert=response.data})
             }
         }

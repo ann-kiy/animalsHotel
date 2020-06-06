@@ -3,37 +3,89 @@
     <v-dialog v-model="dialog" scrollable >
         <template  v-slot:activator="{ on }">
             <v-card class="my-2" width="100%">
-                <v-card-title>Тип:{{type}} Порода:{{breed}}
-                    <v-btn v-if="advertisement.user.id!=auth.id && !isResp" v-on="on"  small color="primary" dark>Откликнуться</v-btn>
-                    <v-btn v-if="advertisement.user.id!=auth.id && isResp" @click="delResp" small color="error" dark>Отменить</v-btn>
-<!--                    <v-btn v-if="profile.id!=auth.id" :disabled="isResp" v-on="on" class="mx-2" fab small dark color="teal">-->
-<!--                        <v-icon dark>mdi-plus-box-multiple</v-icon>-->
-<!--                    </v-btn>-->
+                <v-card-title>
+                    <v-row>
+                        <v-col cols="9">
+                            <v-list-item
+                                    :href=link
+                                    ripple>
+                                <v-list-item-avatar>
+                                    <img v-if="advertisement.user.img" :src="'/img/'+advertisement.user.img">
+                                    <img v-else :src=tempImg>
+                                </v-list-item-avatar>
+                                <v-list-item-content>
+                                    <v-list-item-title v-html="advertisement.user.name"></v-list-item-title>
+                                </v-list-item-content>
+                            </v-list-item>
+                        </v-col>
+                        <v-col cols="3" class="text-right">
+                            <v-btn v-if="advertisement.user.id!=auth.id && !isResp" v-on="on"  small color="primary" dark>Откликнуться</v-btn>
+                            <v-btn v-if="advertisement.user.id!=auth.id && isResp" @click="delResp" small color="error" dark>Отменить</v-btn>
+                        </v-col>
+                    </v-row>
                 </v-card-title>
-                <v-card-subtitle>C {{advertisement.dateStart}} до {{advertisement.dateEnd}}</v-card-subtitle>
-                <v-card-actions>{{advertisement.condition}}</v-card-actions>
-                <v-card-text v-if="advertisement.age">{{advertisement.age}}</v-card-text>
-                <v-card-text  v-if="advertisement.user.id!=auth.id">
-                    <v-label> Хозяйн
-                        <v-list-item
-                                :href=link
-                                ripple>
-                            <v-list-item-avatar>
-                                <img v-if="advertisement.user.img" :src="'/img/'+advertisement.user.img">
-                                <img v-else :src=tempImg>
-                            </v-list-item-avatar>
-                            <v-list-item-content>
-                                <v-list-item-title v-html="advertisement.user.name"></v-list-item-title>
-                            </v-list-item-content>
-                        </v-list-item>
-                    </v-label>
+<!--                <v-card-subtitle>C {{advertisement.dateStart}} до {{advertisement.dateEnd}}</v-card-subtitle>-->
+<!--                <v-card-actions>{{advertisement.condition}}</v-card-actions>-->
+                <v-card-text>
+                    <v-row v-if="advertisement.user.id!=auth.id" class="my-3">
+                        <v-icon class="mx-3">mdi-map-marker</v-icon>
+                        {{advertisement.user.locale}}
+                    </v-row>
+                    <v-row>
+                        <v-icon class="mx-3">mdi-calendar-range</v-icon>
+                        Может принять с {{advertisement.dateStart}} до {{advertisement.dateEnd}}
+                    </v-row>
+                    <v-row md="0">
+                        <v-col cols="6" >
+                                <v-text-field
+                                        :disabled="true"
+                                        label="Тип"
+                                        :value="type"
+                                ></v-text-field>
+                        </v-col>
+                        <v-col cols="6">
+                            <v-text-field
+                                    :disabled="true"
+                                    label="Порода"
+                                    :value="breed"
+                            ></v-text-field>
+                        </v-col>
+                    </v-row>
+                    <v-row class="my-0">
+                        <v-col cols="3" v-if="advertisement.sex">
+                                <v-text-field
+                                        :disabled="true"
+                                        label="Пол"
+                                        :value="advertisement.sex"
+                                ></v-text-field>
+                        </v-col>
+                        <v-col cols="3" v-if="advertisement.age!=0">
+                                <v-text-field
+                                        :disabled="true"
+                                        label="Возраст"
+                                        :value="advertisement.age"
+                                ></v-text-field>
+                        </v-col>
+                        <v-col cols="6">
+                            <v-text-field
+                                    :disabled="true"
+                                    label="Условие приема"
+                                    :value="advertisement.condition"
+                            ></v-text-field>
+                        </v-col>
+                    </v-row>
+                    <v-row v-if="advertisement.info" >
+                        <v-textarea
+                                outlined
+                                :disabled="true"
+                                rows="2"
+                                label="Дополнительная информация"
+                                :value="advertisement.info"
+                        ></v-textarea>
+                    </v-row>
                 </v-card-text>
-                <v-card-text v-if="advertisement.user.id!=auth.id">
-                    {{advertisement.user.locale}}
-                </v-card-text>
-                <v-card-text v-if="advertisement.sex">{{advertisement.sex}}</v-card-text>
-                <v-card-text v-if="advertisement.info">{{advertisement.info}}</v-card-text>
-                <v-card-text>{{advertisement.createDate}}</v-card-text>
+
+
                 <div class="text-right" v-if="advertisement.user.id===auth.id">
                     <v-btn @click="del" color="error" fab small dark>
                         <v-icon>mdi-trash-can-outline</v-icon>
@@ -58,7 +110,7 @@
             <v-card-title>Выберите питомца, которого ходите пристроить</v-card-title>
             <v-divider></v-divider>
             <v-card-text style="height: 300px;">
-                <v-autocomplete v-model="dialogm1" :items="animalsAuthByUser" filled
+                <v-autocomplete v-if="animalsAuthByUser.length!=0" v-model="dialogm1" :items="animalsAuthByUser" filled
                                 color="blue-grey lighten-2"
                                 label="Select"
                                 name="name"
@@ -91,6 +143,13 @@
                     </template>
 
                 </v-autocomplete>
+                <div v-else>
+                    Для отклика необходимо добавить питомца, для которого ищете место передержки
+                    <router-link tag="v-btn" to="/animal" class="m-2" min-width="60">
+                        <span>Добавить животное</span>
+                        <v-icon>mdi-cat</v-icon>
+                    </router-link>
+                </div>
             </v-card-text>
             <v-divider></v-divider>
             <v-card-actions>
@@ -146,7 +205,7 @@
             return {
                 tempImg:"/img/no_foto.png",
                 selectItem:null,
-                dialogm1: '',
+                dialogm1: null,
                 responses:[],
                 countResp:0,
                 isResp:false,

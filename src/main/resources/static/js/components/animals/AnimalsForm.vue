@@ -1,6 +1,7 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
     <v-container fluid>
         <v-data-iterator
+                v-if="items"
                 :items="items"
                 :items-per-page.sync="itemsPerPage"
                 :page="page"

@@ -1,7 +1,7 @@
 <template>
     <v-card  class="px-3; my-3" width="100%">
         <v-row>
-            <v-col class="text-left">
+            <v-col class="text-left" >
                 <v-list-item
                         :href=link
                         ripple>
@@ -14,14 +14,15 @@
                     </v-list-item-content>
                 </v-list-item>
             </v-col>
-            <v-col  v-if="response.stateRecipient" class="text-left">
+            <v-col  class="py-auto" v-if="response.stateRecipient" >
                 <v-btn
                         dark
                         icon
-                        x-small
+                        small
                         absolute
+                        @click="dialogCreate=true"
                 >
-                    <v-icon large color="blue darken-2">mdi-message-text</v-icon>
+                    <v-icon  color="blue darken-2">mdi-message-text</v-icon>
                 </v-btn>
             </v-col>
             <v-col class="text-right">
@@ -72,6 +73,10 @@
                 <v-icon class="pr-2">mdi-cash-register</v-icon>{{response.advertisement.condition}}
             </v-col>
         </v-row>
+        <v-dialog v-model="dialogCreate" max-width="500px">
+            <message-send-form :close="dialogCreate=false" :recipient="response.advertisement.user">
+            </message-send-form>
+        </v-dialog>
         <v-fab-transition>
             <v-btn
                     color="red"
@@ -86,22 +91,28 @@
                 <v-icon>mdi-trash-can-outline</v-icon>
             </v-btn>
         </v-fab-transition>
+
     </v-card>
 
 </template>
 <script>
+    import MessageSendForm from 'components/messages/MessageSentForm.vue'
     export default {
         props: ['response', 'delResp']   ,
         data(){
             return {
                 tempImg: "/img/no_foto.png",
-                link:'/user/'+this.response.advertisement.user.id
+                link:'/user/'+this.response.advertisement.user.id,
+                dialogCreate:false
             }
         },
         methods:{
             del(){
                 this.delResp(this.response)
             }
+        },
+        components:{
+            MessageSendForm
         }
     }
 

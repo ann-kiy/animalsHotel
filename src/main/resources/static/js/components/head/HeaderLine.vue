@@ -74,7 +74,9 @@
                 <router-link tag="v-icon" to="/advertisement">mdi-view-grid-plus</router-link>
             </v-btn>
             <v-btn icon href="">
-                <v-icon>mdi-magnify</v-icon>
+                <router-link tag="v-icon" to="/search" class="m-2">
+                    mdi-magnify
+                </router-link>
             </v-btn>
             <v-btn icon href="/logout">
                 <v-icon>mdi-export</v-icon>
